@@ -19,8 +19,11 @@
   },
   "homepage": "https://gitlab.stud.idi.ntnu.no/tdt4140-2023/landsby-1/gruppe-10/stava/-/blob/main/README.md",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "connect-mongodb-session": "^3.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.4"
   },
