@@ -29,7 +29,7 @@ export const ConfirmPasswordValidator = (
   if (!confirmPassword) {
     return "Confirm password is required";
   } else if (confirmPassword.length < 8) {
-    return "Confirm password must have a minimum 8 characters";
+    return "Must be minimum 8 characters";
   } else if (confirmPassword !== form.password) {
     return "Passwords do not match";
   }
