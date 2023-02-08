@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import LogIn from "./pages/LogIn";
 import RoutesView from "./navigation/RoutesView";
 import { BrowserRouter } from "react-router-dom";
 
