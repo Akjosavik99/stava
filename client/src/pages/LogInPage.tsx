@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import stava_logo from "../assets/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
+import useRegisterValidators from "../components/useRegisterValidator";
 
 const Logo = styled.img`
   width: 10rem;
@@ -45,7 +46,7 @@ const ContentContainer = styled.form`
 
 const InputField = styled.input`
   background-color: white;
-  border-radius: 2rem;
+  border-radius: 1rem;
   height: 3rem;
   width: 10rem;
   margin: 0 auto;
@@ -107,11 +108,12 @@ const LogInPage: React.FC = () => {
             <InputField
               style={{ alignSelf: "flex-end" }}
               placeholder="Username"
+              name="username"
             />
           </UsernameContainer>
         </Triangle>
         <PasswordContainer>
-          <InputField placeholder="Password" />
+          <InputField placeholder="Password" name="password" />
           <LogInButton id="logInButton">Log in</LogInButton>
           <CreateUserContainer>
             <h3 style={{ color: "white", textAlign: "center", margin: 0 }}>
