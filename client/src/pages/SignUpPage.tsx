@@ -21,9 +21,7 @@ const UsernameContainer = styled.div`
   flex-direction: column;
   height: 100%;
   text-align: center;
-  align-items: end;
   justify-content: flex-end;
-  justify-self: end;
 `;
 
 const Triangle = styled.div`
@@ -136,12 +134,12 @@ const SignUpPage: React.FC = () => {
               value={form.username}
               onChange={onUpdateField}
               onBlur={onBlurField}
-              style={{ margin: "auto" }}
+              style={{ alignSelf: "end" }}
               placeholder="Username"
               isError={errors.username.error && errors.username.dirty}
             />
             {errors.username.dirty && errors.username.error ? (
-              <p style={{ borderColor: "red", margin: "0" }}>
+              <p style={{ borderColor: "red", margin: "0.2rem 0 0 0" }}>
                 {errors.username.message}
               </p>
             ) : null}
