@@ -37,7 +37,6 @@ const ContentContainer = styled.form`
   display: flex;
   width: 100%;
   flex-direction: column;
-  /* justify-content: space-evenly; */
   height: auto;
 `;
 
@@ -55,7 +54,6 @@ const FormContainer = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
-  /* justify-content: space-evenly; */
   background-color: #f16a00;
   text-align: center;
   padding-top: 2rem;
