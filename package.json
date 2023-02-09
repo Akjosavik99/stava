@@ -2,9 +2,9 @@
   "name": "stava",
   "version": "1.0.0",
   "description": "Strava without the r",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "node server/index.ts",
+    "start": "node server/index.js",
     "build": "cd client && npm install && npm run build",
     "test": "test"
   },
