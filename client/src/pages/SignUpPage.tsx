@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import stava_logo from "../assets/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loading from "../components/Loading";
 import { useMutation } from "@tanstack/react-query";
 import useRegisterValidators from "../components/useRegisterValidator";
 import arrow from "../assets/arrow.svg";
@@ -35,6 +36,9 @@ const useSignupMutation = () => {
       onSuccess: () => {
         navigate("/login");
       },
+      onError: () => {
+        alert("Sign in failed!");
+      },
     }
   );
 };
@@ -48,7 +52,7 @@ const SignUpPage: React.FC = () => {
 
   const { errors, validateForm, onBlurField } = useRegisterValidators(form);
 
-  const { mutate } = useSignupMutation();
+  const { mutate, isLoading } = useSignupMutation();
 
   const onUpdateField = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name;
@@ -66,6 +70,10 @@ const SignUpPage: React.FC = () => {
   };
 
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <SignupContainer>
