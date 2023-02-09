@@ -3,6 +3,7 @@ import styled from "styled-components";
 import stava_logo from "../assets/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import useRegisterValidators from "../components/useRegisterValidator";
+import arrow from "../assets/arrow.svg";
 
 const Logo = styled.img`
   width: 10rem;
@@ -15,14 +16,6 @@ const LogoContainer = styled.div`
   flex-direction: column;
   margin: 5rem 0;
 `;
-
-/* const UsernameContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  text-align: center;
-  justify-content: flex-end;
-`; */
 
 const Triangle = styled.div`
   z-index: 100;
@@ -90,6 +83,17 @@ const SubmitButton = styled.button`
   }
 `;
 
+const BackButton = styled.div`
+  margin: auto auto auto 2rem;
+  align-self: flex-end;
+`;
+
+const Arrow = styled.img`
+  height: 3rem;
+  width: 3rem;
+  cursor: pointer;
+`;
+
 const SignUpPage: React.FC = () => {
   const [form, setForm] = useState({
     username: "",
@@ -127,25 +131,7 @@ const SignUpPage: React.FC = () => {
         <LogoContainer>
           <Logo src={stava_logo} />
         </LogoContainer>
-        <Triangle>
-          {/* <UsernameContainer>
-            <InputField
-              id="username"
-              name="username"
-              value={form.username}
-              onChange={onUpdateField}
-              onBlur={onBlurField}
-              style={{ alignSelf: "end" }}
-              placeholder="Username"
-              isError={errors.username.error && errors.username.dirty}
-            />
-            {errors.username.dirty && errors.username.error ? (
-              <p style={{ borderColor: "red", margin: "0.2rem 0 0 0" }}>
-                {errors.username.message}
-              </p>
-            ) : null}
-          </UsernameContainer> */}
-        </Triangle>
+        <Triangle />
         <FormContainer>
           <InputContainer>
             <InputField
@@ -191,7 +177,9 @@ const SignUpPage: React.FC = () => {
               onChange={onUpdateField}
               onBlur={onBlurField}
               placeholder="Confirm password"
-              isError={errors.password.error && errors.password.dirty}
+              isError={
+                errors.confirmPassword.error && errors.confirmPassword.dirty
+              }
             />
             {errors.confirmPassword.dirty && errors.confirmPassword.error ? (
               <p
@@ -216,6 +204,9 @@ const SignUpPage: React.FC = () => {
           >
             Create user
           </SubmitButton>
+          <BackButton>
+            <Arrow src={arrow} onClick={() => navigate("/login")} />
+          </BackButton>
         </FormContainer>
       </ContentContainer>
     </SignupContainer>
