@@ -45,6 +45,15 @@ export const InputField = styled.input<{ isError: boolean }>`
   border-color: ${({ isError }) => (isError ? "red" : "black")};
 `;
 
+export const InputFieldLogInPage = styled.input`
+  border-color: black;
+  border-radius: 1rem;
+  height: 2.25rem;
+  width: 14rem;
+  margin: 0 auto;
+  padding: 0rem 1rem;
+`;
+
 export const FormContainer = styled.div`
   display: flex;
   height: 100%;
@@ -52,6 +61,35 @@ export const FormContainer = styled.div`
   background-color: #f16a00;
   text-align: center;
   padding-top: 2rem;
+`;
+
+export const CreateUserContainer = styled.div`
+  display: flex;
+  height: 20%;
+  flex-direction: column;
+  justify-content: space-center;
+`;
+
+export const CreateUserButton = styled.button`
+  border-color: black;
+  border-radius: 5rem;
+  background-color: white;
+  height: 2rem;
+  width: 8rem;
+  margin: auto;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+export const LogInButton = styled.button`
+  border-color: black;
+  border-radius: 5rem;
+  background-color: white;
+  height: 3rem;
+  width: 10rem;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
 
 export const InputContainer = styled.div`
