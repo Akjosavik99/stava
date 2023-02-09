@@ -18,6 +18,7 @@ import {
   SubmitButton,
   BackButton,
   Arrow,
+  ErrorText,
 } from "../components/Form";
 
 type FormData = {
@@ -100,9 +101,7 @@ const SignUpPage: React.FC = () => {
               isError={errors.username.error && errors.username.dirty}
             />
             {errors.username.dirty && errors.username.error && (
-              <p style={{ borderColor: "red", margin: "0.2rem 0 0 0" }}>
-                {errors.username.message}
-              </p>
+              <ErrorText>{errors.username.message}</ErrorText>
             )}
           </InputContainer>
           <InputContainer>
@@ -118,9 +117,7 @@ const SignUpPage: React.FC = () => {
             />
 
             {errors.password.dirty && errors.password.error && (
-              <p style={{ borderColor: "red", margin: "0" }}>
-                {errors.password.message}
-              </p>
+              <ErrorText>{errors.password.message}</ErrorText>
             )}
           </InputContainer>
           <InputContainer>
@@ -137,14 +134,7 @@ const SignUpPage: React.FC = () => {
               }
             />
             {errors.confirmPassword.dirty && errors.confirmPassword.error && (
-              <p
-                style={{
-                  margin: "0",
-                  padding: "0",
-                }}
-              >
-                {errors.confirmPassword.message}
-              </p>
+              <ErrorText>{errors.confirmPassword.message}</ErrorText>
             )}
           </InputContainer>
           <SubmitButton

@@ -86,3 +86,8 @@ export const Arrow = styled.img`
   width: 3rem;
   cursor: pointer;
 `;
+
+export const ErrorText = styled.p`
+  margin: 0;
+  padding: 0;
+`;
