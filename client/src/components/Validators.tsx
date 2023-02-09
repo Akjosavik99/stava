@@ -7,7 +7,7 @@ type RegisterForm = {
 export const UsernameValidator = (username: string) => {
   if (!username) {
     return "Username is required";
-  } else if (!new RegExp(/^[a-zA-Z]*$/).test(username)) {
+  } else if (!new RegExp(/^[a-zA-Z0-9]{4,}$/).test(username)) {
     return "Incorrect username format";
   }
   return "";
