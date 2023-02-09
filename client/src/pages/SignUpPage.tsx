@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import stava_logo from "../assets/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
 import useRegisterValidators from "../components/useRegisterValidator";
 import arrow from "../assets/arrow.svg";
 import {
@@ -17,6 +19,26 @@ import {
   Arrow,
 } from "../components/Form";
 
+type FormData = {
+  username: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const useSignupMutation = () => {
+  const navigate = useNavigate();
+  return useMutation(
+    async (formData: FormData) => {
+      await axios.post("http://localhost:3001/api/user/register", formData);
+    },
+    {
+      onSuccess: () => {
+        navigate("/login");
+      },
+    }
+  );
+};
+
 const SignUpPage: React.FC = () => {
   const [form, setForm] = useState({
     username: "",
@@ -25,6 +47,8 @@ const SignUpPage: React.FC = () => {
   });
 
   const { errors, validateForm, onBlurField } = useRegisterValidators(form);
+
+  const { mutate } = useSignupMutation();
 
   const onUpdateField = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name;
@@ -40,6 +64,7 @@ const SignUpPage: React.FC = () => {
         field,
       });
   };
+
   const navigate = useNavigate();
 
   return (
@@ -47,8 +72,7 @@ const SignUpPage: React.FC = () => {
       <ContentContainer
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(e.currentTarget);
-          navigate("/login");
+          mutate(form);
         }}
       >
         <LogoContainer>
