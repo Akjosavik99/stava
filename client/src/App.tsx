@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 const API_URL = "/api";
 
 function App() {
   const [data, setData] = useState("No data :(");
-  
+
   useEffect(() => {
     async function getData() {
       const url = `${API_URL}`;
@@ -12,7 +12,7 @@ function App() {
       setData(data.msg);
     }
     getData();
-  }, []); 
+  }, []);
 
   return (
     <>
