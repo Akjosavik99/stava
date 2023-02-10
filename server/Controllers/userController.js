@@ -13,12 +13,19 @@ exports.getUserByName = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({ message: "du må ha navn og passord" });
+    const { username, password, confirmPassword } = req.body;
+    if (!username || !password || !confirmPassword) {
+      return res.status(400).json({ message: "Fill out all fields!" });
     } else if (await userService.getUserByName(username)) {
-      return res.status(400).json({ message: "brukernavn allerede i bruk" });
+      return res.status(400).json({ message: "Username is taken." });
+    } else if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Your passwords do not match!" });
     } else {
       const hashedPwd = await bcrypt.hash(password, 5);
       const newUser = await userService.createUser(

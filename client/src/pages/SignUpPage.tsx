@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import stava_logo from "../assets/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Loading from "../components/Loading";
+import { useMutation } from "@tanstack/react-query";
 import useRegisterValidators from "../components/useRegisterValidator";
 import arrow from "../assets/arrow.svg";
 import {
@@ -15,7 +18,31 @@ import {
   SubmitButton,
   BackButton,
   Arrow,
+  ErrorText,
 } from "../components/Form";
+
+type FormData = {
+  username: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const useSignupMutation = () => {
+  const navigate = useNavigate();
+  return useMutation(
+    async (formData: FormData) => {
+      await axios.post("http://localhost:3001/api/user/register", formData);
+    },
+    {
+      onSuccess: () => {
+        navigate("/login");
+      },
+      onError: () => {
+        alert("Sign in failed!");
+      },
+    }
+  );
+};
 
 const SignUpPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -25,6 +52,8 @@ const SignUpPage: React.FC = () => {
   });
 
   const { errors, validateForm, onBlurField } = useRegisterValidators(form);
+
+  const { mutate, isLoading } = useSignupMutation();
 
   const onUpdateField = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name;
@@ -40,15 +69,19 @@ const SignUpPage: React.FC = () => {
         field,
       });
   };
+
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <SignupContainer>
       <ContentContainer
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(e.currentTarget);
-          navigate("/login");
+          mutate(form);
         }}
       >
         <LogoContainer>
@@ -68,9 +101,7 @@ const SignUpPage: React.FC = () => {
               isError={errors.username.error && errors.username.dirty}
             />
             {errors.username.dirty && errors.username.error && (
-              <p style={{ borderColor: "red", margin: "0.2rem 0 0 0" }}>
-                {errors.username.message}
-              </p>
+              <ErrorText>{errors.username.message}</ErrorText>
             )}
           </InputContainer>
           <InputContainer>
@@ -86,9 +117,7 @@ const SignUpPage: React.FC = () => {
             />
 
             {errors.password.dirty && errors.password.error && (
-              <p style={{ borderColor: "red", margin: "0" }}>
-                {errors.password.message}
-              </p>
+              <ErrorText>{errors.password.message}</ErrorText>
             )}
           </InputContainer>
           <InputContainer>
@@ -105,14 +134,7 @@ const SignUpPage: React.FC = () => {
               }
             />
             {errors.confirmPassword.dirty && errors.confirmPassword.error && (
-              <p
-                style={{
-                  margin: "0",
-                  padding: "0",
-                }}
-              >
-                {errors.confirmPassword.message}
-              </p>
+              <ErrorText>{errors.confirmPassword.message}</ErrorText>
             )}
           </InputContainer>
           <SubmitButton
