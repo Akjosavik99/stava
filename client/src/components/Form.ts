@@ -79,17 +79,7 @@ export const CreateUserButton = styled.button`
   margin: auto;
   font-size: 1rem;
   font-weight: bold;
-`;
-
-export const LogInButton = styled.button`
-  border-color: black;
-  border-radius: 5rem;
-  background-color: white;
-  height: 3rem;
-  width: 10rem;
-  margin: 0 auto;
-  font-size: 1.5rem;
-  font-weight: bold;
+  cursor: pointer;
 `;
 
 export const InputContainer = styled.div`
@@ -123,4 +113,9 @@ export const Arrow = styled.img`
   height: 3rem;
   width: 3rem;
   cursor: pointer;
+`;
+
+export const ErrorText = styled.p`
+  margin: 0;
+  padding: 0;
 `;
