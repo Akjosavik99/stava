@@ -4,6 +4,7 @@ import stava_logo from "../assets/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
+import Loading from "../components/Loading";
 import {
   InputFieldLogInPage,
   Logo,
@@ -14,8 +15,9 @@ import {
   FormContainer,
   InputContainer,
   CreateUserContainer,
-  LogInButton,
   CreateUserButton,
+  ErrorText,
+  SubmitButton,
 } from "../components/Form";
 
 type FormData = {
@@ -31,8 +33,11 @@ const useLoginMutation = () => {
     },
     {
       onSuccess: () => {
-        console.log("Sucess yay!");
+        console.log("Sucess");
         navigate("/");
+      },
+      onError: () => {
+        console.log("Wrong username/password");
       },
     }
   );
@@ -40,13 +45,25 @@ const useLoginMutation = () => {
 
 const LogInPage: React.FC = () => {
   const [form, setForm] = useState({
-    username: "abc",
-    password: "abc",
+    username: "",
+    password: "",
   });
 
-  const { mutate } = useLoginMutation();
+  const onUpdateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextFormState = {
+      ...form,
+      [e.target.name]: e.target.value,
+    };
+    setForm(nextFormState);
+  };
+
+  const { mutate, isError, isLoading } = useLoginMutation();
 
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <SignupContainer>
@@ -54,7 +71,6 @@ const LogInPage: React.FC = () => {
         onSubmit={(e) => {
           e.preventDefault();
           mutate(form);
-          console.log("Sucess :D");
         }}
       >
         <LogoContainer>
@@ -66,18 +82,31 @@ const LogInPage: React.FC = () => {
             <InputFieldLogInPage
               placeholder="Username"
               name="username"
-              // value={form.username}
+              onChange={onUpdateField}
+              value={form.username}
+              type={"username"}
             />
           </InputContainer>
           <InputContainer>
             <InputFieldLogInPage
               placeholder="Password"
               name="password"
-              // value={form.password}
+              onChange={onUpdateField}
+              value={form.password}
+              type={"password"}
             />
+            {isError && <ErrorText>Wrong username/password</ErrorText>}
           </InputContainer>
           <InputContainer>
-            <LogInButton id="logInButton">Log in</LogInButton>
+            <SubmitButton
+              id="logInButton"
+              disabled={
+                form.username.length === 0 || form.password.length === 0
+              }
+              style={{ height: "3rem", fontSize: "1.5rem" }}
+            >
+              Log in
+            </SubmitButton>
           </InputContainer>
           <CreateUserContainer>
             <h3
