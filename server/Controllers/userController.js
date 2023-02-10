@@ -45,12 +45,12 @@ exports.loginUser = async (req, res) => {
       const cmp = await bcrypt.compare(req.body.password, user.password);
       if (cmp) {
         req.session.user = user;
-        res.json({ user: user, msg: "Auth Successful" });
+        res.status(200).json({ user: user, msg: "Auth Successful" });
       } else {
-        res.json({ msg: "Wrong username or password." });
+        res.status(400).json({ msg: "Wrong username or password." });
       }
     } else {
-      res.json({ msg: "Wrong username or password." });
+      res.status(400).json({ msg: "Wrong username or password." });
     }
   } catch (error) {
     console.log(error);
@@ -61,7 +61,7 @@ exports.loginUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const user = await userService.updateUser(req.params.id, req.body);
-    res.json({ data: user, status: "success" });
+    res.status(200).json({ data: user, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
