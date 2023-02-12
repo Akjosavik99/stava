@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import AltNavbar from "./components/AltNavbar";
+import MyExercices from "./components/MyExcercices";
 const API_URL = "/api";
 
 function App() {
@@ -19,9 +20,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <AltNavbar />
-      <h1>MERN App!</h1>
-      <p>Data from server: {data}</p>
+      <MyExercices />
     </>
   );
 }
