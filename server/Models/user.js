@@ -11,4 +11,4 @@ const userSchema = new Schema({
   exercises: [String],
 });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);
