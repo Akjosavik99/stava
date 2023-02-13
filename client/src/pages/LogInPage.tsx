@@ -36,7 +36,7 @@ export const useLoginMutation = () => {
     {
       onSuccess: () => {
         console.log("Success");
-        navigate("/");
+        navigate("/programs");
       },
       onError: () => {
         console.log("Wrong username/password");
