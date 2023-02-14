@@ -1,37 +1,73 @@
 import React from "react";
-import styled from "styled-components";
-import stavaLogo from "../assets/stava_logo.svg";
+import stavaLogoWhite from "../assets/stava_logo_white.png";
 import strongMan from "../assets/strong_man.svg";
+import homeIcon from "../assets/home_icon.png";
+import groupsIcon from "../assets/groups_icon.png";
 
-const Bar = styled.nav`
-  font-size: 1.5em;
-  background-color: #f16a00;
-  height: 100px;
-`;
+const styles = {
+  nav: {
+    backgroundColor: "#f16a00",
+  },
+} as const;
 
-const Logo = styled.img`
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 15px;
-  width: 6rem;
-  background-color: white;
-`;
-
-const Strongman = styled.img`
-  width: 6rem;
-  float: right;
-
-  `;
-
-const Navbar: React.FC = () => {
+function Navbar() {
   return (
     <>
-      <Bar>
-        <Logo src={stavaLogo} />
-        <Strongman src={strongMan} />
-      </Bar>
+      <nav className="navbar navbar-expand" style={styles.nav}>
+        <div className="container-fluid me-5 pe-5">
+          <a className="navbar-brand" href="/">
+            <img
+              src={stavaLogoWhite}
+              alt="Logo"
+              width="50"
+              height="48"
+              className="d-inline-block align-text-top"
+            />
+          </a>
+          <div
+            className="collapse navbar-collapse ps-5"
+            id="navbarSupportedContent"
+          >
+            <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+              <li className="nav-item px-3">
+                <a className="nav-link active" aria-current="page" href="/">
+                  <img
+                    src={homeIcon}
+                    alt="Logo"
+                    width="50"
+                    height="48"
+                    className="d-inline-block align-text-top"
+                  />
+                </a>
+              </li>
+              <li className="nav-item px-3">
+                <a className="nav-link" href="/">
+                  <img
+                    src={groupsIcon}
+                    alt="Logo"
+                    width="50"
+                    height="48"
+                    className="d-inline-block align-text-top"
+                  />
+                </a>
+              </li>
+              <li className="nav-item dropdown px-3">
+                <a className="nav-link" href="/">
+                  <img
+                    src={strongMan}
+                    alt="Logo"
+                    width="50"
+                    height="48"
+                    className="d-inline-block align-text-top"
+                  />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </>
   );
-};
+}
+
 export default Navbar;
