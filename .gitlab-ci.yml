@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - deploy
 
 build:
@@ -9,6 +10,16 @@ build:
     - echo "Building..."
     - npm install
     - npm run build
+  only:
+    - merge_requests
+
+test:
+  stage: test
+  image: node:latest
+  script:
+    - echo "Testing..."
+    - npm install
+    - npm run test
   only:
     - merge_requests
 
