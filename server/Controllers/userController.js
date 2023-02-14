@@ -13,12 +13,19 @@ exports.getUserByName = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({ message: "du må ha navn og passord" });
+    const { username, password, confirmPassword } = req.body;
+    if (!username || !password || !confirmPassword) {
+      return res.status(400).json({ message: "Fill out all fields!" });
     } else if (await userService.getUserByName(username)) {
-      return res.status(400).json({ message: "brukernavn allerede i bruk" });
+      return res.status(400).json({ message: "Username is taken." });
+    } else if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Your passwords do not match!" });
     } else {
       const hashedPwd = await bcrypt.hash(password, 5);
       const newUser = await userService.createUser(
@@ -33,18 +40,24 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+
   try {
     const user = await userService.getUserByName(req.body.username);
     if (user) {
       const cmp = await bcrypt.compare(req.body.password, user.password);
       if (cmp) {
         req.session.user = user;
-        res.json({ user: user, msg: "Auth Successful" });
+        res.status(200).json({ user: user, msg: "Auth Successful" });
       } else {
-        res.json({ msg: "Wrong username or password." });
+        res.status(400).json({ msg: "Wrong username or password." });
       }
     } else {
-      res.json({ msg: "Wrong username or password." });
+      res.status(400).json({ msg: "Wrong username or password." });
     }
   } catch (error) {
     console.log(error);
@@ -55,7 +68,7 @@ exports.loginUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const user = await userService.updateUser(req.params.id, req.body);
-    res.json({ data: user, status: "success" });
+    res.status(200).json({ data: user, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

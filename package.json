@@ -2,9 +2,9 @@
   "name": "stava",
   "version": "1.0.0",
   "description": "Strava without the r",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "node server/index.ts",
+    "start": "node server/index.js",
     "build": "cd client && npm install && npm run build",
     "test": "test"
   },
@@ -19,13 +19,16 @@
   },
   "homepage": "https://gitlab.stud.idi.ntnu.no/tdt4140-2023/landsby-1/gruppe-10/stava/-/blob/main/README.md",
   "dependencies": {
+    "@tanstack/react-query": "^4.24.4",
+    "axios": "^1.3.2",
     "bcrypt": "^5.1.0",
     "connect-mongodb-session": "^3.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "mongodb": "^4.13.0",
-    "mongoose": "^6.8.4"
+    "mongoose": "^6.8.4",
+    "react-loader-spinner": "^5.3.4"
   },
   "engines": {
     "node": "18.13.0"
