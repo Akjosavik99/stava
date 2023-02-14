@@ -78,6 +78,9 @@ app.use((req, res, next) => {
 const userRouter = require("./Routers/userRouter");
 app.use("/api/user", userRouter);
 
+const workoutRouter = require("./Routers/workoutRouter");
+app.use("/api/workout", workoutRouter);
+
 // Handle all other GET-reqs
 app.get("*", (req, res) => {
   res.status(404).json({ message: "404 not found" });
