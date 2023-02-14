@@ -3,12 +3,24 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 4,
+  },
+  password: { type: String, required: true, minlength: 8 },
   date: { type: Date, default: Date.now },
   groups: [String],
   plans: [String],
   exercises: [String],
+});
+
+userSchema.static({
+  async getUserByUsername(username) {
+    const user = await this.findOne({ username: username });
+    return user;
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

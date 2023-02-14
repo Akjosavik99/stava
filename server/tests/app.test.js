@@ -1,23 +1,10 @@
-const { MongoClient } = require("mongodb");
-const request = require("supertest");
-const { MongoURI } = require("../config/database");
+/* const { expect } = require("chai"); */
 const User = require("../Models/user");
-//const MongoDBStore = require("connect-mongodb-session"); */
-
-/* const userRouter = require("../Routers/userRouter");
-
-const express = require("express"); */
-
-/* jest.mock("mongoose"); */
-/* jest.spyOn(MongoDBStore, "MongoDBStore"); */
-
-/* jest.mock("express-session", () => (req, res, next) => null);
-jest.mock("connect-mongodb-session", () => (req, res, next) => null); */
-/* sessionSpy.mockReturnValue(() => (req, res, next) => null); */
-
-// const app = require("../index");
+const userModel = require("../Models/user");
+const mongoose = require("mongoose");
 
 const { dbConnect, dbDisconnect } = require("../utils/dbHandler.utils");
+const { MongoServerError } = require("mongodb");
 
 beforeAll(async () => {
   await dbConnect();
@@ -27,60 +14,55 @@ afterAll(async () => {
 });
 
 describe("create user", () => {
-  /* let connection;
-  let db;
-  let app;
-
-  beforeAll(async () => {
-    connection = await MongoClient.connect(MongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    db = await connection.db();
-
-    app = express();
-    app.use("/api/user", userRouter);
-  });
-  afterAll(async () => {
-    await connection.close();
-    await db.close();
-  }); */
-
   it("should create a new user", async () => {
     const newUser = await User({
       username: "test",
-      password: "test",
+      password: "12345678",
     });
-
-    await newUser.save();
-    expect(newUser.username).toBe("test");
-
-    /* await request(app).get("/api/auth/register"); */
-    /* expect(createUser.mock.calls.length).toBe(1); */
+    expect(() => userModel.create(newUser)).not.toThrow();
   });
 
   it("should not create a new user", async () => {
-    const wrongUser = await User({ username: "test" });
+    const noPassword = new User({ username: "test" });
+    const shortPassword = new User({ username: "test", password: "short" });
+    const nullUsername = new User({ username: null, password: "12345678" });
 
-    expect(wrongUser.save).toThrow();
+    let err;
+    try {
+      await userModel.create(noPassword);
+    } catch (error) {
+      err = error;
+    }
+    expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+
+    err;
+    try {
+      await userModel.create(shortPassword);
+    } catch (error) {
+      err = error;
+    }
+    expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+
+    err;
+    try {
+      await userModel.create(nullUsername);
+    } catch (error) {
+      err = error;
+    }
+    expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
   });
 
   it("should get duplication error", async () => {
     const duplicateUser = await User({
       username: "test",
-      password: "test",
+      password: "12345678",
     });
-
-    expect(duplicateUser.save).toThrow();
+    let err;
+    try {
+      await userModel.create(duplicateUser);
+    } catch (error) {
+      err = error;
+    }
+    expect(err).toBeInstanceOf(MongoServerError);
   });
 });
-/* describe("login user", () => {
-  it("should login a user", async () => {
-    const newUser = await User({
-      username: "test",
-      password: "test",
-    });
-
-    await newUser.save();
-  });
-}); */
