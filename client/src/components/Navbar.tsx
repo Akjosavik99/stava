@@ -1,8 +1,8 @@
 import React from "react";
 import stavaLogoWhite from "../assets/stava_logo_white.png";
-import strongMan from "../assets/strong_man.svg";
-import homeIcon from "../assets/home_icon.png";
-import groupsIcon from "../assets/groups_icon.png";
+import strongMan from "../assets/navbarassets/strong_man.svg";
+import homeIcon from "../assets/navbarassets/home_icon.png";
+import groupsIcon from "../assets/navbarassets/groups_icon.png";
 
 const styles = {
   nav: {
