@@ -130,3 +130,33 @@ export const ErrorText = styled.p`
   margin: 0;
   padding: 0;
 `;
+
+export const DataContainer = styled.p`
+  width: auto;
+  display: flex;
+  justify-content: center;
+  padding: 2em;
+  /* background-color: #ffc08e; */
+`;
+export const DoubleContainer = styled.p`
+  margin: 0px;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  min-width: 700px;
+  border: 3px solid black;
+  /* background-color: #ffc08e; */
+`;
+export const WeekdayContainer = styled.p`
+  min-width: 600px;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  /* border-right: 3px solid black; */
+`;
+export const DayContainer = styled.h1`
+  padding: 0.3em;
+  font-size: 1.8em;
+  background-color: #ffc08e;
+  margin: 0;
+`;
