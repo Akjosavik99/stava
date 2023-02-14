@@ -63,6 +63,6 @@ describe("create user", () => {
     } catch (error) {
       err = error;
     }
-    expect(err).toBeInstanceOf(MongoServerError);
+    expect(err.constructor.name).toBe("MongoServerError");
   });
 });
