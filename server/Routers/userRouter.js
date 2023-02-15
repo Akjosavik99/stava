@@ -5,6 +5,7 @@ const {
   loginUser,
   authCheck,
   logoutUser,
+  deleteUser,
 } = require("../Controllers/userController");
 
 const router = express.Router();

@@ -12,6 +12,16 @@ exports.findWorkout = async (req, res) => {
   }
 };
 
+exports.findWorkoutById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const workout = await workoutService.getWorkoutById(id);
+    res.json({ data: workout, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.createWorkout = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
   res.header(
