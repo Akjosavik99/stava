@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import App from "../App";
 import LogInPage from "../pages/LogInPage";
+import ProgramsPage from "../pages/ProgramsPage";
 import SignUpPage from "../pages/SignUpPage";
 import CreateWorkout from "../pages/CreateWorkout";
 import ViewWorkouts from "../pages/ViewWorkouts";
@@ -17,6 +18,7 @@ const RoutesView: React.FC = () => {
       <Route path="/createworkout" element={<CreateWorkout />} />
       <Route path="/viewworkouts/:id" element={<ViewWorkouts />} />
       <Route path="/viewexercises/:id" element={<ViewExercises />} />
+      <Route path="/programs" element={<ProgramsPage />} />
     </Routes>
   );
 };
