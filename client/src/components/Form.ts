@@ -124,6 +124,7 @@ export const Arrow = styled.img`
   height: 3rem;
   width: 3rem;
   cursor: pointer;
+  cursor: pointer;
 `;
 
 export const ErrorText = styled.p`
@@ -136,7 +137,6 @@ export const DataContainer = styled.p`
   display: flex;
   justify-content: center;
   padding: 2em;
-  /* background-color: #ffc08e; */
 `;
 export const DoubleContainer = styled.p`
   margin: 0px;
@@ -145,18 +145,26 @@ export const DoubleContainer = styled.p`
   justify-content: center;
   min-width: 700px;
   border: 3px solid black;
-  /* background-color: #ffc08e; */
 `;
 export const WeekdayContainer = styled.p`
   min-width: 600px;
   margin: 0px;
   display: flex;
   flex-direction: column;
-  /* border-right: 3px solid black; */
 `;
 export const DayContainer = styled.h1`
   padding: 0.3em;
   font-size: 1.8em;
   background-color: #ffc08e;
   margin: 0;
+  min-height: 1.8em;
+`;
+
+export const DayContainerList = styled.a`
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: #f16a00;
+  }
 `;

@@ -6,20 +6,40 @@ import {
   DataContainer,
   DayContainer,
   DoubleContainer,
+  DayContainerList,
 } from "../components/Form";
+import { useNavigate, useNavigation } from "react-router-dom";
 
-// const data = axios
-//   .get(`http://localhost:3001/api/workout/plan`)
-//   .then((response) => {
-//     console.log(response);
-//     return response.data.forEach((program: any) => {
-//       <DayContainer>
-//         <h1>{program.name}</h1>
-//       </DayContainer>;
-//     });
-//   });
+const workoutList = [
+  { day: "friday", name: "Cardio", url: "/ViewWorkouts" },
+  { day: "monday", name: "Chest and Legs test", url: "/ViewWorkouts" },
+  { day: "monday", name: "Chest and Legs test", url: "/login" },
+];
 
 const ViewWorkouts: React.FC = () => {
+  const navigate = useNavigate();
+
+  function findWorkouts(day: any) {
+    type workout = {
+      day: string;
+      name: string;
+      url: string;
+    };
+    let list = new Array();
+    workoutList.forEach((workout) => {
+      if (workout.day == day) {
+        list.push(workout);
+      }
+    });
+
+    return list.map((workout) => (
+      <DayContainerList onClick={() => navigate(workout.url)}>
+        {workout.name}
+        {", "}
+      </DayContainerList>
+    ));
+  }
+
   return (
     <>
       <Navbar />
@@ -43,19 +63,19 @@ const ViewWorkouts: React.FC = () => {
             <DayContainer>Sunday</DayContainer>
           </WeekdayContainer>
           <WeekdayContainer>
-            <DayContainer id="monday"> Chest and back</DayContainer>
-            <DayContainer id="tuesday" style={{ backgroundColor: "#ffdcc4" }}>
-              Chest and back
+            <DayContainer>{findWorkouts("monday")} </DayContainer>
+            <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
+              {findWorkouts("tuesday")}
             </DayContainer>
-            <DayContainer id="wednesday">Chest and back</DayContainer>
-            <DayContainer id="thursday" style={{ backgroundColor: "#ffdcc4" }}>
-              Chest and back
+            <DayContainer>{findWorkouts("wednesday")}</DayContainer>
+            <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
+              {findWorkouts("thursday")}
             </DayContainer>
-            <DayContainer id="friday">Chest and back</DayContainer>
-            <DayContainer id="saturday" style={{ backgroundColor: "#ffdcc4" }}>
-              Chest and back
+            <DayContainer>{findWorkouts("friday")}</DayContainer>
+            <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
+              {findWorkouts("saturday")}
             </DayContainer>
-            <DayContainer id="sunday">Chest and back</DayContainer>
+            <DayContainer>{findWorkouts("sunday")}</DayContainer>
           </WeekdayContainer>
         </DoubleContainer>
       </DataContainer>
