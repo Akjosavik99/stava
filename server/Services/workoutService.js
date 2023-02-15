@@ -11,3 +11,7 @@ module.exports.getWorkout = async (name) => {
 module.exports.getWorkoutByOwner = async (owner) => {
   return await workoutModel.find({ owner: owner });
 };
+
+module.exports.getWorkoutById = async (id) => {
+  return await workoutModel.findById(id);
+};
