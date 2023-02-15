@@ -4,27 +4,31 @@
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^4.24.4",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "axios": "^1.3.2",
+    "jest-environment-jsdom": "^29.4.3",
+    "jest-fetch-mock": "^3.0.3",
+    "nock": "^13.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --verbose ./tests --runInBand --detectOpenHandles",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -39,7 +43,33 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "tests"
+    ],
+    "globals": {
+      "APP_NAME": "Demo"
+    },
+    "transform": {
+      "^.+\\.tsx$": "ts-jest",
+      "^.+\\.ts$": "ts-jest",
+      "^.+\\.svg$": "<rootDir>/svgTransform.js"
+    },
+    "testEnvironment": "jest-environment-jsdom"
+  },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.18.6",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
     "@types/styled-components": "^5.1.26"
   }
 }

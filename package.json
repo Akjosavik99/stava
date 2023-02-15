@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "build": "cd client && npm install && npm run build",
-    "test": "node_modules/mocha/bin/mocha.js server/tests/api.js --exit --timeout 5000 && cd server && jest --runInBand --detectOpenHandles",
+    "build": "cd client && npm install --force && npm run build",
+    "test": "node_modules/mocha/bin/mocha.js server/tests/api.js --exit --timeout 5000 && cd server && jest --verbose ./tests --runInBand --detectOpenHandles",
     "ci": "start-server-and-test http://localhost:3001"
   },
   "repository": {
