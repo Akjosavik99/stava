@@ -17,8 +17,12 @@ test:
   stage: test
   image: node:latest
   script:
-    - echo "Testing..."
+    - echo "Testing server..."
     - npm install
+    - npm run test
+    - echo "Testing client..."
+    - cd client
+    - npm install --force
     - npm run test
   only:
     - merge_requests
