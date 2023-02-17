@@ -8,17 +8,8 @@ import {
   DoubleContainer,
   DayContainerList,
 } from "../components/Form";
-// import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
-const workoutList = [
-  { day: "friday", name: "Cardio", url: "/ViewWorkouts" },
-  { day: "monday", name: "Chest and Legs test", url: "/ViewWorkouts" },
-  { day: "monday", name: "Chest and Legs test", url: "/login" },
-];
-
-const workoutList2 = [{ day: "friday", name: "Cardio", url: "/ViewWorkouts" }];
 
 type Workout = {
   _id: string;
@@ -29,14 +20,6 @@ type Workout = {
 };
 
 type WorkoutData = {
-  // data: {
-  //   _id: string;
-  //   owner: string;
-  //   workoutname: string;
-  //   exercises: [];
-  //   date: string;
-  // };
-
   data: [Workout];
   status: string;
 };
@@ -54,43 +37,42 @@ const useGetWorkoutsQuery = (id?: String) => {
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
 
+  // Test with this id: 63ecac347c834875fc802556 for now.
+  // Will be replaced with the user's id once we got it.
   const { data } = useGetWorkoutsQuery("63ecac347c834875fc802556"); //63ecac347c834875fc802556
 
-  function findWorkouts(day: any) {
-    type Workout1 = {
-      day: string;
+  function getWorkouts(day: string) {
+    type Data = {
       name: string;
       url: string;
     };
-    let list: Workout1[] = [];
-    workoutList.forEach((workout) => {
-      if (workout.day === day) {
-        list.push(workout);
+    try {
+      const emptyList: Data[] = [];
+      const workouts: Workout[] = data!.data;
+      for (var key in workouts) {
+        //iterates thru the json object
+        if (typeof workouts[key] === "string") {
+          //check to see if the value is a string
+          const str = String(workouts[key]); //converts the value to a string
+          if (str === day) {
+            emptyList.push({
+              name: str,
+              url: "/login", //change to workout url when implemented in backend
+            });
+          }
+        }
+
+        return emptyList.map((element) => (
+          <DayContainerList onClick={() => navigate(element.url)}>
+            {element.name}
+            {", "}
+          </DayContainerList>
+        ));
       }
-    });
-
-    return list.map((workout) => (
-      <DayContainerList onClick={() => navigate(workout.url)}>
-        {workout.name}
-        {", "}
-      </DayContainerList>
-    ));
-  }
-
-  function getWorkouts(id: string) {
-    let list: Workout[] = data!.data;
-    // list.forEach((workout) => {
-    //   if (workout.owner === "Test") {
-    //     list.push(workout);
-    //   }
-    // });
-    return list.map((workout) => (
-      <h1>test</h1>
-      // <DayContainerList onClick={() => navigate("/")}>
-      //   {workout.owner}
-      //   {", "}
-      // </DayContainerList>
-    ));
+    } catch (error) {
+      console.log("ERROR!!!!");
+      console.log(error);
+    }
   }
 
   console.log(data);
@@ -118,19 +100,21 @@ const ViewWorkouts: React.FC = () => {
             <DayContainer>Sunday</DayContainer>
           </WeekdayContainer>
           <WeekdayContainer>
-            <DayContainer>{findWorkouts("monday")} </DayContainer>
+            <DayContainer>{getWorkouts("monday")} </DayContainer>
             <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
-              {findWorkouts("tuesday")}
+              {getWorkouts("tuesday")}
             </DayContainer>
-            <DayContainer>{findWorkouts("wednesday")}</DayContainer>
+            <DayContainer>{getWorkouts("wednesday")}</DayContainer>
             <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
-              {findWorkouts("thursday")}
+              {getWorkouts("thursday")}
             </DayContainer>
-            <DayContainer>{findWorkouts("friday")}</DayContainer>
+            <DayContainer>{getWorkouts("friday")}</DayContainer>
             <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
-              {findWorkouts("saturday")}
+              {getWorkouts("saturday")}
             </DayContainer>
-            <DayContainer>{/* {getWorkouts("sunday")} */}</DayContainer>
+            <DayContainer>
+              {getWorkouts("63ecac347c834875fc802556")}
+            </DayContainer>
           </WeekdayContainer>
         </DoubleContainer>
       </DataContainer>
