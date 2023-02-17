@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import stava_logo from "../assets/stava_logo.svg";
+import stava_logo from "../assets/logo/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
 import { useMutation } from "@tanstack/react-query";
 import useRegisterValidators from "../components/useRegisterValidator";
-import arrow from "../assets/arrow.svg";
+import arrow from "../assets/div/arrow.svg";
 import {
   Logo,
   LogoContainer,

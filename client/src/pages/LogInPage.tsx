@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import styled from "styled-components";
-import stava_logo from "../assets/stava_logo.svg";
+import stava_logo from "../assets/logo/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
