@@ -168,3 +168,55 @@ export const DayContainerList = styled.a`
     color: #f16a00;
   }
 `;
+
+export const OuterExercisesContainer = styled.p`
+  margin: 0px;
+  padding: 0.1em;
+  max-height: 600px;
+  width: 60%;
+  /* display: flex; */
+  background-color: #ffc08e;
+  border: 3px solid black;
+  overflow-y: scroll;
+`;
+
+export const InnerExercisesContainer = styled.p`
+  margin: 0px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+// The container with the exercises + reps/sets
+export const ExerciseContainer = styled.p`
+  max-width: 50%;
+  flex: 50%;
+  display: flex;
+  border: 1px solid black;
+  padding: 0.5em;
+`;
+
+export const ExerciseImage = styled.img`
+  width: 5em;
+  height: 5em;
+  margin: 0.5em;
+`;
+
+export const RepsSetsContainer = styled.div`
+  justify-content: center;
+  border: 5px solid grey;
+  margin: 0.5em;
+  font-size: 1.2em;
+  display: flex;
+  background-color: none;
+`;
+export const RepsSets = styled.p`
+  border: 1px solid black;
+  margin: 0.1em;
+  padding: 0em;
+  font-size: 1.35em;
+  font-weight: bold;
+  text-align: center;
+  background-color: white;
+  border-radius: 4em;
+`;

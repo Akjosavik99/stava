@@ -5,6 +5,7 @@ import App from "../App";
 import LogInPage from "../pages/LogInPage";
 import SignUpPage from "../pages/SignUpPage";
 import ViewWorkouts from "../pages/ViewWorkouts";
+import ViewExercises from "../pages/ViewExercises";
 
 const RoutesView: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const RoutesView: React.FC = () => {
       <Route path="/" element={<App />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/viewworkouts" element={<ViewWorkouts />} />
+      <Route path="/viewexercises" element={<ViewExercises />} />
     </Routes>
   );
 };
