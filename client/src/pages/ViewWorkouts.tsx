@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import {
@@ -8,7 +8,9 @@ import {
   DoubleContainer,
   DayContainerList,
 } from "../components/Form";
-import { useNavigate, useNavigation } from "react-router-dom";
+// import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const workoutList = [
   { day: "friday", name: "Cardio", url: "/ViewWorkouts" },
@@ -16,18 +18,53 @@ const workoutList = [
   { day: "monday", name: "Chest and Legs test", url: "/login" },
 ];
 
+const workoutList2 = [{ day: "friday", name: "Cardio", url: "/ViewWorkouts" }];
+
+type Workout = {
+  _id: string;
+  owner: string;
+  workoutname: string;
+  exercises: [];
+  date: string;
+};
+
+type WorkoutData = {
+  // data: {
+  //   _id: string;
+  //   owner: string;
+  //   workoutname: string;
+  //   exercises: [];
+  //   date: string;
+  // };
+
+  data: [Workout];
+  status: string;
+};
+
+const useGetWorkoutsQuery = (id?: String) => {
+  return useQuery(["workouts"], async () => {
+    return await axios
+      .get<WorkoutData>(`http://localhost:3001/api/workout/${id}`)
+      .then((res) => {
+        return res.data;
+      });
+  });
+};
+
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
 
+  const { data } = useGetWorkoutsQuery("63ecac347c834875fc802556"); //63ecac347c834875fc802556
+
   function findWorkouts(day: any) {
-    type workout = {
+    type Workout1 = {
       day: string;
       name: string;
       url: string;
     };
-    let list = new Array();
+    let list: Workout1[] = [];
     workoutList.forEach((workout) => {
-      if (workout.day == day) {
+      if (workout.day === day) {
         list.push(workout);
       }
     });
@@ -39,6 +76,24 @@ const ViewWorkouts: React.FC = () => {
       </DayContainerList>
     ));
   }
+
+  function getWorkouts(id: string) {
+    let list: Workout[] = data!.data;
+    // list.forEach((workout) => {
+    //   if (workout.owner === "Test") {
+    //     list.push(workout);
+    //   }
+    // });
+    return list.map((workout) => (
+      <h1>test</h1>
+      // <DayContainerList onClick={() => navigate("/")}>
+      //   {workout.owner}
+      //   {", "}
+      // </DayContainerList>
+    ));
+  }
+
+  console.log(data);
 
   return (
     <>
@@ -75,7 +130,7 @@ const ViewWorkouts: React.FC = () => {
             <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
               {findWorkouts("saturday")}
             </DayContainer>
-            <DayContainer>{findWorkouts("sunday")}</DayContainer>
+            <DayContainer>{/* {getWorkouts("sunday")} */}</DayContainer>
           </WeekdayContainer>
         </DoubleContainer>
       </DataContainer>
