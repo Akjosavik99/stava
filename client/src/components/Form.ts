@@ -132,7 +132,7 @@ export const ErrorText = styled.p`
   padding: 0;
 `;
 
-export const DataContainer = styled.p`
+export const DataContainer = styled.div`
   width: auto;
   display: flex;
   justify-content: center;
@@ -169,18 +169,19 @@ export const DayContainerList = styled.a`
   }
 `;
 
-export const OuterExercisesContainer = styled.p`
+export const OuterExercisesContainer = styled.div`
   margin: 0px;
   padding: 0.1em;
   max-height: 600px;
+  min-width: 650px;
   width: 60%;
-  /* display: flex; */
   background-color: #ffc08e;
   border: 3px solid black;
   overflow-y: scroll;
 `;
 
-export const InnerExercisesContainer = styled.p`
+export const InnerExercisesContainer = styled.div`
+  min-width: 650px;
   margin: 0px;
   width: 100%;
   display: flex;
@@ -188,12 +189,13 @@ export const InnerExercisesContainer = styled.p`
 `;
 
 // The container with the exercises + reps/sets
-export const ExerciseContainer = styled.p`
+export const ExerciseContainer = styled.div`
   max-width: 50%;
   flex: 50%;
   display: flex;
   border: 1px solid black;
   padding: 0.5em;
+  justify-content: center;
 `;
 
 export const ExerciseImage = styled.img`
@@ -203,20 +205,20 @@ export const ExerciseImage = styled.img`
 `;
 
 export const RepsSetsContainer = styled.div`
-  justify-content: center;
-  border: 5px solid grey;
   margin: 0.5em;
+  padding: 0 0.5em;
   font-size: 1.2em;
-  display: flex;
   background-color: none;
 `;
 export const RepsSets = styled.p`
   border: 1px solid black;
-  margin: 0.1em;
-  padding: 0em;
+  margin: 0.2em;
+  padding: 0 0.5em;
   font-size: 1.35em;
   font-weight: bold;
   text-align: center;
   background-color: white;
   border-radius: 4em;
+  min-width: 6em;
+  max-height: 1.5em;
 `;

@@ -7,7 +7,7 @@ import {
   InnerExercisesContainer,
   OuterExercisesContainer,
   RepsSets,
-  RepsSets as RepsSetsContainer,
+  RepsSetsContainer,
 } from "../components/Form";
 import bench from "../assets/workout_icons/bench.svg";
 import cycle from "../assets/workout_icons/cycle.svg";
@@ -22,11 +22,16 @@ const ViewExercises: React.FC = () => {
           <InnerExercisesContainer>
             <ExerciseContainer>
               <ExerciseImage src={bench}></ExerciseImage>
-              <RepsSetsContainer
-                style={{ backgroundColor: "transparent", border: "none" }}
-              >
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
+              <RepsSetsContainer>
+                <RepsSets>Reps: 6</RepsSets>
+                <RepsSets>Sets: 3</RepsSets>
+              </RepsSetsContainer>
+            </ExerciseContainer>
+            <ExerciseContainer>
+              <ExerciseImage src={cycle}></ExerciseImage>
+              <RepsSetsContainer>
+                <RepsSets>Reps: 6</RepsSets>
+                <RepsSets>Sets: 2</RepsSets>
               </RepsSetsContainer>
             </ExerciseContainer>
             <ExerciseContainer>
@@ -39,15 +44,8 @@ const ViewExercises: React.FC = () => {
             <ExerciseContainer>
               <ExerciseImage src={cycle}></ExerciseImage>
               <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
+                <RepsSets>Reps: 4</RepsSets>
+                <RepsSets>Sets: 5</RepsSets>
               </RepsSetsContainer>
             </ExerciseContainer>
             <ExerciseContainer>
