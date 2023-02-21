@@ -27,7 +27,7 @@ type FormData = {
   confirmPassword: string;
 };
 
-const useSignupMutation = () => {
+export const useSignupMutation = () => {
   const navigate = useNavigate();
   return useMutation(
     async (formData: FormData) => {
@@ -35,10 +35,11 @@ const useSignupMutation = () => {
     },
     {
       onSuccess: () => {
+        console.log("Success");
         navigate("/login");
       },
       onError: () => {
-        alert("Sign in failed!");
+        console.log("Error occurred");
       },
     }
   );
