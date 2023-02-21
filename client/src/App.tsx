@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import MyExercises from "./components/MyExercises";
 const API_URL = "/api";
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <MyExercices />
+      <MyExercises />
     </>
   );
 }
