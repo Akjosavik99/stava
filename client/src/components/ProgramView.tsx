@@ -48,7 +48,7 @@ const Title2 = styled.h1`
 
 
 const Programs: React.FC = () => {
-  const [owners, setOwners] = useState<{ workoutPlan: WorkoutPlan }[]>([]);
+  const [plans, setPlans] = useState<{ workoutPlan: WorkoutPlan }[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Programs: React.FC = () => {
         const response = await axios.get<{ workoutPlan: WorkoutPlan }[]>(
           'http://localhost:3001/api/workout/plan'
         );
-        setOwners(response.data);
+        setPlans(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -72,7 +72,7 @@ const Programs: React.FC = () => {
       <Page>
         <Title>Your Programs</Title>
         <Frame>
-        {owners.map((item, index) => (
+        {plans.map((item, index) => (
           <ProgramItem key={index} onClick={() => {navigate(`/${item.workoutPlan.id}`)}}>
             <Title2>{item.workoutPlan.workoutPlanName}</Title2>
           </ProgramItem>

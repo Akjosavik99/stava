@@ -6,11 +6,6 @@ import Programs from "../components/ProgramView";
 
 
 const ProgramsPage: React.FC = () => {
-    const [form, setForm] = useState({
-      username: "",
-      password: "",
-      confirmPassword: "",
-    });
 
     return (
       <>

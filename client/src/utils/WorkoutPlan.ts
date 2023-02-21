@@ -1,10 +1,12 @@
 import { Workout } from './Workout';
-
+export type Weekday = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
 export interface WorkoutPlan {
-  id: String,
+  id: string;
   owner: string;
   workoutPlanName: string;
   date: Date;
-  workouts: Workout[];
   followers: string[];
+  workoutSchedule: {
+    [weekday in Weekday]?: Workout[];
+  };
 }

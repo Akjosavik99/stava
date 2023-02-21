@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-
 import App from "../App";
 import LogInPage from "../pages/LogInPage";
+import NewProgramPage from "../pages/NewProgramPage";
 import ProgramsPage from "../pages/ProgramsPage";
 import SignUpPage from "../pages/SignUpPage";
 import CreateWorkout from "../pages/CreateWorkout";
@@ -19,6 +19,7 @@ const RoutesView: React.FC = () => {
       <Route path="/viewworkouts/:id" element={<ViewWorkouts />} />
       <Route path="/viewexercises/:id" element={<ViewExercises />} />
       <Route path="/programs" element={<ProgramsPage />} />
+      <Route path="/newprogram" element={<NewProgramPage />} />
     </Routes>
   );
 };
