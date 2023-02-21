@@ -4,6 +4,7 @@ const userModel = require("../Models/user");
 const mongoose = require("mongoose");
 
 const { dbConnect, dbDisconnect } = require("../utils/dbHandler.utils");
+const { MongoServerError } = require("mongodb");
 
 beforeAll(async () => {
   await dbConnect();
