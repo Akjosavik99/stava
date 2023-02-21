@@ -177,8 +177,6 @@ const NewProgramsPage: React.FC = () => {
           }
         })
       }
-      console.log(newWorkoutPlan);
-
       // Send POST request to create workout plan
       await axios.post('http://localhost:3001/api/workout/createplan', newWorkoutPlan);
       // Navigate to /programs

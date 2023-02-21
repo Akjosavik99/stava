@@ -4,5 +4,5 @@ export interface WorkoutPlan {
   workoutPlanName: string;
   date: Date;
   followers: string[];
-  workouts: [{workout: string; day: [string]}]
+  workouts: [{workout: string; day: string[]}]
 }

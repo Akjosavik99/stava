@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { WorkoutPlan } from '../utils/WorkoutPlan';
+import { workoutPlanExample } from "../tests/ExampleWorkouts";
 
 const SuperFrame = styled.div`
 height: 50vh;
@@ -68,21 +69,21 @@ const buttonStyle = {
   marginBottom: "20px"
 };
 
-
-
 const Programs: React.FC = () => {
-  const [plans, setPlans] = useState<{ workoutPlan: WorkoutPlan }[]>([]);
+  const [plans, setPlans] = useState<WorkoutPlan[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWorkoutPlans = async () => {
       try {
-        const response = await axios.get<{ workoutPlan: WorkoutPlan }[]>(
+        const response = await axios.get<WorkoutPlan[]>(
           'http://localhost:3001/api/workout/plan'
         );
         setPlans(response.data);
       } catch (error) {
+        setPlans([workoutPlanExample]);
         console.error(error);
+
       }
     };
 
@@ -97,8 +98,8 @@ const Programs: React.FC = () => {
         <SuperFrame>
           <Frame>
           {plans.map((item, index) => (
-            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/:${item.workoutPlan.id}`)}}>
-              <Title2>{item.workoutPlan.workoutPlanName}</Title2>
+            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/:${item.id}`)}}>
+              <Title2>{item.workoutPlanName}</Title2>
             </ProgramItem>
           ))}
           </Frame>
