@@ -6,30 +6,24 @@ import Navbar from '../components/Navbar';
 import { Page, Title, FrameHolder, Frame, ProgramItem, Title2, Frame2, Frame3, Frame4, LabelField, LabelHolder, Subtitle, WeekdayHeader, WeekdayHolder, WeekDiv, WeekInput, WeekLabel, WorkoutName, WorkoutNameHolder, WorkoutNameHolder2, WorkoutPlanDiv } from '../components/NewProgram';
 import {workout1, workout2} from '../tests/ExampleWorkouts'
 import { Workout } from '../utils/Workout';
-import { Weekday, WorkoutPlan } from '../utils/WorkoutPlan';
-
+import { WorkoutPlan as CorrectWorkoutPlan } from '../utils/WorkoutPlan';
 
 
 const weekdays: Weekday[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-const emptyWorkoutPlan: WorkoutPlan = {
-  id: '',
-  owner: '',
-  workoutPlanName: '',
-  date: new Date(),
-  followers: [],
+type Weekday = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
+interface WorkoutPlan {
+  id: string;
+  owner: string;
+  workoutPlanName: string;
+  date: Date;
+  followers: string[];
   workoutSchedule: {
-    'Mon': [],
-    'Tue': [],
-    'Wed': [],
-    'Thu': [],
-    'Fri': [],
-    'Sat': [],
-    'Sun': []
-  }
-};
+    [weekday in Weekday]?: Workout[];
+  };
+}
 
-
+let emptyWorkoutPlan: WorkoutPlan;
 
 const NewProgramsPage: React.FC = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -50,6 +44,22 @@ const NewProgramsPage: React.FC = () => {
 
   useEffect(() => {
     // Check if the workout plan name is not empty and there are workouts scheduled in any day
+    emptyWorkoutPlan = {
+      id: '',
+      owner: '',
+      workoutPlanName: '',
+      date: new Date(),
+      followers: [],
+      workoutSchedule: {
+        'Mon': [],
+        'Tue': [],
+        'Wed': [],
+        'Thu': [],
+        'Fri': [],
+        'Sat': [],
+        'Sun': []
+      }
+    };
     setIsDisabled(emptyWorkoutPlan.workoutPlanName === '' || Object.values(emptyWorkoutPlan.workoutSchedule).every((day) => day.length === 0));
   }, [emptyWorkoutPlan]);
 
@@ -98,7 +108,7 @@ const NewProgramsPage: React.FC = () => {
     setSelectedWeekdays(selectedWeekdays);
   };
   
-
+  
   const handleWeekdayClick = (selectedWorkout : Workout, weekday: Weekday) => {
     setSelectedWeekdays((prevSelectedWeekdays) => ({
       ...prevSelectedWeekdays,
@@ -125,8 +135,52 @@ const NewProgramsPage: React.FC = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+
+      let newWorkoutPlan: CorrectWorkoutPlan = {
+        id: '',
+        owner: '',
+        workoutPlanName: '',
+        date: new Date(),
+        followers: [],
+        workouts: [{
+          workout: "", 
+          day: [""]
+        }]
+      };
+
+      newWorkoutPlan.workoutPlanName = emptyWorkoutPlan.workoutPlanName;
+      for (const [key, value] of Object.entries(emptyWorkoutPlan.workoutSchedule)) {
+        //console.log(key, value);
+        
+        value.forEach((workout) => {
+          let setWorkout = false;
+          newWorkoutPlan.workouts.forEach((elm) => {
+            if (elm["workout"] == "") {
+              elm["workout"] = workout.id
+              elm["day"] = [key]
+              setWorkout = !setWorkout;
+            }
+          });
+          if (!setWorkout) {
+            newWorkoutPlan.workouts.forEach((elm) => {
+              if (elm["workout"] == workout.id) {
+                if (!elm["day"].includes(key)) {
+                  elm["day"].push(key)
+                }
+                setWorkout = !setWorkout;
+              }
+            });
+          }
+          if (!setWorkout) {
+            newWorkoutPlan.workouts.push({workout : workout.id, day: [key]})
+            setWorkout = !setWorkout;
+          }
+        })
+      }
+      console.log(newWorkoutPlan);
+
       // Send POST request to create workout plan
-      await axios.post('http://localhost:3001/api/workout/createplan', emptyWorkoutPlan);
+      await axios.post('http://localhost:3001/api/workout/createplan', newWorkoutPlan);
       // Navigate to /programs
       navigate('/programs');
     } catch (error) {

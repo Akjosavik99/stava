@@ -1,12 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import { Triangle } from "./Form";
+import { SubmitButton, Triangle } from "./Form";
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Workout } from '../utils/Workout';
 import { WorkoutPlan } from '../utils/WorkoutPlan';
 
+const SuperFrame = styled.div`
+height: 50vh;
+width: 100%;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+`;
 const Frame = styled.div`
   background-color: #f9dac3;
   height: 50vh;
@@ -16,6 +22,19 @@ const Frame = styled.div`
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+`;
+const Frame2 = styled.div`
+  background-color: #f9dac3;
+  height: 50vh;
+  width: 30vw;
+  text-align: center;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  justify-self: flex-end;
+  margin-right: 30px;
+  float: left;
 `;
 const Title = styled.h1`
   color: #f16a00;
@@ -45,6 +64,10 @@ const Title2 = styled.h1`
   margin: 0;
   cursor: pointer;
 `;
+const buttonStyle = {
+  marginBottom: "20px"
+};
+
 
 
 const Programs: React.FC = () => {
@@ -71,13 +94,24 @@ const Programs: React.FC = () => {
     <>
       <Page>
         <Title>Your Programs</Title>
-        <Frame>
-        {plans.map((item, index) => (
-          <ProgramItem key={index} onClick={() => {navigate(`/${item.workoutPlan.id}`)}}>
-            <Title2>{item.workoutPlan.workoutPlanName}</Title2>
-          </ProgramItem>
-        ))}
-        </Frame>
+        <SuperFrame>
+          <Frame>
+          {plans.map((item, index) => (
+            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/:${item.workoutPlan.id}`)}}>
+              <Title2>{item.workoutPlan.workoutPlanName}</Title2>
+            </ProgramItem>
+          ))}
+          </Frame>
+          <Frame2>
+          <SubmitButton
+                  style={buttonStyle}
+                  type="submit"
+                  onClick={() => navigate('/newprogram')}
+                >
+                  New Workout Plan
+                </SubmitButton>
+          </Frame2>
+        </SuperFrame>
         <Triangle style={{height:'20px'}}>
         </Triangle>
       </Page>
