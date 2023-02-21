@@ -1,6 +1,7 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import axios from "axios";
+import { useEffect } from "react";
+import Navbar from "../components/Navbar";
 import {
   WeekdayContainer,
   DataContainer,
@@ -8,38 +9,37 @@ import {
   DoubleContainer,
   DayContainerList,
 } from "../components/Form";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-
-type Workout = {
-  _id: string;
-  owner: string;
-  workoutname: string;
-  exercises: [];
-  date: string;
-};
-
-type WorkoutData = {
-  data: [Workout];
-  status: string;
-};
-
-const useGetWorkoutsQuery = (id?: String) => {
-  return useQuery(["workouts"], async () => {
-    return await axios
-      .get<WorkoutData>(`http://localhost:3001/api/workout/${id}`)
-      .then((res) => {
-        return res.data;
-      });
-  });
-};
+import { useNavigate, useParams } from "react-router-dom";
+import { Workout, WorkoutPlan } from "../util/types";
+import { fork } from "child_process";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
+  const params = useParams();
+  const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan>(
+    {} as WorkoutPlan
+  );
 
-  // Test with this id: 63ecac347c834875fc802556 for now.
-  // Will be replaced with the user's id once we got it.
-  const { data } = useGetWorkoutsQuery("63ecac347c834875fc802556"); //63ecac347c834875fc802556
+  const getData = async (id: string) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3001/api/workout/plan/${id}`
+      );
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (params.id === undefined) {
+      return;
+    }
+
+    getData(params.id).then((res) => {
+      setWorkoutPlan(res);
+    });
+  }, [params.id]);
 
   function getWorkouts(day: string) {
     type Data = {
@@ -48,34 +48,30 @@ const ViewWorkouts: React.FC = () => {
     };
     try {
       const emptyList: Data[] = [];
-      const workouts: Workout[] = data!.data;
-      for (var key in workouts) {
-        //iterates thru the json object
-        if (typeof workouts[key] === "string") {
-          //check to see if the value is a string
-          const str = String(workouts[key]); //converts the value to a string
-          if (str === day) {
+
+      const workout: Workout[] = workoutPlan.workouts;
+      for (const key in workout) {
+        let len = workout[key].day.length;
+        for (let i = 0; i < len; i++) {
+          if (workout[key].day[i] === day) {
             emptyList.push({
-              name: str,
-              url: "/login", //change to workout url when implemented in backend
+              name: workoutPlan.workoutPlanName,
+              url: "/viewexercises/:" + workout[key]._id,
             });
           }
         }
-
-        return emptyList.map((element) => (
-          <DayContainerList onClick={() => navigate(element.url)}>
-            {element.name}
-            {", "}
-          </DayContainerList>
-        ));
       }
+
+      return emptyList.map((element) => (
+        <DayContainerList onClick={() => navigate(element.url)}>
+          {element.name}
+          {", "}
+        </DayContainerList>
+      ));
     } catch (error) {
-      console.log("ERROR!!!!");
       console.log(error);
     }
   }
-
-  console.log(data);
 
   return (
     <>
@@ -100,21 +96,19 @@ const ViewWorkouts: React.FC = () => {
             <DayContainer>Sunday</DayContainer>
           </WeekdayContainer>
           <WeekdayContainer>
-            <DayContainer>{getWorkouts("monday")} </DayContainer>
+            <DayContainer>{getWorkouts("Mon")} </DayContainer>
             <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
-              {getWorkouts("tuesday")}
+              {getWorkouts("Tue")}
             </DayContainer>
-            <DayContainer>{getWorkouts("wednesday")}</DayContainer>
+            <DayContainer>{getWorkouts("Wed")}</DayContainer>
             <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
-              {getWorkouts("thursday")}
+              {getWorkouts("Thu")}
             </DayContainer>
-            <DayContainer>{getWorkouts("friday")}</DayContainer>
+            <DayContainer>{getWorkouts("Fri")}</DayContainer>
             <DayContainer style={{ backgroundColor: "#ffdcc4" }}>
-              {getWorkouts("saturday")}
+              {getWorkouts("Sat")}
             </DayContainer>
-            <DayContainer>
-              {getWorkouts("63ecac347c834875fc802556")}
-            </DayContainer>
+            <DayContainer>{getWorkouts("Sun")}</DayContainer>
           </WeekdayContainer>
         </DoubleContainer>
       </DataContainer>

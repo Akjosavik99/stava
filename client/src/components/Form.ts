@@ -138,7 +138,7 @@ export const DataContainer = styled.div`
   justify-content: center;
   padding: 2em;
 `;
-export const DoubleContainer = styled.p`
+export const DoubleContainer = styled.div`
   margin: 0px;
   width: auto;
   display: flex;
@@ -146,7 +146,7 @@ export const DoubleContainer = styled.p`
   min-width: 700px;
   border: 3px solid black;
 `;
-export const WeekdayContainer = styled.p`
+export const WeekdayContainer = styled.div`
   min-width: 600px;
   margin: 0px;
   display: flex;
@@ -193,7 +193,6 @@ export const ExerciseContainer = styled.div`
   max-width: 50%;
   flex: 50%;
   display: flex;
-  border: 1px solid black;
   padding: 0.5em;
   justify-content: center;
 `;

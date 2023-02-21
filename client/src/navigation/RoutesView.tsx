@@ -13,8 +13,8 @@ const RoutesView: React.FC = () => {
       <Route path="/login" element={<LogInPage />} />
       <Route path="/" element={<App />} />
       <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/viewworkouts" element={<ViewWorkouts />} />
-      <Route path="/viewexercises" element={<ViewExercises />} />
+      <Route path="/viewworkouts/:id" element={<ViewWorkouts />} />
+      <Route path="/viewexercises/:id" element={<ViewExercises />} />
     </Routes>
   );
 };
