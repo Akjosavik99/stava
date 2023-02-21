@@ -82,6 +82,17 @@ export const CreateUserButton = styled.button`
   cursor: pointer;
 `;
 
+export const LogInButton = styled.button`
+  border-color: black;
+  border-radius: 5rem;
+  background-color: white;
+  height: 3rem;
+  width: 10rem;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
 export const InputContainer = styled.div`
   margin: 0 0 0rem 0;
   height: 4.2rem;
