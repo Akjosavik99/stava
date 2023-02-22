@@ -15,7 +15,7 @@ const weekdays: Weekday[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 type Weekday = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
 interface WorkoutPlan {
-  id: string;
+  _id: string;
   owner: string;
   workoutPlanName: string;
   date: Date;
@@ -47,7 +47,7 @@ const NewProgramsPage: React.FC = () => {
   useEffect(() => {
     // Check if the workout plan name is not empty and there are workouts scheduled in any day
     emptyWorkoutPlan = {
-      id: '',
+      _id: '',
       owner: '',
       workoutPlanName: '',
       date: new Date(),
@@ -102,7 +102,7 @@ const NewProgramsPage: React.FC = () => {
     for (const weekday of weekdays) {
       if (emptyWorkoutPlan.workoutSchedule[weekday]) {
         const workouts = emptyWorkoutPlan.workoutSchedule[weekday] || [];
-        if (workouts.some(workout => workout.id === item.id)) {
+        if (workouts.some(workout => workout._id === item._id)) {
           selectedWeekdays[weekday] = true;
         }
       }
@@ -119,8 +119,8 @@ const NewProgramsPage: React.FC = () => {
 
     if (emptyWorkoutPlan.workoutSchedule[weekday]) {
       const workouts = emptyWorkoutPlan.workoutSchedule[weekday]!;
-      if (workouts.some(workout => workout.id === selectedWorkout.id)) {
-        const updatedWorkouts = workouts.filter(workout => workout.id !== selectedWorkout.id);
+      if (workouts.some(workout => workout._id === selectedWorkout._id)) {
+        const updatedWorkouts = workouts.filter(workout => workout._id !== selectedWorkout._id);
         emptyWorkoutPlan.workoutSchedule[weekday] = updatedWorkouts;
       } else {
         const updatedWorkouts = [...workouts, selectedWorkout];
@@ -139,7 +139,7 @@ const NewProgramsPage: React.FC = () => {
     try {
 
       let newWorkoutPlan: CorrectWorkoutPlan = {
-        id: '',
+        _id: '',
         owner: '',
         workoutPlanName: '',
         date: new Date(),
@@ -158,14 +158,14 @@ const NewProgramsPage: React.FC = () => {
           let setWorkout = false;
           newWorkoutPlan.workouts.forEach((elm) => {
             if (elm["workout"] == "") {
-              elm["workout"] = workout.id
+              elm["workout"] = workout._id
               elm["day"] = [key]
               setWorkout = !setWorkout;
             }
           });
           if (!setWorkout) {
             newWorkoutPlan.workouts.forEach((elm) => {
-              if (elm["workout"] == workout.id) {
+              if (elm["workout"] == workout._id) {
                 if (!elm["day"].includes(key)) {
                   elm["day"].push(key)
                 }
@@ -174,7 +174,7 @@ const NewProgramsPage: React.FC = () => {
             });
           }
           if (!setWorkout) {
-            newWorkoutPlan.workouts.push({workout : workout.id, day: [key]})
+            newWorkoutPlan.workouts.push({workout : workout._id, day: [key]})
             setWorkout = !setWorkout;
           }
         })
@@ -203,19 +203,19 @@ const NewProgramsPage: React.FC = () => {
         <FrameHolder>
           <Frame>
           {workouts?.map((item) => (
-              <ProgramItem key={item.workoutname + item.id} onClick={() => handleItemClick(item)}>
+              <ProgramItem key={item.workoutname + item._id} onClick={() => handleItemClick(item)}>
                 <Title2>{item.workoutname}</Title2>
               </ProgramItem>
             ))}
           </Frame>
           <Frame2>
           {selectedWorkout && (
-              <Frame3 key={selectedWorkout.id}>
+              <Frame3 key={selectedWorkout._id}>
                 <Frame4>
                   <Subtitle>{selectedWorkout.workoutname}</Subtitle>
                   <LabelHolder>
                   {weekdays.map((weekday) => (
-                    <WeekdayHolder key={selectedWorkout.id + weekday}>
+                    <WeekdayHolder key={selectedWorkout._id + weekday}>
                       
                       <WeekLabel>
                       {weekday.slice(0, 3)}

@@ -2,7 +2,7 @@ import { Workout } from "../utils/Workout";
 import { WorkoutPlan } from "../utils/WorkoutPlan";
 
 export const workout1: Workout = {
-  id: '1' as string,
+  _id: '1' as string,
   owner: 'John',
   workoutname: 'Workout A',
   date: new Date(),
@@ -20,7 +20,7 @@ export const workout1: Workout = {
   ],
 };
 export const workout2: Workout = {
-  id: '2' as string,
+  _id: '2' as string,
   owner: 'John',
   workoutname: 'Workout B',
   date: new Date(),
@@ -38,7 +38,7 @@ export const workout2: Workout = {
   ],
 };
 export const workoutPlanExample: WorkoutPlan = {
-  id: '2',
+  _id: '2',
   owner: 'Gabriel',
   workoutPlanName: 'Strength Workout II',
   date: new Date(),

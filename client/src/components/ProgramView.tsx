@@ -100,7 +100,7 @@ const Programs: React.FC = () => {
         <SuperFrame>
           <Frame>
           {plans?.map((item, index) => (
-            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/:${item.id}`)}}>
+            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/:${item._id}`)}}>
               <Title2>{item.workoutPlanName}</Title2>
             </ProgramItem>
           ))}
