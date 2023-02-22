@@ -11,7 +11,6 @@ app.use(express.json());
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const MongoDBStore = require("connect-mongodb-session")(session);
-mongoose.set("strictQuery", false);
 
 //Define constants
 const {
@@ -89,3 +88,7 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+module.exports = {
+  app,
+};

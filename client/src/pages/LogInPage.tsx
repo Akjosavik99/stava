@@ -25,7 +25,7 @@ type FormData = {
   password: string;
 };
 
-const useLoginMutation = () => {
+export const useLoginMutation = () => {
   const navigate = useNavigate();
   return useMutation(
     async (formData: FormData) => {
@@ -33,7 +33,7 @@ const useLoginMutation = () => {
     },
     {
       onSuccess: () => {
-        console.log("Sucess");
+        console.log("Success");
         navigate("/");
       },
       onError: () => {
