@@ -30,7 +30,6 @@ const useGetDataQuery = (id: string | undefined) => {
     return await axios
       .get(`http://localhost:3001/api/workout/${id}`)
       .then((res) => {
-        console.log(res.data.data);
         return res.data.data;
       });
   });
@@ -68,7 +67,7 @@ function updateImage(img: string) {
 }
 
 const ViewExercises: React.FC = () => {
-  const [exercises, setExercises] = React.useState<Exercises>({} as Exercises);
+  // const [exercises, setExercises] = React.useState<Exercises>({} as Exercises);
   const params = useParams();
 
   const { data, isLoading } = useGetDataQuery(params.id);

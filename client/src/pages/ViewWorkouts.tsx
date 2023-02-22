@@ -55,7 +55,7 @@ const ViewWorkouts: React.FC = () => {
           if (workout[key].day[i] === day) {
             emptyList.push({
               name: workoutPlan.workoutPlanName,
-              url: "/viewexercises/:" + workout[key]._id,
+              url: "/viewexercises/" + workout[key].workout,
             });
           }
         }
