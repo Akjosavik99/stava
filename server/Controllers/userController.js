@@ -47,6 +47,7 @@ exports.loginUser = async (req, res) => {
   );
 
   try {
+    console.log(req.body);
     const user = await userService.getUserByName(req.body.username);
     const userPassword = req.body.password;
     if (user && userPassword) {

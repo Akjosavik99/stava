@@ -1,17 +1,16 @@
-import React from "react";
 import styled from "styled-components";
-import dumbell from "../assets/dumbell.svg";
-import maskin from "../assets/maskin.svg";
-import medisinball from "../assets/medisinball.svg";
-import running from "../assets/running.svg";
-import yoga from "../assets/yoga.svg";
-import stretching from "../assets/stretching.svg";
-import pulldown from "../assets/pulldown.svg";
-import situps from "../assets/situps.svg";
-import hangups from "../assets/hangups.svg";
-import jumping from "../assets/jumping.svg";
-import bench from "../assets/bench.svg";
-import cycle from "../assets/cycle.svg";
+import dumbell from "../assets/workout_icons/dumbell.svg";
+import maskin from "../assets/workout_icons/machine.svg";
+import medisinball from "../assets/workout_icons/medicineBall.svg";
+import running from "../assets/workout_icons/running.svg";
+import yoga from "../assets/workout_icons/yoga.svg";
+import stretching from "../assets/workout_icons/stretching.svg";
+import pulldown from "../assets/workout_icons/pulldown.svg";
+import situps from "../assets/workout_icons/situps.svg";
+import hangups from "../assets/workout_icons/hangups.svg";
+import jumping from "../assets/workout_icons/jumping.svg";
+import bench from "../assets/workout_icons/bench.svg";
+import cycle from "../assets/workout_icons/cycle.svg";
 
 const Frame = styled.div`
   background-color: #f9dac3;
@@ -21,6 +20,7 @@ const Frame = styled.div`
   text-align: center;
   overflow: hidden;
   overflow-y: scroll;
+  float: left;
   grid-template-columns: 150px 150px 250px;
   border-width: 2px;
   border-style: solid;
@@ -42,7 +42,7 @@ const Title2 = styled.h1`
   margin: 0;
 `;
 
-const Button = styled.div`
+export const Button = styled.div`
   cursor: pointer;
   width: 10px;
   height: 190px;
@@ -58,52 +58,97 @@ const Column = styled.div`
   width: 33%;
 `;
 
-const Excercisces: React.FC = () => {
+interface exercisesProps {
+  updateExercises: (name: string, src: any) => void;
+}
+
+const MyExercises: React.FC<exercisesProps> = ({ updateExercises }) => {
   return (
     <>
       <Title>Create workout</Title>
       <Frame>
         <Title2>My excercices</Title2>
         <Column>
-          <Button>
-            <Image src={maskin} />
-          </Button>
-          <Button>
+          <Button
+            onClick={() => {
+              updateExercises("dumbell", dumbell);
+            }}
+          >
             <Image src={dumbell} />
           </Button>
-          <Button>
-            <Image src={running} />
-          </Button>
-          <Button>
-            <Image src={medisinball} />
-          </Button>
-        </Column>
-        <Column>
-          <Button>
-            <Image src={stretching} />
-          </Button>
-          <Button>
-            <Image src={cycle} />
-          </Button>
-          <Button>
-            <Image src={situps} />
-          </Button>
-          <Button>
-            <Image src={hangups} />
-          </Button>
-        </Column>
-        <Column>
-          <Button>
+          <Button
+            onClick={() => {
+              updateExercises("yoga", yoga);
+            }}
+          >
             <Image src={yoga} />
           </Button>
-          <Button>
-            <Image src={bench} />
+          <Button
+            onClick={() => {
+              updateExercises("medicineBall", medisinball);
+            }}
+          >
+            <Image src={medisinball} />
           </Button>
-          <Button>
+          <Button
+            onClick={() => {
+              updateExercises("situps", situps);
+            }}
+          >
+            <Image src={situps} />
+          </Button>
+        </Column>
+        <Column>
+          <Button
+            onClick={() => {
+              updateExercises("pulldown", pulldown);
+            }}
+          >
             <Image src={pulldown} />
           </Button>
-          <Button>
+          <Button
+            onClick={() => {
+              updateExercises("hangups", hangups);
+            }}
+          >
+            <Image src={hangups} />
+          </Button>
+          <Button
+            onClick={() => {
+              updateExercises("jumping", jumping);
+            }}
+          >
             <Image src={jumping} />
+          </Button>
+          <Button
+            onClick={() => {
+              updateExercises("bench", bench);
+            }}
+          >
+            <Image src={bench} />
+          </Button>
+        </Column>
+        <Column>
+          <Button
+            onClick={() => {
+              updateExercises("cycle", cycle);
+            }}
+          >
+            <Image src={cycle} />
+          </Button>
+          <Button
+            onClick={() => {
+              updateExercises("stretching", stretching);
+            }}
+          >
+            <Image src={stretching} />
+          </Button>
+          <Button
+            onClick={() => {
+              updateExercises("running", running);
+            }}
+          >
+            <Image src={maskin} id="running" />
           </Button>
         </Column>
       </Frame>
@@ -111,4 +156,4 @@ const Excercisces: React.FC = () => {
   );
 };
 
-export default Excercisces;
+export default MyExercises;

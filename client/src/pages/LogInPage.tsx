@@ -20,6 +20,8 @@ import {
   SubmitButton,
 } from "../components/Form";
 
+axios.defaults.withCredentials = true;
+
 type FormData = {
   username: string;
   password: string;
