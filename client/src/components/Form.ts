@@ -124,6 +124,7 @@ export const Arrow = styled.img`
   height: 3rem;
   width: 3rem;
   cursor: pointer;
+  cursor: pointer;
 `;
 
 export const ErrorText = styled.p`

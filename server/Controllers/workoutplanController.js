@@ -32,3 +32,15 @@ exports.createWorkoutPlan = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.findWorkoutPlanById = async (req, res) => {
+  try {
+    const workoutPlanId = req.params.id;
+    const workoutPlan = await workoutplanService.getWorkoutPlanById(
+      workoutPlanId
+    );
+    res.status(200).json({ data: workoutPlan });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

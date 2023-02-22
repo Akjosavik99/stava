@@ -22,16 +22,16 @@ const Frame = styled.div`
   overflow: hidden;
   overflow-y: scroll;
   grid-template-columns: 150px 150px 250px;
-  border-width:2px;
-border-style:solid;
-border-color:black;
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
 `;
 
 const Title = styled.h1`
   color: #f16a00;
   font-size: 4em;
   text-align: center;
-  margin: 0
+  margin: 0;
 `;
 
 const Title2 = styled.h1`
@@ -39,7 +39,7 @@ const Title2 = styled.h1`
   font-size: 3em;
   text-align: center;
   opacity: 1;
-  margin: 0
+  margin: 0;
 `;
 
 const Button = styled.div`
