@@ -1,5 +1,5 @@
 import axios from "axios";
-import { WorkoutPlan } from "./types";
+import { WorkoutPlan } from "./workoutExerciseTypes";
 
 export const getWorkoutPlan = async (id: string) => {
   await axios

@@ -8,9 +8,13 @@ import {
   DayContainer,
   DoubleContainer,
   DayContainerList,
-} from "../components/Form";
+} from "../components/WorkoutForm";
 import { useNavigate, useParams } from "react-router-dom";
-import { Workout, WorkoutPlan } from "../util/types";
+import {
+  Workout,
+  WorkoutPlan,
+  ExerciseData,
+} from "../util/workoutExerciseTypes";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -41,12 +45,8 @@ const ViewWorkouts: React.FC = () => {
   }, [params.id]);
 
   function getWorkouts(day: string) {
-    type Data = {
-      name: string;
-      url: string;
-    };
     try {
-      const emptyList: Data[] = [];
+      const emptyList: ExerciseData[] = [];
 
       const workout: Workout[] = workoutPlan.workouts;
       for (const key in workout) {

@@ -30,3 +30,8 @@ export type Exercise = {
   reps: number;
   _id: string;
 };
+
+export type ExerciseData = {
+  name: string;
+  url: string;
+};

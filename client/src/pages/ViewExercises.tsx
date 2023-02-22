@@ -1,11 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import ExerciseComponent from "../components/ExerciseComponent";
-import {
-  DataContainer,
-  InnerExercisesContainer,
-  OuterExercisesContainer,
-} from "../components/Form";
 import bench from "../assets/workout_icons/bench.svg";
 import cycle from "../assets/workout_icons/cycle.svg";
 import dumbell from "../assets/workout_icons/cycle.svg";
@@ -20,10 +15,15 @@ import hangups from "../assets/workout_icons/hangups.svg";
 import jumping from "../assets/workout_icons/jumping.svg";
 
 import axios from "axios";
-import { Exercises } from "../util/types";
+import { Exercises } from "../util/workoutExerciseTypes";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../components/Loading";
+import {
+  InnerExercisesContainer,
+  OuterExercisesContainer,
+} from "../components/ExerciseForm";
+import { DataContainer } from "../components/WorkoutForm";
 
 const useGetDataQuery = (id: string | undefined) => {
   return useQuery<Exercises>(["workout", id], async () => {
@@ -61,13 +61,16 @@ function updateImage(img: string) {
       return hangups;
     case "jumping":
       return jumping;
+    case "strongMan":
+      return jumping;
+    case "weightlifting":
+      return jumping;
     default:
       return bench;
   }
 }
 
 const ViewExercises: React.FC = () => {
-  // const [exercises, setExercises] = React.useState<Exercises>({} as Exercises);
   const params = useParams();
 
   const { data, isLoading } = useGetDataQuery(params.id);
