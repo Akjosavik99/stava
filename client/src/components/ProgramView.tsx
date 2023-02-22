@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { WorkoutPlan } from '../utils/WorkoutPlan';
 import { workoutPlanExample } from "../tests/ExampleWorkouts";
+axios.defaults.withCredentials = true;
 
 const SuperFrame = styled.div`
 height: 50vh;
@@ -76,10 +77,11 @@ const Programs: React.FC = () => {
   useEffect(() => {
     const fetchWorkoutPlans = async () => {
       try {
-        const response = await axios.get<WorkoutPlan[]>(
+        const response = await axios.get<any>(
           'http://localhost:3001/api/workout/plan'
         );
-        setPlans(response.data);
+
+        setPlans(response.data.data);
       } catch (error) {
         setPlans([workoutPlanExample]);
         console.error(error);
@@ -97,7 +99,7 @@ const Programs: React.FC = () => {
         <Title>Your Programs</Title>
         <SuperFrame>
           <Frame>
-          {plans.map((item, index) => (
+          {plans?.map((item, index) => (
             <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/:${item.id}`)}}>
               <Title2>{item.workoutPlanName}</Title2>
             </ProgramItem>

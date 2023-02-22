@@ -8,6 +8,8 @@ import {workout1, workout2} from '../tests/ExampleWorkouts'
 import { Workout } from '../utils/Workout';
 import { WorkoutPlan as CorrectWorkoutPlan } from '../utils/WorkoutPlan';
 
+axios.defaults.withCredentials = true;
+
 
 const weekdays: Weekday[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -63,23 +65,23 @@ const NewProgramsPage: React.FC = () => {
     setIsDisabled(emptyWorkoutPlan.workoutPlanName === '' || Object.values(emptyWorkoutPlan.workoutSchedule).every((day) => day.length === 0));
   }, [emptyWorkoutPlan]);
 
-
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const response = await axios.get<{ workout: Workout }[]>(
+        const response = await axios.get<any>(
           'http://localhost:3001/api/workout/workouts'
         );
-        setWorkouts(response.data.map((data) => data.workout));
+          setWorkouts(response.data.data);
+          
       } catch (error) {
         setWorkouts([workout1, workout2]);
         console.error(error);
+
       }
     };
 
     fetchWorkouts();
   }, []);
-
   const updateWorkoutPlanName = (name : string) => {
       emptyWorkoutPlan.workoutPlanName = name;
       setWorkoutPlanName(name);
@@ -178,7 +180,8 @@ const NewProgramsPage: React.FC = () => {
         })
       }
       // Send POST request to create workout plan
-      await axios.post('http://localhost:3001/api/workout/createplan', newWorkoutPlan);
+      await axios.post('http://localhost:3001/api/workout/plan', newWorkoutPlan);
+      
       // Navigate to /programs
       navigate('/programs');
     } catch (error) {
@@ -199,26 +202,26 @@ const NewProgramsPage: React.FC = () => {
         <Title>New Program</Title>
         <FrameHolder>
           <Frame>
-            {workouts.map((item) => (
-              <ProgramItem key={item.id} onClick={() => handleItemClick(item)}>
+          {workouts?.map((item) => (
+              <ProgramItem key={item.workoutname + item.id} onClick={() => handleItemClick(item)}>
                 <Title2>{item.workoutname}</Title2>
               </ProgramItem>
             ))}
           </Frame>
           <Frame2>
           {selectedWorkout && (
-              <Frame3>
+              <Frame3 key={selectedWorkout.id}>
                 <Frame4>
                   <Subtitle>{selectedWorkout.workoutname}</Subtitle>
                   <LabelHolder>
                   {weekdays.map((weekday) => (
-                    <WeekdayHolder>
+                    <WeekdayHolder key={selectedWorkout.id + weekday}>
                       
-                      <WeekLabel key={weekday}>
+                      <WeekLabel>
                       {weekday.slice(0, 3)}
                     </WeekLabel>
                     <WeekInput
-                        key={weekday}
+                        key={"input" + weekday}
                         type="checkbox"
                         checked={!!selectedWeekdays[weekday]}
                         onChange={() => handleWeekdayClick(selectedWorkout, weekday)}
@@ -240,11 +243,11 @@ const NewProgramsPage: React.FC = () => {
                     <WeekdayHeader>{weekday}</WeekdayHeader>
                     </WorkoutNameHolder>
                     <WorkoutNameHolder2>
-                      {workoutPlan?.workoutSchedule[weekday]?.map((workout) => (
-                        <WorkoutName>
-                          {workout.workoutname}
-                        </WorkoutName>
-                        ))}
+                    {workoutPlan?.workoutSchedule[weekday]?.map((workout, index) => (
+                      <WorkoutName key={index}>
+                        {workout.workoutname}
+                      </WorkoutName>
+                    ))}
                     </WorkoutNameHolder2>
                     </WeekDiv>
                    ) || <></>))}
