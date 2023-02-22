@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import ExerciseComponent from "../components/ExerciseComponent";
 import {
   DataContainer,
   ExerciseContainer,
@@ -11,83 +12,71 @@ import {
 } from "../components/Form";
 import bench from "../assets/workout_icons/bench.svg";
 import cycle from "../assets/workout_icons/cycle.svg";
+import dumbell from "../assets/dumbell.svg";
+import machine from "../assets/maskin.svg";
+import medicineBall from "../assets/medisinball.svg";
+import running from "../assets/running.svg";
+import yoga from "../assets/yoga.svg";
+import stretching from "../assets/stretching.svg";
+import pulldown from "../assets/pulldown.svg";
+import situps from "../assets/situps.svg";
+import hangups from "../assets/hangups.svg";
+import jumping from "../assets/jumping.svg";
+
+import axios from "axios";
+import { Exercise, Exercises } from "../util/types";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../components/Loading";
+
+const useGetDataQuery = (id: string | undefined) => {
+  return useQuery<Exercises>(["workout", id], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/workout/${id}`)
+      .then((res) => {
+        console.log(res.data.data);
+        return res.data.data;
+      });
+  });
+};
 
 const ViewExercises: React.FC = () => {
+  const [exercises, setExercises] = React.useState<Exercises>({} as Exercises);
+  const params = useParams();
+
+  const { data, isLoading } = useGetDataQuery(params.id);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Navbar />
       <DataContainer>
         <OuterExercisesContainer>
           <h1 style={{ textAlign: "center" }}>Exercises</h1>
+
           <InnerExercisesContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={bench}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: 6</RepsSets>
-                <RepsSets>Sets: 3</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: 6</RepsSets>
-                <RepsSets>Sets: 2</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: 4</RepsSets>
-                <RepsSets>Sets: 5</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
-            <ExerciseContainer>
-              <ExerciseImage src={cycle}></ExerciseImage>
-              <RepsSetsContainer>
-                <RepsSets>Reps: (insert)</RepsSets>
-                <RepsSets>Sets: (insert)</RepsSets>
-              </RepsSetsContainer>
-            </ExerciseContainer>
+            {data?.exercises.map(
+              (exercise: {
+                exerciseName: string;
+                reps: number;
+                sets: number;
+              }) => {
+                return (
+                  <ExerciseComponent
+                    img={exercise.exerciseName}
+                    reps={exercise.reps}
+                    sets={exercise.sets}
+                  />
+                );
+              }
+            )}
           </InnerExercisesContainer>
         </OuterExercisesContainer>
       </DataContainer>
     </>
   );
 };
-
 export default ViewExercises;

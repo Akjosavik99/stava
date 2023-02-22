@@ -174,6 +174,7 @@ export const OuterExercisesContainer = styled.div`
   padding: 0.1em;
   max-height: 600px;
   min-width: 650px;
+  min-height: 600px;
   width: 60%;
   background-color: #ffc08e;
   border: 3px solid black;
@@ -190,10 +191,10 @@ export const InnerExercisesContainer = styled.div`
 
 // The container with the exercises + reps/sets
 export const ExerciseContainer = styled.div`
-  max-width: 50%;
+  max-width: 55%;
   flex: 50%;
   display: flex;
-  padding: 0.5em;
+  /* padding: 0.5em; */
   justify-content: center;
 `;
 
@@ -205,14 +206,14 @@ export const ExerciseImage = styled.img`
 
 export const RepsSetsContainer = styled.div`
   margin: 0.5em;
-  padding: 0 0.5em;
+  /* padding: 0 0.5em; */
   font-size: 1.2em;
   background-color: none;
 `;
 export const RepsSets = styled.p`
   border: 1px solid black;
   margin: 0.2em;
-  padding: 0 0.5em;
+  /* padding: 0 0.5em; */
   font-size: 1.35em;
   font-weight: bold;
   text-align: center;

@@ -11,7 +11,6 @@ import {
 } from "../components/Form";
 import { useNavigate, useParams } from "react-router-dom";
 import { Workout, WorkoutPlan } from "../util/types";
-import { fork } from "child_process";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();

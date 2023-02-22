@@ -14,3 +14,19 @@ export type Workout = {
 export type WorkoutPlanProps = {
   workoutplan: WorkoutPlan;
 };
+
+export type Exercises = {
+  _id: string;
+  owner: string;
+  workoutname: string;
+  exercises: Exercise[];
+  date: string;
+  __v: number;
+};
+
+export type Exercise = {
+  exerciseName: string;
+  sets: number;
+  reps: number;
+  _id: string;
+};
