@@ -4,7 +4,7 @@ import profile from "../assets/navbarassets/profile.svg";
 import home from "../assets/navbarassets/home.png";
 import groups from "../assets/navbarassets/groups.png";
 import viewworkoutprogram from "../assets/navbarassets/viewworkoutprogram.png";
-import createworkoutprogram from "../assets/navbarassets/createworkoutprogram.png";
+import createworkoutprogram from "../assets/navbarassets/createworkoutprogram.svg";
 import createworkout from "../assets/navbarassets/createworkout.png";
 
 const styles = {

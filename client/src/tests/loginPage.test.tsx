@@ -35,7 +35,7 @@ const mockedConsoleLog = jest.fn();
 console.log = mockedConsoleLog;
 
 describe("Log in", () => {
-  test("useLoginMutation should navigate to '/' on success", async () => {
+  test("useLoginMutation should navigate to '/programs' on success", async () => {
     const { result, waitFor } = renderHook(() => useLoginMutation(), {
       wrapper: wrapper,
     });

@@ -54,8 +54,8 @@ const ViewWorkouts: React.FC = () => {
         for (let i = 0; i < len; i++) {
           if (workout[key].day[i] === day) {
             emptyList.push({
-              name: workoutPlan.workoutPlanName,
-              url: "/viewexercises/" + workout[key].workout,
+              name: workout[key].workoutName,
+              url: "/viewexercises/" + workout[key].workoutID,
             });
           }
         }
@@ -63,8 +63,7 @@ const ViewWorkouts: React.FC = () => {
 
       return emptyList.map((element) => (
         <DayContainerList onClick={() => navigate(element.url)}>
-          {element.name}
-          {", "}
+          {element.name}{" "}
         </DayContainerList>
       ));
     } catch (error) {

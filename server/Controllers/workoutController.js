@@ -51,3 +51,26 @@ exports.createWorkout = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getWorkoutByOwner = async (req, res) => {
+  try {
+    const owner = req.session.user.username;
+    let workouts = await workoutService.getWorkoutsByOwner(owner);
+    res.json({
+      data: workouts,
+      status: "success",
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getWorkoutById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const workout = await workoutService.getWorkoutById(id);
+    res.json({ data: workout, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

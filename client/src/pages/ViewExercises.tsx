@@ -13,6 +13,8 @@ import pulldown from "../assets/workout_icons/pulldown.svg";
 import situps from "../assets/workout_icons/situps.svg";
 import hangups from "../assets/workout_icons/hangups.svg";
 import jumping from "../assets/workout_icons/jumping.svg";
+import strongMan from "../assets/workout_icons/strongMan.svg";
+import weightLifting from "../assets/workout_icons/weightlifting.svg";
 
 import axios from "axios";
 import { Exercises } from "../util/workoutExerciseTypes";
@@ -28,7 +30,7 @@ import { DataContainer } from "../components/WorkoutForm";
 const useGetDataQuery = (id: string | undefined) => {
   return useQuery<Exercises>(["workout", id], async () => {
     return await axios
-      .get(`http://localhost:3001/api/workout/${id}`)
+      .get(`http://localhost:3001/api/workout/workout/${id}`)
       .then((res) => {
         return res.data.data;
       });
@@ -62,9 +64,9 @@ function updateImage(img: string) {
     case "jumping":
       return jumping;
     case "strongMan":
-      return jumping;
+      return strongMan;
     case "weightlifting":
-      return jumping;
+      return weightLifting;
     default:
       return bench;
   }

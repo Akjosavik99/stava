@@ -8,7 +8,7 @@ module.exports.getWorkout = async (name) => {
   return await workoutModel.findOne({ name: name });
 };
 
-module.exports.getWorkoutByOwner = async (owner) => {
+module.exports.getWorkoutsByOwner = async (owner) => {
   return await workoutModel.find({ owner: owner });
 };
 

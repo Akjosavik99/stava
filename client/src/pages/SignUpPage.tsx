@@ -20,6 +20,7 @@ import {
   Arrow,
   ErrorText,
 } from "../components/Form";
+axios.defaults.withCredentials = true;
 
 axios.defaults.withCredentials = true;
 
