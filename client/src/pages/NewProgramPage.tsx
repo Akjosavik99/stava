@@ -180,7 +180,8 @@ const NewProgramsPage: React.FC = () => {
         followers: [],
         workouts: [
           {
-            workout: "",
+            workoutID: "",
+            workoutName: "",
             day: [""],
           },
         ],
@@ -195,15 +196,16 @@ const NewProgramsPage: React.FC = () => {
         value.forEach((workout) => {
           let setWorkout = false;
           newWorkoutPlan.workouts.forEach((elm) => {
-            if (elm["workout"] == "") {
-              elm["workout"] = workout._id;
+            if (elm["workoutID"] == "") {
+              elm["workoutID"] = workout._id;
+              elm["workoutName"] = workout.workoutname;
               elm["day"] = [key];
               setWorkout = !setWorkout;
             }
           });
           if (!setWorkout) {
             newWorkoutPlan.workouts.forEach((elm) => {
-              if (elm["workout"] == workout._id) {
+              if (elm["workoutID"] == workout._id) {
                 if (!elm["day"].includes(key)) {
                   elm["day"].push(key);
                 }
@@ -212,7 +214,11 @@ const NewProgramsPage: React.FC = () => {
             });
           }
           if (!setWorkout) {
-            newWorkoutPlan.workouts.push({ workout: workout._id, day: [key] });
+            newWorkoutPlan.workouts.push({
+              workoutID: workout._id,
+              workoutName: workout.workoutname,
+              day: [key],
+            });
             setWorkout = !setWorkout;
           }
         });

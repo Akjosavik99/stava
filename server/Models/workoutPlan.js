@@ -8,7 +8,7 @@ const workoutPlanSchema = new Schema({
   owner: { type: String, required: true },
   workoutPlanName: { type: String, required: true, unique: true },
   date: { type: Date, default: Date.now },
-  workouts: [{ workout: String, day: [String] }],
+  workouts: [{ workoutID: String, workoutName: String, day: [String] }],
   followers: [String],
 });
 

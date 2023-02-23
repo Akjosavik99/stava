@@ -8,7 +8,8 @@ export type WorkoutPlan = {
 
 export type Workout = {
   day: string[];
-  workout: string;
+  workoutID: string;
+  workoutName: string;
   _id: string;
 };
 export type WorkoutPlanProps = {
