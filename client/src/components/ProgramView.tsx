@@ -9,11 +9,11 @@ import { workoutPlanExample } from "../tests/ExampleWorkouts";
 axios.defaults.withCredentials = true;
 
 const SuperFrame = styled.div`
-height: 50vh;
-width: 100%;
-display: flex;
-flex-direction: row;
-justify-content: space-between;
+  height: 50vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 const Frame = styled.div`
   background-color: #f9dac3;
@@ -45,18 +45,18 @@ const Title = styled.h1`
   margin: 0
 `;
 const Page = styled.main`
-height: 92vh;
-overflow-y: hidden;
-width: 100%;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
+  height: 92vh;
+  overflow-y: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 const ProgramItem = styled.div`
-margin: 20px;
-border-bottom: black;
-border-bottom: 2px solid #f16a00;
-cursor: pointer;
+  margin: 20px;
+  border-bottom: black;
+  border-bottom: 2px solid #f16a00;
+  cursor: pointer;
 `;
 const Title2 = styled.h1`
   color: #f16a00;
@@ -70,7 +70,7 @@ const buttonStyle = {
   marginBottom: "20px"
 };
 
-const Programs: React.FC = () => {
+const ProgramView: React.FC = () => {
   const [plans, setPlans] = useState<WorkoutPlan[]>([]);
   const navigate = useNavigate();
 
@@ -100,7 +100,7 @@ const Programs: React.FC = () => {
         <SuperFrame>
           <Frame>
           {plans?.map((item, index) => (
-            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/:${item._id}`)}}>
+            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/${item._id}`)}}>
               <Title2>{item.workoutPlanName}</Title2>
             </ProgramItem>
           ))}
@@ -124,4 +124,4 @@ const Programs: React.FC = () => {
 
 
 
-export default Programs;
+export default ProgramView;

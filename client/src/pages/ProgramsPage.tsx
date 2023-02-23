@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from "../components/Navbar";
-import Programs from "../components/ProgramView";
+import ProgramView from "../components/ProgramView";
 
 
 const ProgramsPage: React.FC = () => {
@@ -8,7 +8,7 @@ const ProgramsPage: React.FC = () => {
     return (
       <>
         <Navbar />
-        <Programs></Programs>
+        <ProgramView />
       </>
     );
   };
