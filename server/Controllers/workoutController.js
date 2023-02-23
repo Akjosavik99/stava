@@ -63,4 +63,14 @@ exports.getWorkoutByOwner = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
+};
+
+exports.getWorkoutById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const workout = await workoutService.getWorkoutById(id);
+    res.json({ data: workout, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

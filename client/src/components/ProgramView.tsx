@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { SubmitButton, Triangle } from "./Form";
 import axios from "axios";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WorkoutPlan } from '../utils/WorkoutPlan';
+import { WorkoutPlan } from "../utils/WorkoutPlan";
 import { workoutPlanExample } from "../tests/ExampleWorkouts";
 axios.defaults.withCredentials = true;
 
@@ -42,7 +42,7 @@ const Title = styled.h1`
   color: #f16a00;
   font-size: 4em;
   text-align: center;
-  margin: 0
+  margin: 0;
 `;
 const Page = styled.main`
   height: 92vh;
@@ -67,7 +67,7 @@ const Title2 = styled.h1`
   cursor: pointer;
 `;
 const buttonStyle = {
-  marginBottom: "20px"
+  marginBottom: "20px",
 };
 
 const ProgramView: React.FC = () => {
@@ -78,20 +78,18 @@ const ProgramView: React.FC = () => {
     const fetchWorkoutPlans = async () => {
       try {
         const response = await axios.get<any>(
-          'http://localhost:3001/api/workout/plan'
+          "http://localhost:3001/api/workout/plan"
         );
 
         setPlans(response.data.data);
       } catch (error) {
         setPlans([workoutPlanExample]);
         console.error(error);
-
       }
     };
 
     fetchWorkoutPlans();
   }, []);
-
 
   return (
     <>
@@ -99,29 +97,35 @@ const ProgramView: React.FC = () => {
         <Title>Your Programs</Title>
         <SuperFrame>
           <Frame>
-          {plans?.map((item, index) => (
-            <ProgramItem key={index} onClick={() => {navigate(`/viewworkouts/${item._id}`)}}>
-              <Title2>{item.workoutPlanName}</Title2>
-            </ProgramItem>
-          ))}
+            {plans.length == 0 ? (
+              <h1>No workoutprograms</h1>
+            ) : (
+              plans?.map((item, index) => (
+                <ProgramItem
+                  key={index}
+                  onClick={() => {
+                    navigate(`/viewworkouts/${item._id}`);
+                  }}
+                >
+                  <Title2>{item.workoutPlanName}</Title2>
+                </ProgramItem>
+              ))
+            )}
           </Frame>
           <Frame2>
-          <SubmitButton
-                  style={buttonStyle}
-                  type="submit"
-                  onClick={() => navigate('/newprogram')}
-                >
-                  New Workout Plan
-                </SubmitButton>
+            <SubmitButton
+              style={buttonStyle}
+              type="submit"
+              onClick={() => navigate("/newprogram")}
+            >
+              New Workout Plan
+            </SubmitButton>
           </Frame2>
         </SuperFrame>
-        <Triangle style={{height:'20px'}}>
-        </Triangle>
+        <Triangle style={{ height: "20px" }}></Triangle>
       </Page>
     </>
   );
 };
-
-
 
 export default ProgramView;

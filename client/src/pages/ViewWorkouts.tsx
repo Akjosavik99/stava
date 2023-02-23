@@ -14,7 +14,13 @@ import {
   Workout,
   WorkoutPlan,
   ExerciseData,
+  Exercises,
+  ServerExerciseData,
 } from "../util/workoutExerciseTypes";
+
+const delay = (time: number) => {
+  return new Promise((resolve) => setTimeout(resolve, time));
+};
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +28,8 @@ const ViewWorkouts: React.FC = () => {
   const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan>(
     {} as WorkoutPlan
   );
+  const [workout, setWorkout] = React.useState<Exercises[]>([]);
+  const [reload, setReload] = React.useState<boolean>(false);
 
   const getData = async (id: string) => {
     try {
@@ -34,39 +42,86 @@ const ViewWorkouts: React.FC = () => {
     }
   };
 
+  const getWorkoutData = async (id: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/workout/workout/${id}`
+      );
+      return (await response.json()) as ServerExerciseData;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getWorkoutName = (id: string | undefined) => {
+    try {
+      if (id == undefined) {
+        return "No id";
+      }
+      for (const key in workout) {
+        if (workout[key]._id == id) {
+          return workout[key].workoutname;
+        }
+      }
+      return "Error";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {}, [reload]);
+
   useEffect(() => {
     if (params.id === undefined) {
       return;
     }
-
     getData(params.id).then((res) => {
       setWorkoutPlan(res);
     });
   }, [params.id]);
 
+  useEffect(() => {
+    delay(500).then(() => {
+      for (const key in workoutPlan.workouts) {
+        getWorkoutData(workoutPlan.workouts[key].workout).then((res) => {
+          if (res == undefined) return;
+          workout.push(res.data);
+          setWorkout(workout);
+        });
+      }
+    });
+  }, [workoutPlan]);
+
   function getWorkouts(day: string) {
     try {
       const emptyList: ExerciseData[] = [];
 
-      const workout: Workout[] = workoutPlan.workouts;
-      for (const key in workout) {
-        let len = workout[key].day.length;
+      const tmpworkout: Workout[] = workoutPlan.workouts;
+      for (const key in tmpworkout) {
+        let len = tmpworkout[key].day.length;
         for (let i = 0; i < len; i++) {
-          if (workout[key].day[i] === day) {
+          const name = getWorkoutName(tmpworkout[key].workout);
+          if (tmpworkout[key].day[i] === day && name != "Error") {
+            console.log("pushing");
             emptyList.push({
-              name: workoutPlan.workoutPlanName,
-              url: "/viewexercises/" + workout[key].workout,
+              name: name,
+              url: "/viewexercises/" + tmpworkout[key].workout,
             });
           }
         }
       }
-
-      return emptyList.map((element) => (
-        <DayContainerList onClick={() => navigate(element.url)}>
+      console.log(day);
+      const res = emptyList.map((element) => (
+        <DayContainerList
+          key={element.url}
+          onClick={() => navigate(element.url)}
+        >
           {element.name}
           {", "}
         </DayContainerList>
       ));
+      console.log(res);
+      return res;
     } catch (error) {
       console.log(error);
     }

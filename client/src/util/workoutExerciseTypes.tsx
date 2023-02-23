@@ -31,7 +31,12 @@ export type Exercise = {
   _id: string;
 };
 
+export type ServerExerciseData = {
+  data: Exercises;
+  status: string;
+};
+
 export type ExerciseData = {
-  name: string;
+  name: string | undefined;
   url: string;
 };

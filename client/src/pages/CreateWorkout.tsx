@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import {
   Frame,
@@ -49,6 +50,7 @@ const saveWorkout = async (currentData: WorkoutData) => {
 };
 
 const CreateWorkout: React.FC = (props) => {
+  const navigate = useNavigate();
   const [data, setData] = useState<WorkoutData>({
     workoutname: "undefined",
     exercises: [],
@@ -111,6 +113,7 @@ const CreateWorkout: React.FC = (props) => {
         <SaveButton
           onClick={() => {
             saveWorkout(data);
+            navigate("/programs");
           }}
         >
           Save Workout
