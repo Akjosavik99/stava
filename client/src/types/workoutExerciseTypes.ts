@@ -18,7 +18,7 @@ export interface WorkoutPlan {
 export interface WorkoutInfo {
   workoutID: string;
   workoutName: string;
-  days: string[];
+  day: string[];
 }
 
 /* export type Workout = {

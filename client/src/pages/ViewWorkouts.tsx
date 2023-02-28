@@ -11,11 +11,12 @@ import {
 } from "../styles/WorkoutForm";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Workout,
   WorkoutPlan,
   ExerciseData,
   WorkoutInfo,
 } from "../types/workoutExerciseTypes";
+import { useGetWorkoutDataQuery } from "../utils/api";
+import Loading from "../components/Loading";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const ViewWorkouts: React.FC = () => {
     {} as WorkoutPlan
   );
 
-  const getData = async (id: string) => {
+  /* const getData = async (id: string) => {
     try {
       const res = await axios.get(
         `http://localhost:3001/api/workout/plan/${id}`
@@ -43,20 +44,29 @@ const ViewWorkouts: React.FC = () => {
     getData(params.id).then((res) => {
       setWorkoutPlan(res);
     });
-  }, [params.id]);
+  }, [params.id]); */
+  const { data, error, isLoading } = useGetWorkoutDataQuery(
+    params.id as string
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  console.log(data);
 
   function getWorkouts(day: string) {
     try {
       const emptyList: ExerciseData[] = [];
 
-      const workouts: WorkoutInfo[] = workoutPlan.workouts;
-      for (const key in workouts) {
-        let len = workouts[key].days.length;
+      const workouts: WorkoutInfo[] = data!.workouts;
+      for (let j = 0; j < workouts.length; j++) {
+        console.log(workouts[j]);
+        let len = workouts[j].day.length;
         for (let i = 0; i < len; i++) {
-          if (workouts[key].days[i] === day) {
+          if (workouts[j].day[i] === day) {
             emptyList.push({
-              name: workouts[key].workoutName,
-              url: "/viewexercises/" + workouts[key].workoutID,
+              name: workouts[j].workoutName,
+              url: "/viewexercises/" + workouts[j].workoutID,
             });
           }
         }

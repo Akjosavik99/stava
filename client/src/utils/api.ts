@@ -74,6 +74,40 @@ export const useFetchWorkouts = () =>
     }
   });
 
+export const useFetchWorkoutPlansQuery = () =>
+  useQuery<WorkoutPlan[]>(["workoutPlans"], async () => {
+    return await axios
+      .get("http://localhost:3001/api/workout/plan")
+      .then((res) => {
+        return res.data.data;
+      });
+  });
+
+export const useGetWorkoutDataQuery = (id: string) =>
+  useQuery<WorkoutPlan>(["workoutPlan", id], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/workout/plan/${id}`)
+      .then((res) => {
+        return res.data.data;
+      });
+  });
+
+/* useEffect(() => {
+  const fetchWorkoutPlans = async () => {
+    try {
+      const response = await axios.get<any>(
+        "http://localhost:3001/api/workout/plan"
+      );
+
+      setPlans(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchWorkoutPlans();
+}, []); */
+
 /* useEffect(() => {
   const fetchWorkouts = async () => {
     try {
