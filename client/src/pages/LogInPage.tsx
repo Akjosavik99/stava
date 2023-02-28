@@ -17,7 +17,7 @@ import {
   CreateUserButton,
   ErrorText,
   SubmitButton,
-} from "../components/Form";
+} from "../styles/Form";
 
 axios.defaults.withCredentials = true;
 

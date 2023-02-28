@@ -8,7 +8,7 @@ import {
   Frame2,
   SaveButton,
   InputField,
-} from "../components/MyWorkout";
+} from "../styles/MyWorkout";
 import SetsXReps from "../components/SetsXReps";
 import MyExercises from "../components/MyExercises";
 import axios from "axios";

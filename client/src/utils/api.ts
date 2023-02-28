@@ -8,6 +8,7 @@ type LoginFormData = {
   username: string;
   password: string;
 };
+
 type SignUpFormData = {
   username: string;
   password: string;
@@ -68,7 +69,7 @@ export const useFetchWorkouts = () =>
       return await axios
         .get("http://localhost:3001/api/workout/workouts")
         .then((res) => {
-          return res.data;
+          return res.data.data;
         });
     }
   });

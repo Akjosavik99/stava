@@ -24,8 +24,8 @@ import Loading from "../components/Loading";
 import {
   InnerExercisesContainer,
   OuterExercisesContainer,
-} from "../components/ExerciseForm";
-import { DataContainer } from "../components/WorkoutForm";
+} from "../styles/ExerciseForm";
+import { DataContainer } from "../styles/WorkoutForm";
 
 const useGetDataQuery = (id: string | undefined) => {
   return useQuery<Exercises>(["exercises", id], async () => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SubmitButton, Triangle } from "../components/Form";
+import { SubmitButton, Triangle } from "../styles/Form";
 import Navbar from "../components/Navbar";
 import {
   Page,
@@ -25,7 +25,7 @@ import {
   WorkoutNameHolder,
   WorkoutNameHolder2,
   WorkoutPlanDiv,
-} from "../components/NewProgram";
+} from "../styles/NewProgram";
 import { Workout } from "../types/workoutExerciseTypes";
 import { WorkoutPlan as CorrectWorkoutPlan } from "../types/workoutExerciseTypes";
 import { useFetchWorkouts } from "../utils/api";
@@ -45,7 +45,22 @@ interface WorkoutPlan {
     [weekday in Weekday]?: Workout[];
   };
 }
-let emptyWorkoutPlan: WorkoutPlan;
+let emptyWorkoutPlan: WorkoutPlan = {
+  _id: "",
+  owner: "",
+  workoutPlanName: "",
+  date: new Date(),
+  followers: [],
+  workoutSchedule: {
+    Mon: [],
+    Tue: [],
+    Wed: [],
+    Thu: [],
+    Fri: [],
+    Sat: [],
+    Sun: [],
+  },
+};
 
 const NewProgramsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -66,47 +81,20 @@ const NewProgramsPage: React.FC = () => {
   const [workoutPlanName, setWorkoutPlanName] = useState("");
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>(emptyWorkoutPlan);
   const [isDisabled, setIsDisabled] = useState(true);
+
   const { data } = useFetchWorkouts();
 
-  /* useEffect(() => {
-    // Check if the workout plan name is not empty and there are workouts scheduled in any day
-    emptyWorkoutPlan = {
-      _id: "",
-      owner: "",
-      workoutPlanName: "",
-      date: new Date(),
-      followers: [],
-      workoutSchedule: {
-        Mon: [],
-        Tue: [],
-        Wed: [],
-        Thu: [],
-        Fri: [],
-        Sat: [],
-        Sun: [],
-      },
-    };
-    setIsDisabled(
-      emptyWorkoutPlan.workoutPlanName === "" ||
-        Object.values(emptyWorkoutPlan.workoutSchedule).every(
-          (day) => day.length === 0
-        )
-    );
-  }, [emptyWorkoutPlan]); */
-
-  /* useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        const response = await axios.get<any>(
-          "http://localhost:3001/api/workout/workouts"
-        );
-        setWorkouts(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchWorkouts();
-  }, []); */
+  const handleAddWorkout = (workout: Workout) => {
+    if (workouts.includes(workout)) {
+      return;
+    }
+    if (workouts.length === 0) {
+      setWorkouts([workout]);
+      return;
+    }
+    let newWorkouts = [...workouts, workout];
+    setWorkouts(newWorkouts);
+  };
 
   const updateWorkoutPlanName = (name: string) => {
     emptyWorkoutPlan.workoutPlanName = name;
@@ -120,6 +108,7 @@ const NewProgramsPage: React.FC = () => {
   };
 
   const handleItemClick = (item: Workout) => {
+    handleAddWorkout(item);
     setSelectedWorkout(item);
     const selectedWeekdays: { [weekday in Weekday]: boolean } = {
       Mon: false,
@@ -247,6 +236,8 @@ const NewProgramsPage: React.FC = () => {
     }
   };
 
+  console.log(workouts);
+
   return (
     <>
       <Navbar />
@@ -254,7 +245,7 @@ const NewProgramsPage: React.FC = () => {
         <Title>New Program</Title>
         <FrameHolder>
           <Frame>
-            {workouts?.map((item) => (
+            {data?.map((item) => (
               <ProgramItem
                 key={item.workoutname + item._id}
                 onClick={() => handleItemClick(item)}

@@ -8,7 +8,7 @@ import {
   DayContainer,
   DoubleContainer,
   DayContainerList,
-} from "../components/WorkoutForm";
+} from "../styles/WorkoutForm";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Workout,

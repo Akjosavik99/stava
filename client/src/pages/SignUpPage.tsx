@@ -19,7 +19,7 @@ import {
   BackButton,
   Arrow,
   ErrorText,
-} from "../components/Form";
+} from "../styles/Form";
 
 axios.defaults.withCredentials = true;
 
