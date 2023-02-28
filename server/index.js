@@ -11,7 +11,6 @@ app.use(express.json());
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const MongoDBStore = require("connect-mongodb-session")(session);
-mongoose.set("strictQuery", false);
 
 //Define constants
 const {
@@ -55,10 +54,12 @@ app.use(
     saveUninitialized: false,
     store: mongoDBstore,
     cookie: {
-      maxAge: MAX_AGE,
-      sameSite: false,
+      domain: 'localhost',
+      path: '/',
       secure: IS_PROD,
-    },
+      maxAge: MAX_AGE,
+      sameSite: false
+    }
   })
 );
 
@@ -67,6 +68,7 @@ app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -78,6 +80,9 @@ app.use((req, res, next) => {
 const userRouter = require("./Routers/userRouter");
 app.use("/api/user", userRouter);
 
+const workoutRouter = require("./Routers/workoutRouter");
+app.use("/api/workout", workoutRouter);
+
 // Handle all other GET-reqs
 app.get("*", (req, res) => {
   res.status(404).json({ message: "404 not found" });
@@ -86,3 +91,7 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+module.exports = {
+  app,
+};

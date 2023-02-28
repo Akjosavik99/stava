@@ -1,8 +1,11 @@
 import React from "react";
-import stavaLogoWhite from "../assets/stava_logo_white.png";
-import strongMan from "../assets/navbarassets/strong_man.svg";
-import homeIcon from "../assets/navbarassets/home_icon.png";
-import groupsIcon from "../assets/navbarassets/groups_icon.png";
+import stavaLogoWhite from "../assets/logo/stava_logo_white.png";
+import profile from "../assets/navbarassets/profile.svg";
+import home from "../assets/navbarassets/home.png";
+import groups from "../assets/navbarassets/groups.png";
+import viewworkoutprogram from "../assets/navbarassets/viewworkoutprogram.png";
+import createworkoutprogram from "../assets/navbarassets/createworkoutprogram.svg";
+import createworkout from "../assets/navbarassets/createworkout.png";
 
 const styles = {
   nav: {
@@ -30,20 +33,9 @@ function Navbar() {
           >
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
               <li className="nav-item px-3">
-                <a className="nav-link active" aria-current="page" href="/">
+                <a className="nav-link" href="/createworkout">
                   <img
-                    src={homeIcon}
-                    alt="Logo"
-                    width="50"
-                    height="48"
-                    className="d-inline-block align-text-top"
-                  />
-                </a>
-              </li>
-              <li className="nav-item px-3">
-                <a className="nav-link" href="/">
-                  <img
-                    src={groupsIcon}
+                    src={createworkout}
                     alt="Logo"
                     width="50"
                     height="48"
@@ -52,9 +44,20 @@ function Navbar() {
                 </a>
               </li>
               <li className="nav-item dropdown px-3">
-                <a className="nav-link" href="/">
+                <a className="nav-link" href="/newprogram">
                   <img
-                    src={strongMan}
+                    src={createworkoutprogram}
+                    alt="Logo"
+                    width="50"
+                    height="48"
+                    className="d-inline-block align-text-top"
+                  />
+                </a>
+              </li>
+              <li className="nav-item dropdown px-3">
+                <a className="nav-link" href="/programs">
+                  <img
+                    src={viewworkoutprogram}
                     alt="Logo"
                     width="50"
                     height="48"

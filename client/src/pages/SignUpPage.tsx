@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import stava_logo from "../assets/stava_logo.svg";
+import stava_logo from "../assets/logo/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
 import { useMutation } from "@tanstack/react-query";
 import useRegisterValidators from "../components/useRegisterValidator";
-import arrow from "../assets/arrow.svg";
+import arrow from "../assets/div/arrow.svg";
 import {
   Logo,
   LogoContainer,
@@ -20,6 +20,9 @@ import {
   Arrow,
   ErrorText,
 } from "../components/Form";
+axios.defaults.withCredentials = true;
+
+axios.defaults.withCredentials = true;
 
 type FormData = {
   username: string;
@@ -27,7 +30,7 @@ type FormData = {
   confirmPassword: string;
 };
 
-const useSignupMutation = () => {
+export const useSignupMutation = () => {
   const navigate = useNavigate();
   return useMutation(
     async (formData: FormData) => {
@@ -35,10 +38,11 @@ const useSignupMutation = () => {
     },
     {
       onSuccess: () => {
+        console.log("Success");
         navigate("/login");
       },
       onError: () => {
-        alert("Sign in failed!");
+        console.log("Error occurred");
       },
     }
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import styled from "styled-components";
-import stava_logo from "../assets/stava_logo.svg";
+import stava_logo from "../assets/logo/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
@@ -20,12 +20,14 @@ import {
   SubmitButton,
 } from "../components/Form";
 
+axios.defaults.withCredentials = true;
+
 type FormData = {
   username: string;
   password: string;
 };
 
-const useLoginMutation = () => {
+export const useLoginMutation = () => {
   const navigate = useNavigate();
   return useMutation(
     async (formData: FormData) => {
@@ -33,8 +35,8 @@ const useLoginMutation = () => {
     },
     {
       onSuccess: () => {
-        console.log("Sucess");
-        navigate("/");
+        console.log("Success");
+        navigate("/programs");
       },
       onError: () => {
         console.log("Wrong username/password");

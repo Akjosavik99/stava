@@ -47,9 +47,11 @@ exports.loginUser = async (req, res) => {
   );
 
   try {
+    console.log(req.body);
     const user = await userService.getUserByName(req.body.username);
-    if (user) {
-      const cmp = await bcrypt.compare(req.body.password, user.password);
+    const userPassword = req.body.password;
+    if (user && userPassword) {
+      const cmp = await bcrypt.compare(userPassword, user.password);
       if (cmp) {
         req.session.user = user;
         res.status(200).json({ user: user, msg: "Auth Successful" });
@@ -90,4 +92,16 @@ exports.logoutUser = async (req, res) => {
     res.clearCookie("session-id"); // clear cookie
     res.send("Logget ut.");
   });
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await userService.deleteUser(req.query.id);
+    if (user === null) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    res.status(200).json({ data: user, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };

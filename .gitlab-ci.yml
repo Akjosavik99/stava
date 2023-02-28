@@ -1,0 +1,40 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  image: node:latest
+  script:
+    - echo "Building..."
+    - npm install
+    - npm run build
+  only:
+    - merge_requests
+
+test:
+  stage: test
+  image: node:latest
+  script:
+    - echo "Testing server..."
+    - npm install
+    - npm run test
+    - echo "Testing client..."
+    - cd client
+    - npm install --force
+    - npm run test
+  only:
+    - merge_requests
+
+deploy:
+  stage: deploy
+  image: node:latest
+  script:
+    - echo "Deploying..."
+    - cd client
+    - npx vercel --token $VERCEL_TOKEN --confirm=n --prod
+  only:
+    - main
+  variables:
+    VERCEL_TOKEN: $VERCEL_TOKEN
