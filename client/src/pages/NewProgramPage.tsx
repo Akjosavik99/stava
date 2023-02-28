@@ -26,7 +26,7 @@ import {
   WorkoutNameHolder2,
   WorkoutPlanDiv,
 } from "../styles/NewProgram";
-import { Workout } from "../types/workoutExerciseTypes";
+import { Workout, WorkoutInfo } from "../types/workoutExerciseTypes";
 import { WorkoutPlan as CorrectWorkoutPlan } from "../types/workoutExerciseTypes";
 import { useFetchWorkouts } from "../utils/api";
 
@@ -45,28 +45,28 @@ interface WorkoutPlan {
     [weekday in Weekday]?: Workout[];
   };
 }
-let emptyWorkoutPlan: WorkoutPlan = {
+let emptyWorkoutPlan: CorrectWorkoutPlan = {
   _id: "",
   owner: "",
   workoutPlanName: "",
   date: new Date(),
   followers: [],
-  workoutSchedule: {
-    Mon: [],
-    Tue: [],
-    Wed: [],
-    Thu: [],
-    Fri: [],
-    Sat: [],
-    Sun: [],
-  },
+  workouts: [
+    {
+      workoutID: "",
+      workoutName: "",
+      days: [""],
+    },
+  ],
 };
 
 const NewProgramsPage: React.FC = () => {
   const navigate = useNavigate();
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [workouts, setWorkouts] = useState<WorkoutInfo[]>([]);
   const [programName, setProgramName] = useState<string>("");
-  const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutInfo | null>(
+    null
+  );
   const [selectedWeekdays, setSelectedWeekdays] = useState<
     Record<Weekday, boolean>
   >({
@@ -79,12 +79,13 @@ const NewProgramsPage: React.FC = () => {
     Sun: false,
   });
   const [workoutPlanName, setWorkoutPlanName] = useState("");
-  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>(emptyWorkoutPlan);
+  const [workoutPlan, setWorkoutPlan] =
+    useState<CorrectWorkoutPlan>(emptyWorkoutPlan);
   const [isDisabled, setIsDisabled] = useState(true);
 
   const { data } = useFetchWorkouts();
 
-  const handleAddWorkout = (workout: Workout) => {
+  const handleAddWorkout = (workout: WorkoutInfo) => {
     if (workouts.includes(workout)) {
       return;
     }
@@ -101,15 +102,21 @@ const NewProgramsPage: React.FC = () => {
     setWorkoutPlanName(name);
     setIsDisabled(
       emptyWorkoutPlan.workoutPlanName === "" ||
-        Object.values(emptyWorkoutPlan.workoutSchedule).every(
-          (day) => day.length === 0
-        )
+        emptyWorkoutPlan.workouts
+          .map((workout) => workout.days)
+          .every((day) => day.length === 0)
     );
   };
 
   const handleItemClick = (item: Workout) => {
-    handleAddWorkout(item);
-    setSelectedWorkout(item);
+    const workoutInfo: WorkoutInfo = {
+      workoutID: item._id,
+      workoutName: item.workoutname,
+      days: [],
+    };
+
+    handleAddWorkout(workoutInfo);
+    setSelectedWorkout(workoutInfo);
     const selectedWeekdays: { [weekday in Weekday]: boolean } = {
       Mon: false,
       Tue: false,
@@ -119,23 +126,46 @@ const NewProgramsPage: React.FC = () => {
       Sat: false,
       Sun: false,
     };
-    for (const weekday of weekdays) {
+    /* for (const weekday of weekdays) {
       if (emptyWorkoutPlan.workoutSchedule[weekday]) {
         const workouts = emptyWorkoutPlan.workoutSchedule[weekday] || [];
         if (workouts.some((workout) => workout._id === item._id)) {
           selectedWeekdays[weekday] = true;
         }
       }
-    }
+    } */
+    const temp = workouts.find((workout) => workout.workoutID === item._id);
+    temp?.days.forEach((element) => {
+      selectedWeekdays[element as Weekday] = true;
+    });
     setSelectedWeekdays(selectedWeekdays);
   };
 
-  const handleWeekdayClick = (selectedWorkout: Workout, weekday: Weekday) => {
+  const handleWeekdayClick = (
+    selectedWorkout: WorkoutInfo,
+    weekday: Weekday
+  ) => {
     setSelectedWeekdays((prevSelectedWeekdays) => ({
       ...prevSelectedWeekdays,
       [weekday]: !prevSelectedWeekdays[weekday],
     }));
+    if (!selectedWorkout.days.includes(weekday)) {
+      selectedWorkout.days.push(weekday);
+    } else {
+      selectedWorkout.days = selectedWorkout.days.filter(
+        (day) => day !== weekday
+      );
+    }
 
+    const temp = workouts.findIndex(
+      (workout) => workout.workoutID === selectedWorkout.workoutID
+    );
+    const newWorkouts = [...workouts];
+    newWorkouts[temp] = selectedWorkout;
+    setWorkouts(newWorkouts);
+
+    setWorkoutPlan({ ...emptyWorkoutPlan, workouts: workouts });
+    /* 
     if (emptyWorkoutPlan.workoutSchedule[weekday]) {
       const workouts = emptyWorkoutPlan.workoutSchedule[weekday]!;
       if (workouts.some((workout) => workout._id === selectedWorkout._id)) {
@@ -147,7 +177,7 @@ const NewProgramsPage: React.FC = () => {
         const updatedWorkouts = [...workouts, selectedWorkout];
         emptyWorkoutPlan.workoutSchedule[weekday] = updatedWorkouts;
       }
-    }
+    } */
     /* if (emptyWorkoutPlan.workoutSchedule[weekday]) {
       const workouts = emptyWorkoutPlan.workoutSchedule[weekday]!;
       if (workouts.some((workout) => workout._id === selectedWorkout._id)) {
@@ -160,19 +190,18 @@ const NewProgramsPage: React.FC = () => {
         emptyWorkoutPlan.workoutSchedule[weekday] = updatedWorkouts;
       }
     } */
-    setWorkoutPlan(emptyWorkoutPlan);
+    /* setWorkoutPlan(emptyWorkoutPlan); */
+    console.log(emptyWorkoutPlan);
     setIsDisabled(
       emptyWorkoutPlan.workoutPlanName === "" ||
-        Object.values(emptyWorkoutPlan.workoutSchedule).every(
-          (day) => day.length === 0
-        )
+        emptyWorkoutPlan.workouts.some((workout) => workout.days.length === 0)
     );
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      let newWorkoutPlan: CorrectWorkoutPlan = {
+      /* let newWorkoutPlan: CorrectWorkoutPlan = {
         _id: "",
         owner: "",
         workoutPlanName: "",
@@ -185,10 +214,10 @@ const NewProgramsPage: React.FC = () => {
             days: [""],
           },
         ],
-      };
+      }; */
 
-      newWorkoutPlan.workoutPlanName = emptyWorkoutPlan.workoutPlanName;
-      for (const [key, value] of Object.entries(
+      /* newWorkoutPlan.workoutPlanName = emptyWorkoutPlan.workoutPlanName; */
+      /* for (const [key, value] of Object.entries(
         emptyWorkoutPlan.workoutSchedule
       )) {
         value.forEach((workout) => {
@@ -220,11 +249,11 @@ const NewProgramsPage: React.FC = () => {
             setWorkout = !setWorkout;
           }
         });
-      }
+      } */
       // Send POST request to create workout plan
       await axios.post(
         "http://localhost:3001/api/workout/plan",
-        newWorkoutPlan
+        emptyWorkoutPlan
       );
 
       // Navigate to /programs
@@ -256,12 +285,12 @@ const NewProgramsPage: React.FC = () => {
           </Frame>
           <Frame2>
             {selectedWorkout ? (
-              <Frame3 key={selectedWorkout._id}>
+              <Frame3 key={selectedWorkout.workoutID}>
                 <Frame4>
-                  <Subtitle>{selectedWorkout.workoutname}</Subtitle>
+                  <Subtitle>{selectedWorkout.workoutName}</Subtitle>
                   <LabelHolder>
                     {weekdays.map((weekday) => (
-                      <WeekdayHolder key={selectedWorkout._id + weekday}>
+                      <WeekdayHolder key={selectedWorkout.workoutID + weekday}>
                         <WeekLabel>{weekday.slice(0, 3)}</WeekLabel>
                         <WeekInput
                           key={"input" + weekday}
@@ -280,22 +309,35 @@ const NewProgramsPage: React.FC = () => {
                   <WorkoutPlanDiv>
                     {weekdays.map(
                       (weekday) =>
-                        (workoutPlan?.workoutSchedule[weekday]?.length && (
-                          <WeekDiv>
-                            <WorkoutNameHolder>
-                              <WeekdayHeader>{weekday}</WeekdayHeader>
-                            </WorkoutNameHolder>
-                            <WorkoutNameHolder2>
-                              {workoutPlan?.workoutSchedule[weekday]?.map(
-                                (workout, index) => (
-                                  <WorkoutName key={index}>
-                                    {workout.workoutname}
-                                  </WorkoutName>
-                                )
-                              )}
-                            </WorkoutNameHolder2>
-                          </WeekDiv>
-                        )) || <></>
+                        (workoutPlan?.workouts.length &&
+                          workoutPlan?.workouts.some((workout) =>
+                            workout.days.includes(weekday as string)
+                          ) && (
+                            <WeekDiv>
+                              <WorkoutNameHolder>
+                                <WeekdayHeader>{weekday}</WeekdayHeader>
+                              </WorkoutNameHolder>
+                              <WorkoutNameHolder2>
+                                {workoutPlan?.workouts.map(
+                                  (workout, index) =>
+                                    workout.days.includes(
+                                      weekday as string
+                                    ) && (
+                                      <WorkoutName key={index}>
+                                        {workout.workoutName}
+                                      </WorkoutName>
+                                    )
+                                )}
+                                {/* {workoutPlan?.workoutSchedule[weekday]?.map(
+                                  (workout, index) => (
+                                    <WorkoutName key={index}>
+                                      {workout.workoutname}
+                                    </WorkoutName>
+                                  )
+                                )} */}
+                              </WorkoutNameHolder2>
+                            </WeekDiv>
+                          )) || <></>
                     )}
                   </WorkoutPlanDiv>
                 </Frame4>
@@ -327,5 +369,4 @@ const NewProgramsPage: React.FC = () => {
     </>
   );
 };
-
 export default NewProgramsPage;
