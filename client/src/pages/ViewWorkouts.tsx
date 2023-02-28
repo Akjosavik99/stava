@@ -1,20 +1,20 @@
 import React from "react";
 import axios from "axios";
 import { useEffect } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/Navbar";
 import {
   WeekdayContainer,
   DataContainer,
   DayContainer,
   DoubleContainer,
   DayContainerList,
-} from "../components/WorkoutForm";
+} from "@/components/WorkoutForm";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Workout,
   WorkoutPlan,
   ExerciseData,
-} from "../util/workoutExerciseTypes";
+} from "@/types/workoutExerciseTypes";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();

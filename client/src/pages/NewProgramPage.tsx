@@ -1,8 +1,8 @@
 import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SubmitButton, Triangle } from "../components/Form";
-import Navbar from "../components/Navbar";
+import { SubmitButton, Triangle } from "@/components/Form";
+import Navbar from "@/components/Navbar";
 import {
   Page,
   Title,
@@ -25,10 +25,10 @@ import {
   WorkoutNameHolder,
   WorkoutNameHolder2,
   WorkoutPlanDiv,
-} from "../components/NewProgram";
-import { workout1, workout2 } from "../tests/ExampleWorkouts";
-import { Workout } from "../utils/Workout";
-import { WorkoutPlan as CorrectWorkoutPlan } from "../utils/WorkoutPlan";
+} from "@/components/NewProgram";
+import { workout1, workout2 } from "@/tests/ExampleWorkouts";
+import { Workout } from "@/types/Workout";
+import { WorkoutPlan as CorrectWorkoutPlan } from "@/types/WorkoutPlan";
 
 axios.defaults.withCredentials = true;
 
@@ -191,8 +191,6 @@ const NewProgramsPage: React.FC = () => {
       for (const [key, value] of Object.entries(
         emptyWorkoutPlan.workoutSchedule
       )) {
-        //console.log(key, value);
-
         value.forEach((workout) => {
           let setWorkout = false;
           newWorkoutPlan.workouts.forEach((elm) => {

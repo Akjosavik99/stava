@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import stava_logo from "../assets/logo/stava_logo.svg";
+import stava_logo from "@/assets/logo/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Loading from "../components/Loading";
-import { useMutation } from "@tanstack/react-query";
-import useRegisterValidators from "../components/useRegisterValidator";
-import arrow from "../assets/div/arrow.svg";
+import Loading from "@/components/Loading";
+import { useSignupMutation } from "@/utils/api";
+import useRegisterValidators from "@/components/useRegisterValidator";
+import arrow from "@/assets/div/arrow.svg";
 import {
   Logo,
   LogoContainer,
@@ -19,34 +19,9 @@ import {
   BackButton,
   Arrow,
   ErrorText,
-} from "../components/Form";
-axios.defaults.withCredentials = true;
+} from "@/components/Form";
 
 axios.defaults.withCredentials = true;
-
-type FormData = {
-  username: string;
-  password: string;
-  confirmPassword: string;
-};
-
-export const useSignupMutation = () => {
-  const navigate = useNavigate();
-  return useMutation(
-    async (formData: FormData) => {
-      await axios.post("http://localhost:3001/api/user/register", formData);
-    },
-    {
-      onSuccess: () => {
-        console.log("Success");
-        navigate("/login");
-      },
-      onError: () => {
-        console.log("Error occurred");
-      },
-    }
-  );
-};
 
 const SignUpPage: React.FC = () => {
   const [form, setForm] = useState({

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/Navbar";
 import {
   Frame,
   Column,
@@ -9,9 +9,9 @@ import {
   Frame2,
   SaveButton,
   InputField,
-} from "../components/MyWorkout";
-import SetsXReps from "../components/SetsXReps";
-import MyExercises from "../components/MyExercises";
+} from "@/components/MyWorkout";
+import SetsXReps from "@/components/SetsXReps";
+import MyExercises from "@/components/MyExercises";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;

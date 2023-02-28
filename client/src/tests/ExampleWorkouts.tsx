@@ -1,5 +1,5 @@
-import { Workout } from "../utils/Workout";
-import { WorkoutPlan } from "../utils/WorkoutPlan";
+import { Workout } from "@/types/Workout";
+import { WorkoutPlan } from "@/types/WorkoutPlan";
 
 export const workout1: Workout = {
   _id: "1" as string,
