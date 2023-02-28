@@ -27,26 +27,16 @@ import {
   WorkoutPlanDiv,
 } from "../styles/NewProgram";
 import { Workout, WorkoutInfo } from "../types/workoutExerciseTypes";
-import { WorkoutPlan as CorrectWorkoutPlan } from "../types/workoutExerciseTypes";
-import { useFetchWorkouts } from "../utils/api";
+import { WorkoutPlan } from "../types/workoutExerciseTypes";
+import { useCreateWorkoutPlanMutation, useFetchWorkouts } from "../utils/api";
 
 axios.defaults.withCredentials = true;
 
 const weekdays: Weekday[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type Weekday = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
-interface WorkoutPlan {
-  _id: string;
-  owner: string;
-  workoutPlanName: string;
-  date: Date;
-  followers: string[];
-  workoutSchedule: {
-    [weekday in Weekday]?: Workout[];
-  };
-}
 
-let emptyWorkoutPlan: CorrectWorkoutPlan = {
+let emptyWorkoutPlan: WorkoutPlan = {
   _id: "",
   owner: "",
   workoutPlanName: "",
@@ -62,7 +52,6 @@ let emptyWorkoutPlan: CorrectWorkoutPlan = {
 };
 
 const NewProgramsPage: React.FC = () => {
-  const navigate = useNavigate();
   const [workouts, setWorkouts] = useState<WorkoutInfo[]>([]);
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutInfo | null>(
     null
@@ -79,11 +68,12 @@ const NewProgramsPage: React.FC = () => {
     Sun: false,
   });
   const [workoutPlanName, setWorkoutPlanName] = useState("");
-  const [workoutPlan, setWorkoutPlan] =
-    useState<CorrectWorkoutPlan>(emptyWorkoutPlan);
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>(emptyWorkoutPlan);
   const [isDisabled, setIsDisabled] = useState(true);
 
   const { data } = useFetchWorkouts();
+
+  const { mutate } = useCreateWorkoutPlanMutation();
 
   const handleAddWorkout = (workout: WorkoutInfo) => {
     if (workouts.includes(workout)) {
@@ -157,8 +147,6 @@ const NewProgramsPage: React.FC = () => {
     newWorkouts[temp] = selectedWorkout;
     setWorkouts(newWorkouts);
 
-    console.log(selectedWorkout);
-
     const tempWorkoutPlan = { ...workoutPlan };
     tempWorkoutPlan.workouts = newWorkouts;
     setWorkoutPlan(tempWorkoutPlan);
@@ -167,20 +155,6 @@ const NewProgramsPage: React.FC = () => {
       workoutPlan.workoutPlanName === "" ||
         workoutPlan.workouts.some((workout) => workout.day[0] === "")
     );
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      // Send POST request to create workout plan
-      await axios.post("http://localhost:3001/api/workout/plan", workoutPlan);
-
-      // Navigate to /programs
-      navigate("/programs");
-    } catch (error) {
-      // Handle error
-      console.error(error);
-    }
   };
 
   return (
@@ -242,13 +216,6 @@ const NewProgramsPage: React.FC = () => {
                                       </WorkoutName>
                                     )
                                 )}
-                                {/* {workoutPlan?.workoutSchedule[weekday]?.map(
-                                  (workout, index) => (
-                                    <WorkoutName key={index}>
-                                      {workout.workoutname}
-                                    </WorkoutName>
-                                  )
-                                )} */}
                               </WorkoutNameHolder2>
                             </WeekDiv>
                           )) || <></>
@@ -260,7 +227,12 @@ const NewProgramsPage: React.FC = () => {
               <h1>Select a workout</h1>
             )}
             {selectedWorkout && (
-              <form onSubmit={handleSubmit}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  mutate(workoutPlan);
+                }}
+              >
                 <LabelField>
                   Workout Program Name:
                   <input

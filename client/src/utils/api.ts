@@ -1,5 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Workout } from "../types/workoutExerciseTypes";
 import { WorkoutPlan } from "../types/workoutExerciseTypes";
@@ -92,32 +93,20 @@ export const useGetWorkoutDataQuery = (id: string) =>
       });
   });
 
-/* useEffect(() => {
-  const fetchWorkoutPlans = async () => {
-    try {
-      const response = await axios.get<any>(
-        "http://localhost:3001/api/workout/plan"
-      );
-
-      setPlans(response.data.data);
-    } catch (error) {
-      console.error(error);
+export const useCreateWorkoutPlanMutation = () => {
+  const navigate = useNavigate();
+  return useMutation(
+    async (workoutPlan: WorkoutPlan) => {
+      await axios.post("http://localhost:3001/api/workout/plan", workoutPlan);
+    },
+    {
+      onSuccess: () => {
+        console.log("Success");
+        navigate("/programs");
+      },
+      onError: () => {
+        console.log("Error occurred");
+      },
     }
-  };
-
-  fetchWorkoutPlans();
-}, []); */
-
-/* useEffect(() => {
-  const fetchWorkouts = async () => {
-    try {
-      const response = await axios.get<any>(
-        "http://localhost:3001/api/workout/workouts"
-      );
-      setWorkouts(response.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  fetchWorkouts();
-}, []); */
+  );
+};
