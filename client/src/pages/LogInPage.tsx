@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import stava_logo from "@/assets/logo/stava_logo.svg";
+import stava_logo from "../assets/logo/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useLoginMutation } from "@/utils/api";
-import Loading from "@/components/Loading";
+import { useLoginMutation } from "../utils/api";
+import Loading from "../components/Loading";
 import {
   InputFieldLogInPage,
   Logo,
@@ -17,7 +17,7 @@ import {
   CreateUserButton,
   ErrorText,
   SubmitButton,
-} from "@/components/Form";
+} from "../components/Form";
 
 axios.defaults.withCredentials = true;
 

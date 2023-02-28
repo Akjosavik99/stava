@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "@/components/Navbar";
+import Navbar from "../components/Navbar";
 import {
   Frame,
   Column,
-  Title,
   Title2,
   Frame2,
   SaveButton,
   InputField,
-} from "@/components/MyWorkout";
-import SetsXReps from "@/components/SetsXReps";
-import MyExercises from "@/components/MyExercises";
+} from "../components/MyWorkout";
+import SetsXReps from "../components/SetsXReps";
+import MyExercises from "../components/MyExercises";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -49,7 +48,7 @@ const saveWorkout = async (currentData: WorkoutData) => {
     });
 };
 
-const CreateWorkout: React.FC = (props) => {
+const CreateWorkout: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<WorkoutData>({
     workoutname: "undefined",

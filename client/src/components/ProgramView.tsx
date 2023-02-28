@@ -4,8 +4,8 @@ import { SubmitButton, Triangle } from "./Form";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WorkoutPlan } from "@/types/WorkoutPlan";
-import { workoutPlanExample } from "@/tests/ExampleWorkouts";
+import { WorkoutPlan } from "../types/workoutExerciseTypes";
+
 axios.defaults.withCredentials = true;
 
 const SuperFrame = styled.div`
@@ -66,9 +66,6 @@ const Title2 = styled.h1`
   margin: 0;
   cursor: pointer;
 `;
-const buttonStyle = {
-  marginBottom: "20px",
-};
 
 const ProgramView: React.FC = () => {
   const [plans, setPlans] = useState<WorkoutPlan[]>([]);
@@ -83,7 +80,6 @@ const ProgramView: React.FC = () => {
 
         setPlans(response.data.data);
       } catch (error) {
-        setPlans([workoutPlanExample]);
         console.error(error);
       }
     };
@@ -114,7 +110,7 @@ const ProgramView: React.FC = () => {
           </Frame>
           <Frame2>
             <SubmitButton
-              style={buttonStyle}
+              style={{ marginBottom: "20px" }}
               type="submit"
               onClick={() => navigate("/newprogram")}
             >

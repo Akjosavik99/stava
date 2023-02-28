@@ -5,7 +5,7 @@ import nock from "nock";
 import { act } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 
-import { useSignupMutation } from "@/utils/api";
+import { useSignupMutation } from "../utils/api";
 
 jest.mock("axios");
 

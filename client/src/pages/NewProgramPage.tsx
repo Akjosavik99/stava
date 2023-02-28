@@ -1,8 +1,8 @@
 import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SubmitButton, Triangle } from "@/components/Form";
-import Navbar from "@/components/Navbar";
+import { SubmitButton, Triangle } from "../components/Form";
+import Navbar from "../components/Navbar";
 import {
   Page,
   Title,
@@ -25,10 +25,10 @@ import {
   WorkoutNameHolder,
   WorkoutNameHolder2,
   WorkoutPlanDiv,
-} from "@/components/NewProgram";
-import { workout1, workout2 } from "@/tests/ExampleWorkouts";
-import { Workout } from "@/types/Workout";
-import { WorkoutPlan as CorrectWorkoutPlan } from "@/types/WorkoutPlan";
+} from "../components/NewProgram";
+import { Workout } from "../types/workoutExerciseTypes";
+import { WorkoutPlan as CorrectWorkoutPlan } from "../types/workoutExerciseTypes";
+import { useFetchWorkouts } from "../utils/api";
 
 axios.defaults.withCredentials = true;
 
@@ -45,10 +45,10 @@ interface WorkoutPlan {
     [weekday in Weekday]?: Workout[];
   };
 }
-
 let emptyWorkoutPlan: WorkoutPlan;
 
 const NewProgramsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [programName, setProgramName] = useState<string>("");
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
@@ -64,10 +64,11 @@ const NewProgramsPage: React.FC = () => {
     Sun: false,
   });
   const [workoutPlanName, setWorkoutPlanName] = useState("");
-  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>();
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>(emptyWorkoutPlan);
   const [isDisabled, setIsDisabled] = useState(true);
+  const { data } = useFetchWorkouts();
 
-  useEffect(() => {
+  /* useEffect(() => {
     // Check if the workout plan name is not empty and there are workouts scheduled in any day
     emptyWorkoutPlan = {
       _id: "",
@@ -91,9 +92,9 @@ const NewProgramsPage: React.FC = () => {
           (day) => day.length === 0
         )
     );
-  }, [emptyWorkoutPlan]);
+  }, [emptyWorkoutPlan]); */
 
-  useEffect(() => {
+  /* useEffect(() => {
     const fetchWorkouts = async () => {
       try {
         const response = await axios.get<any>(
@@ -101,13 +102,12 @@ const NewProgramsPage: React.FC = () => {
         );
         setWorkouts(response.data.data);
       } catch (error) {
-        setWorkouts([workout1, workout2]);
         console.error(error);
       }
     };
-
     fetchWorkouts();
-  }, []);
+  }, []); */
+
   const updateWorkoutPlanName = (name: string) => {
     emptyWorkoutPlan.workoutPlanName = name;
     setWorkoutPlanName(name);
@@ -159,6 +159,18 @@ const NewProgramsPage: React.FC = () => {
         emptyWorkoutPlan.workoutSchedule[weekday] = updatedWorkouts;
       }
     }
+    /* if (emptyWorkoutPlan.workoutSchedule[weekday]) {
+      const workouts = emptyWorkoutPlan.workoutSchedule[weekday]!;
+      if (workouts.some((workout) => workout._id === selectedWorkout._id)) {
+        const updatedWorkouts = workouts.filter(
+          (workout) => workout._id !== selectedWorkout._id
+        );
+        emptyWorkoutPlan.workoutSchedule[weekday] = updatedWorkouts;
+      } else {
+        const updatedWorkouts = [...workouts, selectedWorkout];
+        emptyWorkoutPlan.workoutSchedule[weekday] = updatedWorkouts;
+      }
+    } */
     setWorkoutPlan(emptyWorkoutPlan);
     setIsDisabled(
       emptyWorkoutPlan.workoutPlanName === "" ||
@@ -167,7 +179,6 @@ const NewProgramsPage: React.FC = () => {
         )
     );
   };
-  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -182,7 +193,7 @@ const NewProgramsPage: React.FC = () => {
           {
             workoutID: "",
             workoutName: "",
-            day: [""],
+            days: [""],
           },
         ],
       };
@@ -197,15 +208,15 @@ const NewProgramsPage: React.FC = () => {
             if (elm["workoutID"] == "") {
               elm["workoutID"] = workout._id;
               elm["workoutName"] = workout.workoutname;
-              elm["day"] = [key];
+              elm["days"] = [key];
               setWorkout = !setWorkout;
             }
           });
           if (!setWorkout) {
             newWorkoutPlan.workouts.forEach((elm) => {
               if (elm["workoutID"] == workout._id) {
-                if (!elm["day"].includes(key)) {
-                  elm["day"].push(key);
+                if (!elm["days"].includes(key)) {
+                  elm["days"].push(key);
                 }
                 setWorkout = !setWorkout;
               }
@@ -215,7 +226,7 @@ const NewProgramsPage: React.FC = () => {
             newWorkoutPlan.workouts.push({
               workoutID: workout._id,
               workoutName: workout.workoutname,
-              day: [key],
+              days: [key],
             });
             setWorkout = !setWorkout;
           }

@@ -1,17 +1,47 @@
-export type WorkoutPlan = {
+/* export type WorkoutPlan = {
   _id: string;
   owner: string;
   workoutPlanName: string;
   workouts: Workout[];
   date: string;
-};
+}; */
 
-export type Workout = {
+export interface WorkoutPlan {
+  _id: string;
+  owner: string;
+  workoutPlanName: string;
+  date: Date;
+  followers: string[];
+  workouts: [WorkoutInfo];
+}
+
+export interface WorkoutInfo {
+  workoutID: string;
+  workoutName: string;
+  days: string[];
+}
+
+/* export type Workout = {
   day: string[];
   workoutID: string;
   workoutName: string;
   _id: string;
-};
+}; */
+
+export interface Workout {
+  _id: string;
+  owner: string;
+  workoutname: string;
+  date: Date;
+  exercises: [
+    {
+      exerciseName: string;
+      sets: number;
+      reps: number;
+    }
+  ];
+}
+
 export type WorkoutPlanProps = {
   workoutplan: WorkoutPlan;
 };

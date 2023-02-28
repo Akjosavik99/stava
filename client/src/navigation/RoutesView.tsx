@@ -1,13 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import App from "@/App";
-import LogInPage from "@/pages/LogInPage";
-import NewProgramPage from "@/pages/NewProgramPage";
-import ProgramsPage from "@/pages/ProgramsPage";
-import SignUpPage from "@/pages/SignUpPage";
-import CreateWorkout from "@/pages/CreateWorkout";
-import ViewWorkouts from "@/pages/ViewWorkouts";
-import ViewExercises from "@/pages/ViewExercises";
+import App from "../App";
+import LogInPage from "../pages/LogInPage";
+import NewProgramPage from "../pages/NewProgramPage";
+import ProgramsPage from "../pages/ProgramsPage";
+import SignUpPage from "../pages/SignUpPage";
+import CreateWorkout from "../pages/CreateWorkout";
+import ViewWorkouts from "../pages/ViewWorkouts";
+import ViewExercises from "../pages/ViewExercises";
 
 const RoutesView: React.FC = () => {
   return (

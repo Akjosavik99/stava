@@ -1,20 +1,21 @@
 import React from "react";
 import axios from "axios";
 import { useEffect } from "react";
-import Navbar from "@/components/Navbar";
+import Navbar from "../components/Navbar";
 import {
   WeekdayContainer,
   DataContainer,
   DayContainer,
   DoubleContainer,
   DayContainerList,
-} from "@/components/WorkoutForm";
+} from "../components/WorkoutForm";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Workout,
   WorkoutPlan,
   ExerciseData,
-} from "@/types/workoutExerciseTypes";
+  WorkoutInfo,
+} from "../types/workoutExerciseTypes";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -48,14 +49,14 @@ const ViewWorkouts: React.FC = () => {
     try {
       const emptyList: ExerciseData[] = [];
 
-      const workout: Workout[] = workoutPlan.workouts;
-      for (const key in workout) {
-        let len = workout[key].day.length;
+      const workouts: WorkoutInfo[] = workoutPlan.workouts;
+      for (const key in workouts) {
+        let len = workouts[key].days.length;
         for (let i = 0; i < len; i++) {
-          if (workout[key].day[i] === day) {
+          if (workouts[key].days[i] === day) {
             emptyList.push({
-              name: workout[key].workoutName,
-              url: "/viewexercises/" + workout[key].workoutID,
+              name: workouts[key].workoutName,
+              url: "/viewexercises/" + workouts[key].workoutID,
             });
           }
         }
