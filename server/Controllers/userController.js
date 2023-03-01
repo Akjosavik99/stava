@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const user = require("../Models/user");
+const user = require("../Models/User");
 const userService = require("../Services/userService");
 
 exports.getUserByName = async (req, res) => {
