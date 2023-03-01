@@ -54,12 +54,12 @@ app.use(
     saveUninitialized: false,
     store: mongoDBstore,
     cookie: {
-      domain: 'localhost',
-      path: '/',
+      domain: "localhost",
+      path: "/",
       secure: IS_PROD,
       maxAge: MAX_AGE,
-      sameSite: false
-    }
+      sameSite: false,
+    },
   })
 );
 

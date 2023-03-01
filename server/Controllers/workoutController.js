@@ -1,5 +1,4 @@
-const workout = require("../Models/workout");
-const user = require("../Models/user");
+const workout = require("../Models/Workout");
 const workoutService = require("../Services/workoutService");
 
 exports.findWorkout = async (req, res) => {
