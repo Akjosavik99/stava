@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import dumbell from "../assets/workout_icons/dumbell.svg";
-import maskin from "../assets/workout_icons/machine.svg";
-import medisinball from "../assets/workout_icons/medicineBall.svg";
 import running from "../assets/workout_icons/running.svg";
+import medicineball from "../assets/workout_icons/medicineBall.svg";
 import yoga from "../assets/workout_icons/yoga.svg";
 import stretching from "../assets/workout_icons/stretching.svg";
 import pulldown from "../assets/workout_icons/pulldown.svg";
@@ -85,10 +84,10 @@ const MyExercises: React.FC<exercisesProps> = ({ updateExercises }) => {
           </Button>
           <Button
             onClick={() => {
-              updateExercises("medicineBall", medisinball);
+              updateExercises("medicineBall", medicineball);
             }}
           >
-            <Image src={medisinball} />
+            <Image src={medicineball} />
           </Button>
           <Button
             onClick={() => {
@@ -148,7 +147,7 @@ const MyExercises: React.FC<exercisesProps> = ({ updateExercises }) => {
               updateExercises("running", running);
             }}
           >
-            <Image src={maskin} id="running" />
+            <Image src={running} id="running" />
           </Button>
         </Column>
       </Frame>

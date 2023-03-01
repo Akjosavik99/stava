@@ -28,7 +28,6 @@ type WorkoutData = {
 
 type ChosenExercise = {
   name: string;
-  src: any;
   sets: number;
   reps: number;
 };
@@ -54,11 +53,12 @@ const CreateWorkout: React.FC = () => {
     workoutname: "undefined",
     exercises: [],
   });
+
   const [exercises, setExercises] = useState<Array<ChosenExercise>>([]);
   const [title, setTitle] = useState<string>("undefined");
 
-  const updateExercises = (name: string, src: any): void => {
-    setExercises([...exercises, { name: name, src: src, sets: 0, reps: 0 }]);
+  const updateExercises = (name: string): void => {
+    setExercises([...exercises, { name: name, sets: 0, reps: 0 }]);
   };
 
   const updateSets = (sets: number, index: number): void => {
@@ -73,7 +73,7 @@ const CreateWorkout: React.FC = () => {
   let chosenExercises = exercises.map((exercise) => {
     return (
       <SetsXReps
-        source={exercise.src}
+        source={exercise.name}
         index={exercises.indexOf(exercise)}
         updateSets={updateSets}
         updateReps={updateReps}
@@ -81,6 +81,7 @@ const CreateWorkout: React.FC = () => {
     );
   });
 
+  // When exercises or title changes, update data
   useEffect(() => {
     setData({
       workoutname: title,

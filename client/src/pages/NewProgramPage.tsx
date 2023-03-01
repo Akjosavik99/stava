@@ -1,6 +1,5 @@
 import axios from "axios";
-import { FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { SubmitButton, Triangle } from "../styles/Form";
 import Navbar from "../components/Navbar";
 import {
@@ -75,6 +74,7 @@ const NewProgramsPage: React.FC = () => {
 
   const { mutate } = useCreateWorkoutPlanMutation();
 
+  // Adds the selected workout to the workout plan
   const handleAddWorkout = (workout: WorkoutInfo) => {
     if (workouts.includes(workout)) {
       return;
@@ -87,18 +87,21 @@ const NewProgramsPage: React.FC = () => {
     setWorkouts(newWorkouts);
   };
 
+  // When writing a workout plan name, update the workout plan name-state
   const updateWorkoutPlanName = (name: string) => {
     setWorkoutPlanName(name);
 
     workoutPlan.workoutPlanName = name;
     setWorkoutPlan(workoutPlan);
 
+    // If title is empty or no weekdays are selected, disable the submit button
     setIsDisabled(
       workoutPlan.workoutPlanName === "" ||
         workoutPlan.workouts.some((workout) => workout.day[0] === "")
     );
   };
 
+  // Function to handle clicks on the workout items
   const handleItemClick = (item: Workout) => {
     const workoutInfo: WorkoutInfo = {
       workoutID: item._id,
@@ -124,6 +127,7 @@ const NewProgramsPage: React.FC = () => {
     setSelectedWeekdays(selectedWeekdays);
   };
 
+  // When clicking a weekday-checkbox, update states and display the selected weekdays on the right
   const handleWeekdayClick = (
     selectedWorkout: WorkoutInfo,
     weekday: Weekday
@@ -151,6 +155,7 @@ const NewProgramsPage: React.FC = () => {
     tempWorkoutPlan.workouts = newWorkouts;
     setWorkoutPlan(tempWorkoutPlan);
 
+    // If title is empty or no weekdays are selected, disable the submit button
     setIsDisabled(
       workoutPlan.workoutPlanName === "" ||
         workoutPlan.workouts.some((workout) => workout.day[0] === "")

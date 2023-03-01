@@ -1,11 +1,3 @@
-/* export type WorkoutPlan = {
-  _id: string;
-  owner: string;
-  workoutPlanName: string;
-  workouts: Workout[];
-  date: string;
-}; */
-
 export interface WorkoutPlan {
   _id: string;
   owner: string;
@@ -20,13 +12,6 @@ export interface WorkoutInfo {
   workoutName: string;
   day: string[];
 }
-
-/* export type Workout = {
-  day: string[];
-  workoutID: string;
-  workoutName: string;
-  _id: string;
-}; */
 
 export interface Workout {
   _id: string;

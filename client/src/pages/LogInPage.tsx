@@ -27,6 +27,7 @@ const LogInPage: React.FC = () => {
     password: "",
   });
 
+  // Update form state when user types in input field
   const onUpdateField = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextFormState = {
       ...form,
