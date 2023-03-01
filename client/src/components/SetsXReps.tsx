@@ -52,6 +52,7 @@ const SetsXReps: React.FC<setsXRepsProps> = ({
   const [sets, setSets] = React.useState(0);
   const [reps, setReps] = React.useState(0);
 
+  // Function to dynamically import all images from a folder
   function importAll(r: __WebpackModuleApi.RequireContext) {
     let images: ImageList = {};
     r.keys().map((item) => {

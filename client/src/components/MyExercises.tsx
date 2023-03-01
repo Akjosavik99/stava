@@ -17,6 +17,7 @@ type ImageList = {
 };
 
 const MyExercises: React.FC<exercisesProps> = ({ updateExercises }) => {
+  // Function to dynamically import all images from a folder
   function importAll(r: __WebpackModuleApi.RequireContext) {
     let images: ImageList = {};
     r.keys().map((item) => {

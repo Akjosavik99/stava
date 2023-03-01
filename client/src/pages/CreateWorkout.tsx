@@ -12,18 +12,19 @@ import {
 import SetsXReps from "../components/SetsXReps";
 import MyExercises from "../components/MyExercises";
 import axios from "axios";
+import { useSaveWorkoutMutation } from "../utils/api";
 
 axios.defaults.withCredentials = true;
 
-type Exercise = {
+type NewExercise = {
   exerciseName: string;
   sets: number;
   reps: number;
 };
 
-type WorkoutData = {
+type NewWorkoutData = {
   workoutname: string;
-  exercises: Array<Exercise>;
+  exercises: Array<NewExercise>;
 };
 
 type ChosenExercise = {
@@ -32,27 +33,14 @@ type ChosenExercise = {
   reps: number;
 };
 
-const saveWorkout = async (currentData: WorkoutData) => {
-  console.log(currentData);
-  await axios
-    .post("http://localhost:3001/api/workout", currentData)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      console.log("done");
-    });
-};
-
 const CreateWorkout: React.FC = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<WorkoutData>({
+  const [data, setData] = useState<NewWorkoutData>({
     workoutname: "undefined",
     exercises: [],
   });
+
+  const { mutate } = useSaveWorkoutMutation();
 
   const [exercises, setExercises] = useState<Array<ChosenExercise>>([]);
   const [title, setTitle] = useState<string>("undefined");
@@ -112,7 +100,7 @@ const CreateWorkout: React.FC = () => {
         </Column>
         <SaveButton
           onClick={() => {
-            saveWorkout(data);
+            mutate(data);
             navigate("/programs");
           }}
         >

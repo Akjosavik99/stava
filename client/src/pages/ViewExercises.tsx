@@ -1,9 +1,6 @@
 import React from "react";
 
-import axios from "axios";
-import { Exercises } from "../types/workoutExerciseTypes";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import Loading from "../components/Loading";
 import {
   InnerExercisesContainer,
@@ -12,16 +9,7 @@ import {
 import { DataContainer } from "../styles/WorkoutForm";
 import Navbar from "../components/Navbar";
 import ExerciseComponent from "../components/ExerciseComponent";
-
-const useGetDataQuery = (id: string | undefined) => {
-  return useQuery<Exercises>(["exercises", id], async () => {
-    return await axios
-      .get(`http://localhost:3001/api/workout/workout/${id}`)
-      .then((res) => {
-        return res.data.data;
-      });
-  });
-};
+import { useGetDataQuery } from "../utils/api";
 
 type ImageList = {
   [key: string]: string;
@@ -32,6 +20,7 @@ const ViewExercises: React.FC = () => {
 
   const { data, isLoading } = useGetDataQuery(params.id);
 
+  // Function to dynamically import all images from a folder
   function importAll(r: __WebpackModuleApi.RequireContext) {
     let images: ImageList = {};
     r.keys().map((item) => {

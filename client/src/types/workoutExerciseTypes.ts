@@ -27,6 +27,11 @@ export interface Workout {
   ];
 }
 
+export type WorkoutData = {
+  workoutname: string;
+  exercises: Array<Exercise>;
+};
+
 export type WorkoutPlanProps = {
   workoutplan: WorkoutPlan;
 };
@@ -55,4 +60,16 @@ export type ServerExerciseData = {
 export type ExerciseData = {
   name: string | undefined;
   url: string;
+};
+
+// Made for posting exercises that haven't gotten an ID yet
+export type ExerciseWithoutID = {
+  exerciseName: string;
+  sets: number;
+  reps: number;
+};
+
+export type WorkoutDataNoId = {
+  workoutname: string;
+  exercises: Array<ExerciseWithoutID>;
 };

@@ -1,6 +1,4 @@
 import React from "react";
-import axios from "axios";
-import { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import {
   WeekdayContainer,
@@ -10,49 +8,19 @@ import {
   DayContainerList,
 } from "../styles/WorkoutForm";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  WorkoutPlan,
-  ExerciseData,
-  WorkoutInfo,
-} from "../types/workoutExerciseTypes";
+import { ExerciseData, WorkoutInfo } from "../types/workoutExerciseTypes";
 import { useGetWorkoutDataQuery } from "../utils/api";
 import Loading from "../components/Loading";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan>(
-    {} as WorkoutPlan
-  );
 
-  /* const getData = async (id: string) => {
-    try {
-      const res = await axios.get(
-        `http://localhost:3001/api/workout/plan/${id}`
-      );
-      return res.data.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (params.id === undefined) {
-      return;
-    }
-
-    getData(params.id).then((res) => {
-      setWorkoutPlan(res);
-    });
-  }, [params.id]); */
-  const { data, error, isLoading } = useGetWorkoutDataQuery(
-    params.id as string
-  );
+  const { data, isLoading } = useGetWorkoutDataQuery(params.id as string);
 
   if (isLoading) {
     return <Loading />;
   }
-  console.log(data);
 
   function getWorkouts(day: string) {
     try {
@@ -60,7 +28,6 @@ const ViewWorkouts: React.FC = () => {
 
       const workouts: WorkoutInfo[] = data!.workouts;
       for (let j = 0; j < workouts.length; j++) {
-        console.log(workouts[j]);
         let len = workouts[j].day.length;
         for (let i = 0; i < len; i++) {
           if (workouts[j].day[i] === day) {

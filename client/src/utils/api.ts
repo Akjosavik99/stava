@@ -1,8 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Workout } from "../types/workoutExerciseTypes";
+import {
+  Exercises,
+  Workout,
+  WorkoutDataNoId,
+} from "../types/workoutExerciseTypes";
 import { WorkoutPlan } from "../types/workoutExerciseTypes";
 
 type LoginFormData = {
@@ -109,4 +112,20 @@ export const useCreateWorkoutPlanMutation = () => {
       },
     }
   );
+};
+
+export const useGetDataQuery = (id: string | undefined) => {
+  return useQuery<Exercises>(["exercises", id], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/workout/workout/${id}`)
+      .then((res) => {
+        return res.data.data;
+      });
+  });
+};
+
+export const useSaveWorkoutMutation = () => {
+  return useMutation(async (currentData: WorkoutDataNoId) => {
+    await axios.post("http://localhost:3001/api/workout", currentData);
+  });
 };
