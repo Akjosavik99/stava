@@ -53,7 +53,6 @@ const SetsXReps: React.FC<setsXRepsProps> = ({
   const [reps, setReps] = React.useState(0);
 
   function importAll(r: __WebpackModuleApi.RequireContext) {
-    /* return r.keys().map(r); */
     let images: ImageList = {};
     r.keys().map((item) => {
       images[item.replace("./", "")] = r(item);
