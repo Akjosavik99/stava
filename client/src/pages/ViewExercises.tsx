@@ -18,12 +18,16 @@ import weightLifting from "../assets/workout_icons/weightlifting.svg";
 
 import axios from "axios";
 import { Exercises } from "../util/workoutExerciseTypes";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../components/Loading";
 import {
   InnerExercisesContainer,
   OuterExercisesContainer,
+  TripleContainer,
+  ProgressButton,
+  SingleContainer,
+  HeaderContainer,
 } from "../components/ExerciseForm";
 import { DataContainer } from "../components/WorkoutForm";
 
@@ -74,6 +78,7 @@ function updateImage(img: string) {
 
 const ViewExercises: React.FC = () => {
   const params = useParams();
+  const navigate = useNavigate();
 
   const { data, isLoading } = useGetDataQuery(params.id);
 
@@ -86,7 +91,25 @@ const ViewExercises: React.FC = () => {
       <Navbar />
       <DataContainer>
         <OuterExercisesContainer>
-          <h1 style={{ textAlign: "center" }}>Exercises</h1>
+          <TripleContainer>
+            <SingleContainer>
+              <ProgressButton onClick={() => navigate("/viewProgress")}>
+                Progress
+              </ProgressButton>
+            </SingleContainer>
+            <HeaderContainer>
+              <h1
+                style={{
+                  textAlign: "center",
+                  fontSize: "4em",
+                  width: "100%",
+                }}
+              >
+                Exercises
+              </h1>
+            </HeaderContainer>
+            {/* <SingleContainer></SingleContainer> */}
+          </TripleContainer>
 
           <InnerExercisesContainer>
             {data?.exercises.map(

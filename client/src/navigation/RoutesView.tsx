@@ -8,6 +8,7 @@ import SignUpPage from "../pages/SignUpPage";
 import CreateWorkout from "../pages/CreateWorkout";
 import ViewWorkouts from "../pages/ViewWorkouts";
 import ViewExercises from "../pages/ViewExercises";
+import ViewProgress from "../pages/ViewProgress";
 
 const RoutesView: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const RoutesView: React.FC = () => {
       <Route path="/viewexercises/:id" element={<ViewExercises />} />
       <Route path="/programs" element={<ProgramsPage />} />
       <Route path="/newprogram" element={<NewProgramPage />} />
+      <Route path="/viewProgress" element={<ViewProgress />} />
     </Routes>
   );
 };
