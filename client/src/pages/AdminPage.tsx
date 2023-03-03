@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
+import { Triangle } from "../components/Form";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -86,6 +87,7 @@ const AdminPage: React.FC = () => {
           </AdminFunction>
         </AdminFunctionsContainer>
       </DataContainer>
+      <Triangle style={{ height: "20px" }}></Triangle>
     </>
   );
 };
