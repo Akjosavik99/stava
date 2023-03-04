@@ -74,17 +74,17 @@ const NewProgramsPage: React.FC = () => {
 
   const { mutate } = useCreateWorkoutPlanMutation();
 
+  const toggleIsDisabled = () => {
+    // If title is empty or no weekdays are selected, disable the submit button
+    setIsDisabled(
+      workoutPlan.workoutPlanName === "" ||
+        workoutPlan.workouts.some((workout) => workout.day[0] === "")
+    );
+  };
+
   // Adds the selected workout to the workout plan
   const handleAddWorkout = (workout: WorkoutInfo) => {
-    if (workouts.includes(workout)) {
-      return;
-    }
-    if (workouts.length === 0) {
-      setWorkouts([workout]);
-      return;
-    }
-    let newWorkouts = [...workouts, workout];
-    setWorkouts(newWorkouts);
+    setWorkouts(workouts.length === 0 ? [workout] : [...workouts, workout]);
   };
 
   // When writing a workout plan name, update the workout plan name-state
@@ -94,11 +94,7 @@ const NewProgramsPage: React.FC = () => {
     workoutPlan.workoutPlanName = name;
     setWorkoutPlan(workoutPlan);
 
-    // If title is empty or no weekdays are selected, disable the submit button
-    setIsDisabled(
-      workoutPlan.workoutPlanName === "" ||
-        workoutPlan.workouts.some((workout) => workout.day[0] === "")
-    );
+    toggleIsDisabled();
   };
 
   // Function to handle clicks on the workout items
@@ -156,10 +152,7 @@ const NewProgramsPage: React.FC = () => {
     setWorkoutPlan(tempWorkoutPlan);
 
     // If title is empty or no weekdays are selected, disable the submit button
-    setIsDisabled(
-      workoutPlan.workoutPlanName === "" ||
-        workoutPlan.workouts.some((workout) => workout.day[0] === "")
-    );
+    toggleIsDisabled();
   };
 
   return (
