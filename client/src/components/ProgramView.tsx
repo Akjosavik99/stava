@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { SubmitButton, Triangle } from "./Form";
+import { SubmitButton, Triangle } from "../styles/Form";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WorkoutPlan } from "../utils/WorkoutPlan";
-import { workoutPlanExample } from "../tests/ExampleWorkouts";
+import { useFetchWorkoutPlansQuery } from "../utils/api";
+
 axios.defaults.withCredentials = true;
 
 const SuperFrame = styled.div`
@@ -66,30 +65,11 @@ const Title2 = styled.h1`
   margin: 0;
   cursor: pointer;
 `;
-const buttonStyle = {
-  marginBottom: "20px",
-};
 
 const ProgramView: React.FC = () => {
-  const [plans, setPlans] = useState<WorkoutPlan[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchWorkoutPlans = async () => {
-      try {
-        const response = await axios.get<any>(
-          "http://localhost:3001/api/workout/plan"
-        );
-
-        setPlans(response.data.data);
-      } catch (error) {
-        setPlans([workoutPlanExample]);
-        console.error(error);
-      }
-    };
-
-    fetchWorkoutPlans();
-  }, []);
+  const { data } = useFetchWorkoutPlansQuery();
 
   return (
     <>
@@ -97,10 +77,10 @@ const ProgramView: React.FC = () => {
         <Title>Your Programs</Title>
         <SuperFrame>
           <Frame>
-            {plans.length == 0 ? (
+            {data?.length == 0 ? (
               <h1>No workoutprograms</h1>
             ) : (
-              plans?.map((item, index) => (
+              data?.map((item, index) => (
                 <ProgramItem
                   key={index}
                   onClick={() => {
@@ -114,7 +94,7 @@ const ProgramView: React.FC = () => {
           </Frame>
           <Frame2>
             <SubmitButton
-              style={buttonStyle}
+              style={{ marginBottom: "20px" }}
               type="submit"
               onClick={() => navigate("/newprogram")}
             >
