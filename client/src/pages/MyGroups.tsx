@@ -69,24 +69,47 @@ const GroupButton = styled.button`
   font-weight: bold;
 `;
 
+const GroupName = styled.p`
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 2rem;
+  margin-top: 1rem;
+`;
+
+type GroupData = {
+  _id: string;
+  groupName: string;
+  isPrivate: boolean;
+  owners: { username: string; userID: string }[];
+  members: { username: string; userID: string }[];
+  workouts: { workoutName: string; workoutID: string }[];
+  postIDs: string[];
+  date: Date;
+};
+
 // This will be implemented once the backend is ready
 
-/* const useGetGroupsQuery = () => {
+const useGetGroupsQuery = () => {
   return useQuery(["groups"], async () => {
-    return await axios.get("http://localhost:3001/api/groups").then((res) => {
-      return res.data;
+    return await axios.get("http://localhost:3001/api/group/").then((res) => {
+      return res.data.data as GroupData[];
     });
   });
-}; */
+};
 
 const MyGroups: React.FC = () => {
   const navigate = useNavigate();
   // This will be implemented once the backend is ready
 
-  /* const { data, isLoading, isError } = useGetGroupsQuery(); */
-  /* if (isLoading) {
+  const { data, isLoading, isError } = useGetGroupsQuery();
+
+  if (isLoading) {
     return <Loading />;
-  } */
+  }
+
+  if (isError) {
+    return <div>Something went wrong</div>;
+  }
 
   return (
     <div>
@@ -94,7 +117,11 @@ const MyGroups: React.FC = () => {
       <StyledHeader>Your groups</StyledHeader>
       <DataContainer>
         <OuterExercisesContainer>
-          <InnerExercisesContainer />
+          <InnerExercisesContainer>
+            {data.map((element) => {
+              return <GroupName>{element.groupName}</GroupName>;
+            })}
+          </InnerExercisesContainer>
         </OuterExercisesContainer>
         <GroupFunctionsContainer>
           <GroupFunction>
