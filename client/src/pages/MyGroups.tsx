@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -79,6 +80,7 @@ const GroupButton = styled.button`
 }; */
 
 const MyGroups: React.FC = () => {
+  const navigate = useNavigate();
   // This will be implemented once the backend is ready
 
   /* const { data, isLoading, isError } = useGetGroupsQuery(); */
@@ -87,7 +89,7 @@ const MyGroups: React.FC = () => {
   } */
 
   return (
-    <div style={{ height: "100vh" }}>
+    <div>
       <Navbar />
       <StyledHeader>Your groups</StyledHeader>
       <DataContainer>
@@ -96,10 +98,14 @@ const MyGroups: React.FC = () => {
         </OuterExercisesContainer>
         <GroupFunctionsContainer>
           <GroupFunction>
-            <GroupButton>Join group</GroupButton>
+            <GroupButton onClick={() => navigate("/creategroup")}>
+              Create group
+            </GroupButton>
           </GroupFunction>
           <GroupFunction>
-            <GroupButton>Add group</GroupButton>
+            <GroupButton onClick={() => navigate("/joincommunity")}>
+              Join community
+            </GroupButton>
           </GroupFunction>
         </GroupFunctionsContainer>
       </DataContainer>
