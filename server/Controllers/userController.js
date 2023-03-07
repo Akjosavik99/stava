@@ -79,9 +79,9 @@ exports.updateUser = async (req, res) => {
 exports.authCheck = async (req, res) => {
   const sessUser = req.session.user;
   if (sessUser) {
-    return res.status(201).json({ data: user, message: "Autorisert :)" });
+    return res.status(200).json({ data: user, message: "Autorisert :)" });
   } else {
-    return res.status(401).json({ message: "Ikke Autorisert :(" });
+    return res.status(200).json({ message: "Ikke Autorisert :(" });
   }
 };
 

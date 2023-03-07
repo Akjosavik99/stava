@@ -53,6 +53,10 @@ exports.createWorkout = async (req, res) => {
 
 exports.getWorkoutByOwner = async (req, res) => {
   try {
+    if (!req.session.user) {
+      res.status(401).json({ status: "Fail", message: "Unauthorized" });
+      return;
+    }
     const owner = req.session.user.username;
     let workouts = await workoutService.getWorkoutsByOwner(owner);
     res.json({
