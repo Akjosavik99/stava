@@ -1,11 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import { useGetGroupsQuery } from "../utils/api";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -76,30 +75,8 @@ const GroupName = styled.p`
   margin-top: 1rem;
 `;
 
-type GroupData = {
-  _id: string;
-  groupName: string;
-  isPrivate: boolean;
-  owners: { username: string; userID: string }[];
-  members: { username: string; userID: string }[];
-  workouts: { workoutName: string; workoutID: string }[];
-  postIDs: string[];
-  date: Date;
-};
-
-// This will be implemented once the backend is ready
-
-const useGetGroupsQuery = () => {
-  return useQuery(["groups"], async () => {
-    return await axios.get("http://localhost:3001/api/group/").then((res) => {
-      return res.data.data as GroupData[];
-    });
-  });
-};
-
 const MyGroups: React.FC = () => {
   const navigate = useNavigate();
-  // This will be implemented once the backend is ready
 
   const { data, isLoading, isError } = useGetGroupsQuery();
 
