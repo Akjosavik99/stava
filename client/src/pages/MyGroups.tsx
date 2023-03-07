@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
 import styled from "styled-components";
-import { Triangle } from "../components/Form";
+import { Triangle } from "../styles/Form";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 
