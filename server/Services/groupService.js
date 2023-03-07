@@ -1,7 +1,9 @@
 const GroupModel = require("../Models/Group");
 
-exports.findGroupByUser = async (userid) => {
-  return await GroupModel.find({ username: userid });
+exports.findGroupByUser = async (username) => {
+  return await GroupModel.find({
+    "members.userName": username,
+  });
 };
 
 exports.findGroupById = async (id) => {
