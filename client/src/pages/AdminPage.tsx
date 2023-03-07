@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
-import { Triangle } from "../components/Form";
+import { Triangle } from "../styles/Form";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
