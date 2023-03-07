@@ -2,11 +2,17 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
 
+const StyledHeader = styled.h1`
+  font-size: 3em;
+  text-align: center;
+  color: #f16a00;
+`;
+
 const OuterExercisesContainer = styled.div`
   margin: 0px;
   padding: 0.1em;
-  max-height: 600px;
-  min-height: 600px;
+  max-height: 400px;
+  min-height: 500px;
   width: 50%;
   background-color: #ffc08e;
   border: 3px solid black;
@@ -28,9 +34,10 @@ const DataContainer = styled.div`
   padding: 2em;
 `;
 
-const AdminFunctions = styled.div`
+const AdminFunctionsContainer = styled.div`
   width: 40%;
-  height: 600px;
+  height: 500px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -57,15 +64,17 @@ const AdminButton = styled.button`
   font-weight: bold;
 `;
 
+// There will have to be a way to get all users from a certain group, and display them here.
 const AdminPage: React.FC = () => {
   return (
-    <div>
+    <>
       <Navbar />
+      <StyledHeader>Manage admins</StyledHeader>
       <DataContainer>
         <OuterExercisesContainer>
           <InnerExercisesContainer />
         </OuterExercisesContainer>
-        <AdminFunctions>
+        <AdminFunctionsContainer>
           <AdminFunction>
             <AdminButton>Create admin</AdminButton>
           </AdminFunction>
@@ -75,9 +84,9 @@ const AdminPage: React.FC = () => {
           <AdminFunction>
             <AdminButton>Back to Cardio Group</AdminButton>
           </AdminFunction>
-        </AdminFunctions>
+        </AdminFunctionsContainer>
       </DataContainer>
-    </div>
+    </>
   );
 };
 
