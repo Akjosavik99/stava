@@ -2,7 +2,6 @@ const express = require("express");
 
 const {
   createWorkout,
-  findWorkout,
   findWorkoutById,
   getWorkoutByOwner,
 } = require("../Controllers/workoutController");
