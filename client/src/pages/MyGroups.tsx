@@ -118,9 +118,13 @@ const MyGroups: React.FC = () => {
       <DataContainer>
         <OuterExercisesContainer>
           <InnerExercisesContainer>
-            {data.map((element) => {
-              return <GroupName>{element.groupName}</GroupName>;
-            })}
+            {data.length > 0 ? (
+              data.map((element) => {
+                return <GroupName>{element.groupName}</GroupName>;
+              })
+            ) : (
+              <GroupName>You are not a member of any groups</GroupName>
+            )}
           </InnerExercisesContainer>
         </OuterExercisesContainer>
         <GroupFunctionsContainer>
