@@ -1,5 +1,5 @@
-const User = require("../Models/user");
-const userModel = require("../Models/user");
+const User = require("../Models/User");
+const userModel = require("../Models/User");
 const mongoose = require("mongoose");
 
 const { dbConnect, dbDisconnect } = require("../utils/dbHandler.utils");
