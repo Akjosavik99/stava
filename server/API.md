@@ -1,4 +1,4 @@
-# Api documentation:
+# Api documentation
 
 ## User
 
@@ -62,3 +62,21 @@ Find group by id
 
 `/update/:id Method: PUT`
 Update group
+
+## Post
+
+### `/api/post`
+
+Methods:
+
+`/ Method: GET`
+Finds all posts connected to user
+
+`/ Method: POST`
+Create new post
+
+`/find/:id Method: GET`
+Find post by id
+
+`/update/:id Method: PUT`
+Update post

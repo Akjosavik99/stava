@@ -86,6 +86,9 @@ app.use("/api/workout", workoutRouter);
 const groupRouter = require("./Routers/groupRouter");
 app.use("/api/group", groupRouter);
 
+const postRouter = require("./Routers/postRouter");
+app.use("/api/post", postRouter);
+
 // Handle all other GET-reqs
 app.get("*", (req, res) => {
   res.status(404).json({ message: "404 not found" });
