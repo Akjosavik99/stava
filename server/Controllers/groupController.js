@@ -3,8 +3,8 @@ const groupService = require("../Services/groupService");
 
 exports.findGroupByUser = async (req, res) => {
   try {
-    const userid = req.session.user.userid;
-    const groups = await groupService.findGroupByUser(userid);
+    const username = await req.session.user.username;
+    const groups = await groupService.findGroupByUser(username);
     res.json({ data: groups, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
