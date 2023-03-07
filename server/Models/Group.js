@@ -13,6 +13,7 @@ const GroupSchema = new Schema({
   date: { type: Date, default: Date.now },
   owners: [{ userName: String, userID: String }],
   members: [{ userName: String, userID: String }],
+  workouts: [{ workoutName: String, workoutID: String }],
   postIDs: [String],
 });
 
