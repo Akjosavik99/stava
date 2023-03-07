@@ -87,7 +87,7 @@ const MyGroups: React.FC = () => {
   } */
 
   return (
-    <>
+    <div style={{ height: "100vh" }}>
       <Navbar />
       <StyledHeader>Your groups</StyledHeader>
       <DataContainer>
@@ -103,8 +103,10 @@ const MyGroups: React.FC = () => {
           </GroupFunction>
         </GroupFunctionsContainer>
       </DataContainer>
-      <Triangle style={{ height: "20px" }}></Triangle>
-    </>
+      <Triangle
+        style={{ height: "20px", position: "absolute", bottom: 0 }}
+      ></Triangle>
+    </div>
   );
 };
 
