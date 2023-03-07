@@ -1,16 +1,6 @@
 const workout = require("../Models/Workout");
 const workoutService = require("../Services/workoutService");
 
-exports.findWorkout = async (req, res) => {
-  try {
-    const owner = req.session.user.username;
-    const workouts = await workoutService.getWorkoutByOwner(owner);
-    res.json({ data: workouts, status: "success" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 exports.findWorkoutById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -58,7 +48,7 @@ exports.getWorkoutByOwner = async (req, res) => {
       return;
     }
     const owner = req.session.user.username;
-    let workouts = await workoutService.getWorkoutsByOwner(owner);
+    const workouts = await workoutService.getWorkoutsByOwner(owner);
     res.json({
       data: workouts,
       status: "success",
