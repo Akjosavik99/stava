@@ -21,6 +21,9 @@ Register user
 `/register Method: DELETE`
 Delete user
 
+`/feed Method: GET`
+Get the feed in an array of posts
+
 ## Workout & WorkoutPlans
 
 ### `/api/workout`
