@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Post } from "../types/PostTypes";
 import {
   Exercises,
   Workout,
@@ -129,3 +130,10 @@ export const useSaveWorkoutMutation = () => {
     await axios.post("http://localhost:3001/api/workout", currentData);
   });
 };
+
+export const useGetFeedPostsQuery = () =>
+  useQuery(["feed"], async () => {
+    return await axios.get("http://localhost:3001/api/post").then((res) => {
+      return res.data.data as Post[];
+    });
+  });
