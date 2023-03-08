@@ -34,6 +34,14 @@ exports.createUser = async (req, res) => {
         new user({ username: username, password: hashedPwd })
       );
       req.session.user = newUser;
+      await groupService.createGroup({
+        groupName: newUser.username + "" + newUser._id,
+        isPrivate: true,
+        owners: [{ userName: newUser.username, userID: newUser._id }],
+        members: [{ userName: newUser.username, userID: newUser._id }],
+        workoutPlans: [],
+        postIDs: [],
+      });
       res.status(200).json({ data: newUser, message: "New user created" });
     }
   } catch (err) {
