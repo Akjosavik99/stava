@@ -129,3 +129,7 @@ export const useSaveWorkoutMutation = () => {
     await axios.post("http://localhost:3001/api/workout", currentData);
   });
 };
+
+export const getUserGroups = async () => {
+  return await axios.get("http://localhost:3001/api/group");
+};

@@ -10,6 +10,7 @@ import { DataContainer } from "../styles/WorkoutForm";
 import Navbar from "../components/Navbar";
 import ExerciseComponent from "../components/ExerciseComponent";
 import { useGetDataQuery } from "../utils/api";
+import SharePopUp from "../components/SharePopUp";
 
 type ImageList = {
   [key: string]: string;
