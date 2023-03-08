@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const user = require("../Models/User");
 const userService = require("../Services/userService");
+const postService = require("../Services/postService");
+const groupService = require("../Services/groupService");
 
 exports.getUserByName = async (req, res) => {
   const { username } = req.body;
@@ -101,6 +103,25 @@ exports.deleteUser = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
     res.status(200).json({ data: user, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.UserFeed = async (req, res) => {
+  try {
+    const user = await userService.getUserByName(req.session.user.username);
+    const groups = await groupService.findGroupByUser(user.username);
+    let posts = await postService.findPostByUser(user.username);
+
+    groups.forEach(async (group) => {
+      group.postIDs.forEach(async (id) => {
+        if (!posts.includes(id)) {
+          posts.push(await postService.findPostById(id));
+        }
+      });
+    });
+    res.status(200).json({ data: posts, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
