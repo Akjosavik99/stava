@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Title } from "../styles/NewProgram";
 import { getUserGroups } from "../utils/api";
 import { Group } from "../types/groupTypes";
+import { Community } from "../types/groupTypes";
 
 /* Rectangle 46 */
 const Rectangle46 = styled.div`
   position: absolute;
-  width: 345px;
-  height: 259px;
+  width: auto;
+  height: 350px;
   background: #ffffff;
+  border: 2px solid black;
+  overflow: scroll;
+  top: 120px;
+  left: 450px;
 `;
 
 /* Friends */
 
 const Friends = styled.div`
-  position: absolute;
-  cursor: pointer;
   font-family: "Inter";
-  font-style: normal;
-  font-weight: 800;
-  margin: 10px;
-  font-size: 24px;
-  line-height: 29px;
-  /* identical to box height */
-  text-align: center;
+  font-weight: 700;
+  font-size: 30px;
+  cursor: pointer;
   color: #f16a00;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   &:hover {
     color: #f16a00;
   }
@@ -45,7 +42,6 @@ const BlackText = styled.div`
 
 const Line2 = styled.div`
   position: absolute;
-  width: 295px;
   height: 0px;
   margin-top: 40px;
   border: 1px solid #f16a00;
@@ -54,7 +50,6 @@ const Line2 = styled.div`
 /* Share program to... */
 
 const Shareprogram = styled.div`
-  position: absolute;
   width: 302px;
   height: 39px;
 
@@ -70,22 +65,6 @@ const Shareprogram = styled.div`
   color: #f16a00;
 `;
 
-/* Rectangle 49 */
-
-const Modal = styled.div<{ isVisible: boolean }>`
-  width: 345px;
-  height: 259px;
-  background-color: FFFFFF;
-  display: ${({ isVisible }) => (isVisible ? "block" : "none")};
-  visibility: ${({ isVisible }) => (isVisible ? "visible" : "hidden")};
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 30%;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
 const ShareButton = styled.button`
   border-radius: 5rem;
   background-color: #f16a00;
@@ -95,12 +74,20 @@ const ShareButton = styled.button`
   font-weight: bold;
   color: white;
   float: right;
-  margin-right: 330px;
+`;
+
+const OrangeText = styled.div`
+  font-family: "Inter";
+  font-weight: 700;
+  font-size: 20px;
+  color: #f16a00;
+  cursor: pointer;
 `;
 
 const SharePopUp: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [groups, setGroups] = useState([] as Group[]);
+  const [communities, setCommunities] = useState([] as Community[]);
 
   useEffect(() => {
     getUserGroups()
@@ -123,32 +110,73 @@ const SharePopUp: React.FC = () => {
       </ShareButton>
       {groups.length > 0 ? (
         isVisible ? (
-          <Rectangle46
-            style={{
-              background: "rgba(241, 106, 0, 0.22)",
-              height: "179px",
-            }}
-          >
-            <div className="row">
-              <div className="col">
-                {" "}
-                <div className="card">
-                  <div className="card-body">
+          <Rectangle46>
+            <div
+              className="row"
+              style={{
+                position: "sticky",
+                top: "10px",
+                backgroundColor: "#FFFFFF",
+              }}
+            >
+              <Shareprogram
+                style={{
+                  backgroundColor: "#FFFFFF",
+                }}
+              >
+                Share program to...
+              </Shareprogram>
+            </div>
+            <div className="row row-cols-2 g-3">
+              <div
+                className="card"
+                style={{
+                  background: "rgba(241, 106, 0, 0.22)",
+                  width: "auto",
+                  margin: "20px",
+                  overflow: "scroll",
+                }}
+              >
+                <div className="row">
+                  <Friends>Friends</Friends>
+                  <Line2></Line2>
+                </div>
+                <div className="row">
+                  <div className="col">
                     <h5 className="card-title">Groups</h5>
                     {groups.map((group) => (
-                      <h1>{group.groupName}</h1>
+                      <OrangeText>
+                        {group.groupName}
+                        {"\n\n"}
+                      </OrangeText>
                     ))}
+                  </div>
+                  <div className="col">
+                    <h5 className="card-title">Communities</h5>
+                    {communities.map((community) => (
+                      <OrangeText>{community.communityName}</OrangeText>
+                    ))}
+                    <OrangeText>Heisann</OrangeText>
                   </div>
                 </div>
               </div>
-              <div className="col">høyre side</div>
             </div>
+            <ShareButton
+              style={{
+                position: "sticky",
+                bottom: "20px",
+                height: "3rem",
+              }}
+            >
+              Share
+            </ShareButton>
           </Rectangle46>
         ) : null
       ) : (
-        <h2>loading...</h2>
+        <h2>no groups to share to...</h2>
       )}
     </>
   );
 };
+
 export default SharePopUp;
