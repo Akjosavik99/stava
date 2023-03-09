@@ -50,7 +50,7 @@ describe("Log in", () => {
     });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
-      expect(mockedUsedNavigate).toBeCalledWith("/programs");
+      expect(mockedUsedNavigate).toBeCalledWith("/");
       expect(mockedConsoleLog).toBeCalledWith("Success");
     });
   });
