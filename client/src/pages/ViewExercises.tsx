@@ -17,7 +17,6 @@ type ImageList = {
 
 const ViewExercises: React.FC = () => {
   const params = useParams();
-  const navigate = useNavigate();
 
   const { data, isLoading } = useGetDataQuery(params.id);
 
@@ -43,25 +42,7 @@ const ViewExercises: React.FC = () => {
       <Navbar />
       <DataContainer>
         <OuterExercisesContainer>
-          <TripleContainer>
-            <SingleContainer>
-              <ProgressButton onClick={() => navigate("/viewProgress")}>
-                Progress
-              </ProgressButton>
-            </SingleContainer>
-            <HeaderContainer>
-              <h1
-                style={{
-                  textAlign: "center",
-                  fontSize: "4em",
-                  width: "100%",
-                }}
-              >
-                Exercises
-              </h1>
-            </HeaderContainer>
-            {/* <SingleContainer></SingleContainer> */}
-          </TripleContainer>
+          <h1 style={{ textAlign: "center" }}>Exercises</h1>
 
           <InnerExercisesContainer>
             {data?.exercises.map(
