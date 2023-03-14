@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Post } from "../types/PostTypes";
+import { Log } from "../types/userType";
 import {
   Exercises,
   Workout,
@@ -137,3 +138,16 @@ export const useGetFeedPostsQuery = () =>
       return res.data.data as Post[];
     });
   });
+
+  
+export const getUserGroups = async () => {
+  return await axios.get("http://localhost:3001/api/group");
+}
+
+export const fetchUser = async () => {
+  return await axios.get("http://localhost:3001/api/user/auth");
+};
+
+export const log = async (log: Log) => {
+  return await axios.post("http://localhost:3001/api/user/log", log);
+};

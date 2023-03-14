@@ -10,6 +10,7 @@ import ViewWorkouts from "../pages/ViewWorkouts";
 import ViewExercises from "../pages/ViewExercises";
 import PrivateRoute from "./PrivateRoute";
 import PageNotFound from "../pages/PageNotFound";
+import ViewProgress from "../pages/ViewProgress";
 
 const RoutesView: React.FC = () => {
   return (
@@ -33,6 +34,10 @@ const RoutesView: React.FC = () => {
       <Route
         path="/newprogram"
         element={<PrivateRoute element={<NewProgramPage />} />}
+      />
+      <Route
+        path="/viewProgress"
+        element={<PrivateRoute element={<ViewProgress />} />}
       />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
