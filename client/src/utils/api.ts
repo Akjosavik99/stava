@@ -129,3 +129,7 @@ export const useSaveWorkoutMutation = () => {
     await axios.post("http://localhost:3001/api/workout", currentData);
   });
 };
+
+export const sendPost = async (post: any) => {
+  await axios.post("http://localhost:3001/api/post", post);
+};

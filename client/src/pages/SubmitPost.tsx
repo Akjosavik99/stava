@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { SubmitButton, Triangle } from "../styles/Form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { submitPost } from "../types/PostTypes";
 import { sendPost } from "../utils/api";
 
 const SuperWrapper = styled.div`
@@ -26,7 +25,6 @@ const Title = styled.h1`
   margin: 0;
 `;
 
-
 const SubmitPost: React.FC = () => {
   const navigate = useNavigate();
 
@@ -35,48 +33,69 @@ const SubmitPost: React.FC = () => {
   const [picture, setPicture] = useState<string>("");
 
   const handleSubmitPost = () => {
-    const post = {title: title, text: text, picture: picture} as submitPost
-    sendPost(post).then((res) => window.location.reload()).catch((err) => {
-      console.log(err)
-    } )
-  }
+    const post = { title: title, text: text, picture: picture };
+    sendPost(post)
+      .then((res) => window.location.reload())
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
-    <div className="container">
-    <Navbar />  
-    <SuperWrapper>
-        <Title>Create Post</Title>
-        <SubmitPostWrapper>
-          <div className="mb-3">
-            <label htmlFor="postTitle" className="form-label fs-3">Title</label>
-            <input type="text" className="form-control" id="postTitle" value={title} onChange={(e)=>setTitle(e.target.value)} />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="postText" className="form-label fs-3">Text</label>
-            <textarea className="form-control" id="postText" value={text} onChange={(e)=>setText(e.target.value)}/>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="postImage" className="form-label fs-3">Attach image</label>
-            <input className="form-control" type="file" id="postImage" onChange={(e)=>setPicture(e.target.value)} />
-          </div>
-        </SubmitPostWrapper>
-        <SubmitButton
-              style={{ marginTop: "10px" }}
-              type="submit"
-              onClick={() => {handleSubmitPost()}}
-            >
-              Submit Post
-            </SubmitButton>
+      <div className="container">
+        <Navbar />
+        <SuperWrapper>
+          <Title>Create Post</Title>
+          <SubmitPostWrapper>
+            <div className="mb-3">
+              <label htmlFor="postTitle" className="form-label fs-3">
+                Title
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="postTitle"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="postText" className="form-label fs-3">
+                Text
+              </label>
+              <textarea
+                className="form-control"
+                id="postText"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="postImage" className="form-label fs-3">
+                Attach image
+              </label>
+              <input
+                className="form-control"
+                type="file"
+                id="postImage"
+                onChange={(e) => setPicture(e.target.value)}
+              />
+            </div>
+          </SubmitPostWrapper>
+          <SubmitButton
+            style={{ marginTop: "10px" }}
+            type="submit"
+            onClick={() => {
+              handleSubmitPost();
+            }}
+          >
+            Submit Post
+          </SubmitButton>
         </SuperWrapper>
-        </div>
-       
+      </div>
     </>
   );
 };
-
-
-
-
 
 export default SubmitPost;
