@@ -131,6 +131,10 @@ export const useSaveWorkoutMutation = () => {
   });
 };
 
+export const getUserGroups = async () => {
+  return await axios.get("http://localhost:3001/api/group");
+}
+
 export const fetchUser = async () => {
   return await axios.get("http://localhost:3001/api/user/auth");
 };
