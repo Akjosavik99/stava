@@ -45,7 +45,7 @@ const Shareprogram = styled.div`
   font-size: 32px;
   line-height: 39px;
   /* identical to box height */
-
+  float: right; 
   text-align: center;
 
   color: #f16a00;
@@ -112,10 +112,9 @@ const SharePopUp: React.FC = () => {
         isVisible ? (
           <Rectangle46>
             <div
-              className="row"
+              className="row sticky-top bg-white"
               style={{
                 position: "sticky",
-                top: "10px",
                 backgroundColor: "#FFFFFF",
               }}
             >
@@ -171,19 +170,23 @@ const SharePopUp: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="row">
-              <h5>{active.groupName ? "Sharing to..." : "Choose a group"}</h5>
-              <p>{active.groupName ? active.groupName : null}</p>
+            <div className="row sticky-bottom bg-white">
+              <div className = "col">
               <ShareButton
                 onClick={() => shareWorkout(active)}
                 style={{
                   position: "sticky",
-                  bottom: "20px",
                   height: "3rem",
+                  margin: "13px"
                 }}
               >
                 Share
               </ShareButton>
+              </div>
+              <div className = "col">
+              <h5>{active.groupName ? "Sharing to..." : "Choose a group"}</h5>
+              <p>{active.groupName ? active.groupName : null}</p>
+              </div>             
             </div>
           </Rectangle46>
         ) : null
