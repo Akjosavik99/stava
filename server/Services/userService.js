@@ -13,7 +13,7 @@ exports.getUserByName = async (username) => {
 };
 
 exports.updateUser = async (id, user) => {
-  return await UserModel.findByIdAndUpdate(id, user);
+  return await UserModel.findByIdAndUpdate(id, user, { new: true });
 };
 
 exports.deleteUser = async (id) => {

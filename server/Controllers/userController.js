@@ -134,3 +134,15 @@ exports.UserFeed = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.log = async (req, res) => {
+  const { text } = req.body;
+  const user = await userService.getUserByName(req.session.user.username);
+  if (text && user) {
+    user.log.push({ date: Date.now(), text: text });
+    const newUser = await userService.updateUser(user._id, user);
+    res.status(200).json(newUser);
+  } else {
+    res.status(400).json({ message: "No text or user" });
+  }
+};

@@ -14,6 +14,7 @@ const UserSchema = new Schema({
   groups: [String],
   plans: [String],
   exercises: [String],
+  log: [{ date: { type: Date, default: Date.now() }, text: String }],
 });
 
 UserSchema.static({
