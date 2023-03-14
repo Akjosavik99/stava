@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { GroupData } from "../types/GroupTypes";
-import { Post } from "../types/PostTypes";
+import { GroupData } from "../types/groupTypes";
+import { Post } from "../types/postTypes";
 import { Log } from "../types/userType";
 import {
   Exercises,
