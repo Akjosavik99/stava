@@ -87,8 +87,9 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.authCheck = async (req, res) => {
-  const sessUser = req.session.user;
-  if (sessUser) {
+  const user = await userService.getUserByName(req.session.user.username);
+  if (user) {
+    req.session.user = user;
     return res.status(200).json({ data: user, message: "Autorisert :)" });
   } else {
     return res.status(200).json({ message: "Ikke Autorisert :(" });

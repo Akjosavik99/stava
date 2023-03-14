@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Log } from "../types/userType";
 import {
   Exercises,
   Workout,
@@ -128,4 +129,12 @@ export const useSaveWorkoutMutation = () => {
   return useMutation(async (currentData: WorkoutDataNoId) => {
     await axios.post("http://localhost:3001/api/workout", currentData);
   });
+};
+
+export const fetchUser = async () => {
+  return await axios.get("http://localhost:3001/api/user/auth");
+};
+
+export const log = async (log: Log) => {
+  return await axios.post("http://localhost:3001/api/user/log", log);
 };

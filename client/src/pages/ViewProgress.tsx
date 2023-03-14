@@ -1,7 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import React from "react";
-import { Form } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import {
   Heading,
@@ -13,48 +11,72 @@ import {
   ProgressUnit,
   SubmitButton,
 } from "../styles/ProgressView";
-import { User } from "../types/userType";
+import { Log } from "../types/userType";
+import { fetchUser, log } from "../utils/api";
 
 const ViewProgress: React.FC = () => {
-  const useGetDataQuery = (id: string) => {
-    return useQuery<User>([id], async () => {
-      return await axios
-        .get(`http://localhost:3001/api/user/log`)
-        .then((res) => {
-          return res.data.data;
-        });
-    });
+  const [user, setUser] = useState(undefined as any);
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    fetchUser()
+      .then((res) => {
+        res.data.data ? setUser(res.data.data) : setUser(undefined);
+      })
+      .catch((e) => {
+        setUser(undefined);
+        console.log(e);
+      });
+  }, []);
+
+  const formatDate = (numberdate: number) => {
+    const date = new Date(numberdate);
+    return (
+      <>
+        {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
+      </>
+    );
   };
 
-  const { data, isLoading, error } = useGetDataQuery("id");
+  const submitLog = (e: React.FormEvent) => {
+    e.preventDefault();
+    log({ date: Date.now().toString(), text: text }).then((res) => {
+      res ? window.location.reload() : null;
+    });
+  };
 
   return (
     <>
       <Navbar />
       <OuterContainer>
-        <Heading>Your Progress</Heading>
-        <InnerContainer
-          onSubmit={() => {
-            console.log("submit");
-          }}
-        >
-          <ProgressContainer>
-            <ProgressUnit>
-              01.01.2023 - Today I lifted 90 kg max rep in bench, ran 3km on a
-              treadmill and also set a new record in deadlift with 150 kg.
-            </ProgressUnit>
-            <ProgressUnit>
-              02.01.2023 - Ran 8km in one hour on treadmill
-            </ProgressUnit>
-            <ProgressUnit>
-              04.01.2023 - Today I lifted 160 kg max rep in deadlift
-            </ProgressUnit>
-          </ProgressContainer>
-          <InputContainer>
-            <InputFieldContainer></InputFieldContainer>
-            <SubmitButton type="submit">Submit</SubmitButton>
-          </InputContainer>
-        </InnerContainer>
+        {user !== undefined ? (
+          <>
+            <Heading>Your Progress</Heading>
+            <InnerContainer
+              onSubmit={(e) => {
+                submitLog(e);
+              }}
+            >
+              <ProgressContainer>
+                {user.log.map((log: Log) => {
+                  return (
+                    <ProgressUnit>
+                      {formatDate(Date.parse(log.date))} - {log.text}
+                    </ProgressUnit>
+                  );
+                })}
+              </ProgressContainer>
+              <InputContainer>
+                <InputFieldContainer
+                  onChange={(e) => setText(e.target.value)}
+                ></InputFieldContainer>
+                <SubmitButton type="submit">Submit</SubmitButton>
+              </InputContainer>
+            </InnerContainer>
+          </>
+        ) : (
+          <Loading />
+        )}
       </OuterContainer>
     </>
   );

@@ -9,6 +9,6 @@ export type User = {
 };
 
 export type Log = {
-  date: Date;
-  log: string;
+  date: string;
+  text: string;
 };

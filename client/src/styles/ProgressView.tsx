@@ -48,6 +48,7 @@ export const InputFieldContainer = styled.textarea`
   border-radius: 1rem;
   border: none;
   resize: none;
+  margin-right: 0.4em;
 `;
 
 export const SubmitButton = styled.button`
@@ -61,5 +62,5 @@ export const SubmitButton = styled.button`
   font-size: 1.5rem;
   font-weight: bold;
   justify-content: center;
-  margin: 1em;
+  margin: 0.2em;
 `;
