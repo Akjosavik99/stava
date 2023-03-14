@@ -1,3 +1,9 @@
+export type submitPost = {
+    title: string;
+    text: string;
+    picture: string;
+  };
+  
 export type Post = {
   _id: string;
   date: Date;
