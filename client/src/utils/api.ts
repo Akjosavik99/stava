@@ -139,6 +139,10 @@ export const useGetGroupsQuery = () => {
       return res.data.data as GroupData[];
     });
   });
+}
+
+export const sendPost = async (post: any) => {
+  await axios.post("http://localhost:3001/api/post", post);
 };
 
 export const useGetFeedPostsQuery = () =>
