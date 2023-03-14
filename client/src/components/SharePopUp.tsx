@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getUserGroups } from "../utils/api";
 import { Group } from "../types/groupTypes";
-import { Community } from "../types/groupTypes";
 
 /* Rectangle 46 */
 const Rectangle46 = styled.div`
@@ -14,19 +13,6 @@ const Rectangle46 = styled.div`
   overflow: scroll;
   top: 120px;
   left: 450px;
-`;
-
-/* Friends */
-
-const Friends = styled.div`
-  font-family: "Inter";
-  font-weight: 700;
-  font-size: 30px;
-  cursor: pointer;
-  color: #f16a00;
-  &:hover {
-    color: #f16a00;
-  }
 `;
 
 const BlackText = styled.div`
@@ -87,13 +73,21 @@ const OrangeText = styled.div`
 const SharePopUp: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [groups, setGroups] = useState([] as Group[]);
-  const [communities, setCommunities] = useState([] as Community[]);
+  const [privateGroups, setPrivateGroups] = useState([] as Group[]);
+  const [publicGroups, setPublicGroups] = useState([] as Group[]);
+  const [active, setActive] = useState({} as Group);
 
   useEffect(() => {
     getUserGroups()
       .then((res) => {
         if (res.data.data) {
           setGroups(res.data.data);
+          setPrivateGroups(
+            res.data.data.filter((group: Group) => group.isPrivate)
+          );
+          setPublicGroups(
+            res.data.data.filter((group: Group) => !group.isPrivate)
+          );
         } else {
           setGroups([]);
         }
@@ -102,6 +96,12 @@ const SharePopUp: React.FC = () => {
         console.log(err);
       });
   }, []);
+
+  const shareWorkout = (group: Group) => {
+    //TODO
+    //waiting for backend implementation for sharing a workout in a group as post
+    console.log(group);
+  };
 
   return (
     <>
@@ -138,38 +138,53 @@ const SharePopUp: React.FC = () => {
                 }}
               >
                 <div className="row">
-                  <Friends>Friends</Friends>
-                  <Line2></Line2>
-                </div>
-                <div className="row">
                   <div className="col">
                     <h5 className="card-title">Groups</h5>
-                    {groups.map((group) => (
+                    {privateGroups.map((group) => (
                       <OrangeText>
-                        {group.groupName}
+                        <a
+                          onClick={() => {
+                            setActive(group);
+                          }}
+                        >
+                          {group.groupName}
+                        </a>
                         {"\n\n"}
                       </OrangeText>
                     ))}
                   </div>
                   <div className="col">
                     <h5 className="card-title">Communities</h5>
-                    {communities.map((community) => (
-                      <OrangeText>{community.communityName}</OrangeText>
+                    {publicGroups.map((group) => (
+                      <OrangeText>
+                        <a
+                          onClick={() => {
+                            setActive(group);
+                          }}
+                        >
+                          {group.groupName}
+                        </a>
+                        {"\n\n"}
+                      </OrangeText>
                     ))}
-                    <OrangeText>Heisann</OrangeText>
                   </div>
                 </div>
               </div>
             </div>
-            <ShareButton
-              style={{
-                position: "sticky",
-                bottom: "20px",
-                height: "3rem",
-              }}
-            >
-              Share
-            </ShareButton>
+            <div className="row">
+              <h5>{active.groupName ? "Sharing to..." : "Choose a group"}</h5>
+              <p>{active.groupName ? active.groupName : null}</p>
+              <ShareButton
+                onClick={() => shareWorkout(active)}
+                style={{
+                  position: "sticky",
+                  bottom: "20px",
+                  height: "3rem",
+                }}
+              >
+                Share
+              </ShareButton>
+            </div>
           </Rectangle46>
         ) : null
       ) : (

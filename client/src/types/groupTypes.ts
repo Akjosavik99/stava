@@ -7,13 +7,3 @@ export type Group = {
   workouts: [{ workoutName: String; workoutID: String }];
   postIDs: [String];
 };
-
-export type Community = {
-  communityName: String;
-  isPrivate: Boolean;
-  date: Date;
-  owners: [{ userName: String; userID: String }];
-  members: [{ userName: String; userID: String }];
-  workouts: [{ workoutName: String; workoutID: String }];
-  postIDs: [String];
-};
