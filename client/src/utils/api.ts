@@ -2,6 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { GroupData } from "../types/GroupTypes";
+import { Post } from "../types/PostTypes";
+import { Log } from "../types/userType";
 import {
   Exercises,
   Workout,
@@ -41,7 +43,7 @@ export const useLoginMutation = () => {
     {
       onSuccess: () => {
         console.log("Success");
-        navigate("/programs");
+        navigate("/");
       },
       onError: () => {
         console.log("Wrong username/password");
@@ -137,4 +139,24 @@ export const useGetGroupsQuery = () => {
       return res.data.data as GroupData[];
     });
   });
+};
+
+export const useGetFeedPostsQuery = () =>
+  useQuery(["feed"], async () => {
+    return await axios.get("http://localhost:3001/api/post").then((res) => {
+      return res.data.data as Post[];
+    });
+  });
+
+  
+export const getUserGroups = async () => {
+  return await axios.get("http://localhost:3001/api/group");
+}
+
+export const fetchUser = async () => {
+  return await axios.get("http://localhost:3001/api/user/auth");
+};
+
+export const log = async (log: Log) => {
+  return await axios.post("http://localhost:3001/api/user/log", log);
 };

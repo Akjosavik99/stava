@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const user = require("../Models/User");
 const userService = require("../Services/userService");
+const postService = require("../Services/postService");
+const groupService = require("../Services/groupService");
 
 exports.getUserByName = async (req, res) => {
   const { username } = req.body;
@@ -32,6 +34,14 @@ exports.createUser = async (req, res) => {
         new user({ username: username, password: hashedPwd })
       );
       req.session.user = newUser;
+      await groupService.createGroup({
+        groupName: newUser.username + "" + newUser._id,
+        isPrivate: true,
+        owners: [{ userName: newUser.username, userID: newUser._id }],
+        members: [{ userName: newUser.username, userID: newUser._id }],
+        workoutPlans: [],
+        postIDs: [],
+      });
       res.status(200).json({ data: newUser, message: "New user created" });
     }
   } catch (err) {
@@ -77,8 +87,9 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.authCheck = async (req, res) => {
-  const sessUser = req.session.user;
-  if (sessUser) {
+  const user = await userService.getUserByName(req.session.user.username);
+  if (user) {
+    req.session.user = user;
     return res.status(200).json({ data: user, message: "Autorisert :)" });
   } else {
     return res.status(200).json({ message: "Ikke Autorisert :(" });
@@ -103,5 +114,36 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json({ data: user, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.UserFeed = async (req, res) => {
+  try {
+    const user = await userService.getUserByName(req.session.user.username);
+    const groups = await groupService.findGroupByUser(user.username);
+    let posts = await postService.findPostByUser(user.username);
+
+    groups.forEach(async (group) => {
+      group.postIDs.forEach(async (id) => {
+        if (!posts.includes(id)) {
+          posts.push(await postService.findPostById(id));
+        }
+      });
+    });
+    res.status(200).json({ data: posts, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.log = async (req, res) => {
+  const { text } = req.body;
+  const user = await userService.getUserByName(req.session.user.username);
+  if (text && user) {
+    user.log.push({ date: Date.now(), text: text });
+    const newUser = await userService.updateUser(user._id, user);
+    res.status(200).json(newUser);
+  } else {
+    res.status(400).json({ message: "No text or user" });
   }
 };
