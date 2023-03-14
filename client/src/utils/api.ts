@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Post } from "../types/PostTypes";
+import { GroupData } from "../types/groupTypes";
+import { Post } from "../types/postTypes";
 import { Log } from "../types/userType";
 import {
   Exercises,
@@ -131,6 +132,14 @@ export const useSaveWorkoutMutation = () => {
     await axios.post("http://localhost:3001/api/workout", currentData);
   });
 };
+
+export const useGetGroupsQuery = () => {
+  return useQuery(["groups"], async () => {
+    return await axios.get("http://localhost:3001/api/group/").then((res) => {
+      return res.data.data as GroupData[];
+    });
+  });
+}
 
 export const sendPost = async (post: any) => {
   await axios.post("http://localhost:3001/api/post", post);
