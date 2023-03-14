@@ -1,10 +1,11 @@
 const group = require("../Models/Group");
 const groupService = require("../Services/groupService");
+const userService = require("../Services/userService");
 
 exports.findGroupByUser = async (req, res) => {
   try {
-    const username = await req.session.user.username;
-    const groups = await groupService.findGroupByUser(username);
+    const user = await userService.getUserByName(req.session.user.username);
+    const groups = await groupService.findGroupByUser(user.username);
     res.json({ data: groups, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });

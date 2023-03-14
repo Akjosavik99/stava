@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ExerciseData, WorkoutInfo } from "../types/workoutExerciseTypes";
 import { useGetWorkoutDataQuery } from "../utils/api";
 import Loading from "../components/Loading";
+import SharePopUp from "../components/SharePopUp";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
@@ -88,6 +89,8 @@ const ViewWorkouts: React.FC = () => {
           </WeekdayContainer>
         </DoubleContainer>
       </DataContainer>
+      <SharePopUp/>
+
     </>
   );
 };
