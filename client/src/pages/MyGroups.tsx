@@ -20,7 +20,7 @@ const OuterExercisesContainer = styled.div`
   width: 50%;
   background-color: #ffc08e;
   border: 3px solid black;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 const InnerExercisesContainer = styled.div`

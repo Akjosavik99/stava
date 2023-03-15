@@ -1,7 +1,7 @@
 import stavaLogoWhite from "../assets/logo/stava_logo_white.png";
 import viewworkoutprogram from "../assets/navbarassets/viewworkoutprogram.png";
-import createworkoutprogram from "../assets/navbarassets/createworkoutprogram.svg";
-import createworkout from "../assets/navbarassets/createworkout.png";
+import createworkout from "../assets/navbarassets/createworkout.svg";
+import groups from "../assets/navbarassets/groups.svg";
 import { useEffect, useState } from "react";
 import { fetchUser } from "../utils/api";
 import { Log, User } from "../types/userType";
@@ -102,9 +102,9 @@ function Navbar() {
           >
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
               <li className="nav-item px-3">
-                <a className="nav-link" href="/createworkout">
+                <a className="nav-link" href="/groups">
                   <img
-                    src={createworkout}
+                    src={groups}
                     alt="Logo"
                     width="50"
                     height="48"
@@ -112,10 +112,10 @@ function Navbar() {
                   />
                 </a>
               </li>
-              <li className="nav-item dropdown px-3">
-                <a className="nav-link" href="/newprogram">
+              <li className="nav-item px-3">
+                <a className="nav-link" href="/createworkout">
                   <img
-                    src={createworkoutprogram}
+                    src={createworkout}
                     alt="Logo"
                     width="50"
                     height="48"
@@ -134,12 +134,12 @@ function Navbar() {
                   />
                 </a>
               </li>
-              <li className="nav-item-dropdown px-3">
-                <a className="nav-link" href="/viewprogress">
-                  <h1>🔥 {streak}</h1>
-                </a>
-              </li>
             </ul>
+            <div className="nav-item-dropdown d-flex ">
+              <a className="nav-link" href="/viewprogress">
+                <h1>🔥 {streak}</h1>
+              </a>
+            </div>
           </div>
         </div>
       </nav>
