@@ -30,3 +30,8 @@ export const FeedPost = styled.div`
     cursor: pointer;
   }
 `;
+
+export const MainContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;
