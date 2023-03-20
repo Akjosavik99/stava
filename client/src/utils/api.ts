@@ -147,9 +147,11 @@ export const sendPost = async (post: any) => {
 
 export const useGetFeedPostsQuery = () =>
   useQuery(["feed"], async () => {
-    return await axios.get("http://localhost:3001/api/post").then((res) => {
-      return res.data.data as Post[];
-    });
+    return await axios
+      .get("http://localhost:3001/api/user/feed")
+      .then((res) => {
+        return res.data.data as Post[];
+      });
   });
 
 export const getUserGroups = async () => {
