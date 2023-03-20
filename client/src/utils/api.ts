@@ -166,12 +166,18 @@ export const log = async (log: Log) => {
   return await axios.post("http://localhost:3001/api/user/log", log);
 };
 
-export const useGetMembersQuery = (id: string) => {
+export const useGetGroupQuery = (id: string) => {
   return useQuery(["members"], async () => {
     return await axios
       .get(`http://localhost:3001/api/group/find/${id}`)
       .then((res) => {
-        return res.data.data.members as { userName: string; userID: string }[];
+        return res.data.data as GroupData;
       });
+  });
+};
+
+export const useUpdateGroupMutation = (groupId: string) => {
+  return useMutation(async (group: GroupData) => {
+    await axios.put(`http://localhost:3001/api/group/update/${groupId}`, group);
   });
 };

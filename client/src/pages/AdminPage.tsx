@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import { Triangle } from "../styles/Form";
-import { useSearchParams } from "react-router-dom";
-import { useGetMembersQuery } from "../utils/api";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useGetGroupQuery, useUpdateGroupMutation } from "../utils/api";
 import Loading from "../components/Loading";
+import { GroupData } from "../types/groupTypes";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -80,13 +81,48 @@ const GroupName = styled.label`
 
 // There will have to be a way to get all users from a certain group, and display them here.
 const AdminPage: React.FC = () => {
+  const [selectedMembers, setSelectedMembers] = useState<
+    { userName: string; userID: string }[]
+  >([]);
+
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const groupId = searchParams.get("groupId");
 
-  const { data, isLoading, isError } = useGetMembersQuery(groupId || "");
+  const { data, isLoading, isError } = useGetGroupQuery(groupId || "");
+  const { mutate } = useUpdateGroupMutation(groupId || "");
 
   const goBackToGroup = () => {
-    window.location.href = `/groups/${groupId}`;
+    // redirect to group page
+    navigate(`/groups/${groupId}`);
+  };
+
+  const handleCreateAdmin = (
+    userList: { userName: string; userID: string }[]
+  ) => {
+    userList.forEach((user) => {
+      data?.owners.push(user);
+    });
+    mutate(data!);
+  };
+
+  const handleRemoveMember = (
+    userList: { userName: string; userID: string }[]
+  ) => {
+    userList.forEach((user) => {
+      const index = data?.members.findIndex(
+        (tempUser) => tempUser.userID === user.userID
+      );
+      console.log(index);
+      if (index! > -1) {
+        data?.members.splice(index!, 1)!;
+        console.log("now");
+      }
+    });
+    console.log(data?.members);
+    /* const index = data?.members.indexOf({ userName, userID }); */
+
+    mutate(data!);
   };
 
   if (isError) return <h1>Something went wrong</h1>;
@@ -100,20 +136,37 @@ const AdminPage: React.FC = () => {
       <DataContainer>
         <OuterExercisesContainer>
           <InnerExercisesContainer>
-            {data.length > 0 ? (
-              data?.map((member) => {
+            {data.members.length > 0 ? (
+              data.members.map((member) => {
                 return (
                   <div>
                     <input
                       type={"checkbox"}
                       id={member.userID}
                       name={"userID"}
-                      value={member.userID}
+                      value={(member.userID, member.userName)}
                       style={{
                         margin: "1rem",
                         height: "20px",
                         width: "20px",
                         marginRight: "0rem",
+                      }}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedMembers([
+                            ...selectedMembers,
+                            {
+                              userName: member.userName,
+                              userID: member.userID,
+                            },
+                          ]);
+                        } else {
+                          setSelectedMembers(
+                            selectedMembers.filter(
+                              (user) => user.userID !== member.userID
+                            )
+                          );
+                        }
                       }}
                     />
                     <GroupName htmlFor={member.userID}>
@@ -129,13 +182,23 @@ const AdminPage: React.FC = () => {
         </OuterExercisesContainer>
         <AdminFunctionsContainer>
           <AdminFunction>
-            <AdminButton>Create admin</AdminButton>
+            <AdminButton
+              disabled={!(selectedMembers.length > 0)}
+              onClick={() => handleCreateAdmin(selectedMembers)}
+            >
+              Create admin
+            </AdminButton>
           </AdminFunction>
           <AdminFunction>
-            <AdminButton>Remove member</AdminButton>
+            <AdminButton
+              disabled={!(selectedMembers.length > 0)}
+              onClick={() => handleRemoveMember(selectedMembers)}
+            >
+              Remove member
+            </AdminButton>
           </AdminFunction>
           <AdminFunction>
-            <AdminButton onClick={() => goBackToGroup()}>
+            <AdminButton onClick={() => goBackToGroup}>
               Back to Cardio Group
             </AdminButton>
           </AdminFunction>
