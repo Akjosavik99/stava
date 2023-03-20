@@ -101,7 +101,9 @@ const AdminPage: React.FC = () => {
     userList: { userName: string; userID: string }[]
   ) => {
     userList.forEach((user) => {
-      data?.owners.push(user);
+      if (!data?.owners.some((tempUser) => tempUser.userID === user.userID)) {
+        data?.owners.push(user);
+      }
     });
     mutate(data!);
   };
@@ -113,15 +115,10 @@ const AdminPage: React.FC = () => {
       const index = data?.members.findIndex(
         (tempUser) => tempUser.userID === user.userID
       );
-      console.log(index);
       if (index! > -1) {
-        data?.members.splice(index!, 1)!;
-        console.log("now");
+        data?.members.splice(index!, 1);
       }
     });
-    console.log(data?.members);
-    /* const index = data?.members.indexOf({ userName, userID }); */
-
     mutate(data!);
   };
 
