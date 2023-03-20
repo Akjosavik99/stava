@@ -68,11 +68,14 @@ const AdminButton = styled.button`
   font-weight: bold;
 `;
 
-const GroupName = styled.p`
+const GroupName = styled.label`
   font-size: 24px;
   font-weight: bold;
   margin-left: 2rem;
   margin-top: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 // There will have to be a way to get all users from a certain group, and display them here.
@@ -98,7 +101,27 @@ const AdminPage: React.FC = () => {
         <OuterExercisesContainer>
           <InnerExercisesContainer>
             {data.length > 0 ? (
-              data?.map((member) => <GroupName>{member.userName}</GroupName>)
+              data?.map((member) => {
+                return (
+                  <div>
+                    <input
+                      type={"checkbox"}
+                      id={member.userID}
+                      name={"userID"}
+                      value={member.userID}
+                      style={{
+                        margin: "1rem",
+                        height: "20px",
+                        width: "20px",
+                        marginRight: "0rem",
+                      }}
+                    />
+                    <GroupName htmlFor={member.userID}>
+                      {member.userName}
+                    </GroupName>
+                  </div>
+                );
+              })
             ) : (
               <h1>No members in this group</h1>
             )}
