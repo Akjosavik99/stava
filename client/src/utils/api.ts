@@ -139,7 +139,7 @@ export const useGetGroupsQuery = () => {
       return res.data.data as GroupData[];
     });
   });
-}
+};
 
 export const sendPost = async (post: any) => {
   await axios.post("http://localhost:3001/api/post", post);
@@ -152,10 +152,9 @@ export const useGetFeedPostsQuery = () =>
     });
   });
 
-  
 export const getUserGroups = async () => {
   return await axios.get("http://localhost:3001/api/group");
-}
+};
 
 export const fetchUser = async () => {
   return await axios.get("http://localhost:3001/api/user/auth");
@@ -163,4 +162,14 @@ export const fetchUser = async () => {
 
 export const log = async (log: Log) => {
   return await axios.post("http://localhost:3001/api/user/log", log);
+};
+
+export const useGetMembersQuery = (id: string) => {
+  return useQuery(["members"], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/group/find/${id}`)
+      .then((res) => {
+        return res.data.data.members as { userName: string; userID: string }[];
+      });
+  });
 };
