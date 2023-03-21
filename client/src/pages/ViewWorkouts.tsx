@@ -89,8 +89,7 @@ const ViewWorkouts: React.FC = () => {
           </WeekdayContainer>
         </DoubleContainer>
       </DataContainer>
-      <SharePopUp/>
-
+      {/* <SharePopUp/> */}
     </>
   );
 };

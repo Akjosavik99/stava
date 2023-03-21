@@ -1,10 +1,12 @@
 const post = require("../Models/Post");
 const postService = require("../Services/postService");
+const groupService = require("../Services/groupService");
+const workoutPlanService = require("../Services/workoutplanService");
 
 exports.findPostByUser = async (req, res) => {
   try {
     const username = req.session.user.username;
-    const posts = await postService.findPostByUser(username);
+    const posts = await (await postService.findPostByUser(username)).reverse();
     res.json({ data: posts, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -40,6 +42,36 @@ exports.createPost = async (req, res) => {
           picture: picture,
         })
       );
+      res.status(200).json({ data: newPost, message: "New post created" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createPost2 = async (req, res) => {
+  try {
+    const { title, text, workoutPlanID, groupID, picture } = req.body;
+    const { user } = req.session;
+    if (!title || !text || !workoutPlanID || !groupID || !user) {
+      return res.status(400).json({ message: "Incomplete post request!" });
+    } else {
+      const workoutPlanName = await workoutPlanService.getWorkoutPlanById(
+        workoutPlanID
+      ).workoutPlanName;
+      const newPost = await postService.createPost(
+        new post({
+          author: user.username,
+          title: title,
+          text: text,
+          workoutPlan: {
+            workoutPlanName: workoutPlanName,
+            workoutPlanID: workoutPlanID,
+          },
+          picture: picture,
+        })
+      );
+      await groupService.addPostToGroup(groupID, newPost._id);
       res.status(200).json({ data: newPost, message: "New post created" });
     }
   } catch (err) {

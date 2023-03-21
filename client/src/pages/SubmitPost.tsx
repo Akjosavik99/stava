@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
-import { SubmitButton, Triangle } from "../styles/Form";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { sendPost } from "../utils/api";
+import { SubmitButton } from "../styles/Form";
+import {
+  sendPost,
+  useFetchWorkoutPlansQuery,
+  useFetchWorkouts,
+  useGetGroupsQuery,
+  useGetWorkoutDataQuery,
+} from "../utils/api";
+import { GroupData } from "../types/groupTypes";
+import Loading from "../components/Loading";
+import { Workout, WorkoutPlan } from "../types/workoutExerciseTypes";
 
 const SuperWrapper = styled.div`
   padding: 20px;
@@ -26,14 +33,32 @@ const Title = styled.h1`
 `;
 
 const SubmitPost: React.FC = () => {
-  const navigate = useNavigate();
-
+  const [selectedGroupID, setSelectedGroupID] = useState<string>("");
+  const [selectedWorkoutPlanID, setSelectedWorkoutPlanID] =
+    useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
-  const [picture, setPicture] = useState<string>("");
+
+  const groupData = useGetGroupsQuery();
+
+  const workoutPlanData = useFetchWorkoutPlansQuery();
+
+  if (groupData.isLoading || workoutPlanData.isLoading) {
+    return <Loading />;
+  }
+
+  if (groupData.isError || workoutPlanData.isError) {
+    return <div>Something went wrong</div>;
+  }
 
   const handleSubmitPost = () => {
-    const post = { title: title, text: text, picture: picture };
+    const post = {
+      title: title,
+      text: text,
+      workoutPlanID: selectedWorkoutPlanID,
+      groupID: selectedGroupID,
+      picture: "",
+    };
     sendPost(post)
       .then((res) => window.location.reload())
       .catch((err) => {
@@ -41,10 +66,54 @@ const SubmitPost: React.FC = () => {
       });
   };
 
+  const showGroups = () => {
+    if (groupData.data.length > 0) {
+      return groupData.data.map((group: GroupData) => {
+        return (
+          <div>
+            <button
+              className={
+                selectedGroupID == group._id ? "btn btn-light" : "btn btn-grey"
+              }
+              onClick={(e) => setSelectedGroupID(group._id)}
+            >
+              {group.groupName}
+            </button>
+          </div>
+        );
+      });
+    } else {
+      return <div>No groups...</div>;
+    }
+  };
+
+  const showWorkouts = () => {
+    if (workoutPlanData.data.length > 0) {
+      return workoutPlanData.data.map((workoutPlan: WorkoutPlan) => {
+        return (
+          <div>
+            <button
+              className={
+                selectedWorkoutPlanID == workoutPlan._id
+                  ? "btn btn-light"
+                  : "btn btn-grey"
+              }
+              onClick={(e) => setSelectedWorkoutPlanID(workoutPlan._id)}
+            >
+              {workoutPlan.workoutPlanName}
+            </button>
+          </div>
+        );
+      });
+    } else {
+      return <div>No workouts...</div>;
+    }
+  };
+
   return (
     <>
+      <Navbar />
       <div className="container">
-        <Navbar />
         <SuperWrapper>
           <Title>Create Post</Title>
           <SubmitPostWrapper>
@@ -72,15 +141,16 @@ const SubmitPost: React.FC = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="postImage" className="form-label fs-3">
-                Attach image
+              <label htmlFor="" className="form-label fs-3">
+                Choose group
               </label>
-              <input
-                className="form-control"
-                type="file"
-                id="postImage"
-                onChange={(e) => setPicture(e.target.value)}
-              />
+              {showGroups()}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="" className="form-label fs-3">
+                Choose workout
+              </label>
+              {showWorkouts()}
             </div>
           </SubmitPostWrapper>
           <SubmitButton

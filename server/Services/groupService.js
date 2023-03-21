@@ -21,3 +21,10 @@ exports.createGroup = async (group) => {
 exports.updateGroup = async (id, group) => {
   return await GroupModel.findByIdAndUpdate(id, group, { new: true });
 };
+
+exports.addPostToGroup = async (id, postID) => {
+  return await GroupModel.updateOne(
+    { _id: id },
+    { $push: { postIDs: postID } }
+  );
+};
