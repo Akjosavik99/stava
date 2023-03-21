@@ -61,6 +61,12 @@ exports.createGroup = async (req, res) => {
 };
 
 exports.updateGroup = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   try {
     const id = req.params.id;
     const group = req.body;

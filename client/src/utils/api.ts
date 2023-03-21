@@ -173,3 +173,18 @@ export const getAllUsers = async () => {
 export const createGroup = async (group: submitGroup) => {
   return await axios.post("http://localhost:3001/api/group", group);
 };
+export const useGetGroupQuery = (id: string) => {
+  return useQuery(["members"], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/group/find/${id}`)
+      .then((res) => {
+        return res.data.data as GroupData;
+      });
+  });
+};
+
+export const useUpdateGroupMutation = (groupId: string) => {
+  return useMutation(async (group: GroupData) => {
+    await axios.put(`http://localhost:3001/api/group/update/${groupId}`, group);
+  });
+};
