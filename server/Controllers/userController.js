@@ -57,7 +57,6 @@ exports.loginUser = async (req, res) => {
   );
 
   try {
-    console.log(req.body);
     const user = await userService.getUserByName(req.body.username);
     const userPassword = req.body.password;
     if (user && userPassword) {
@@ -87,13 +86,15 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.authCheck = async (req, res) => {
-  const user = await userService.getUserByName(req.session.user.username);
-  if (user) {
-    req.session.user = user;
-    return res.status(200).json({ data: user, message: "Autorisert :)" });
-  } else {
-    return res.status(200).json({ message: "Ikke Autorisert :(" });
-  }
+  try {
+    const user = await userService.getUserByName(req.session.user.username);
+    if (user) {
+      req.session.user = user;
+      return res.status(200).json({ data: user, message: "Autorisert :)" });
+    } else {
+      return res.status(200).json({ message: "Ikke Autorisert :(" });
+    }
+  } catch {}
 };
 
 exports.logoutUser = async (req, res) => {
@@ -130,7 +131,7 @@ exports.UserFeed = async (req, res) => {
         }
       });
     });
-    res.status(200).json({ data: posts, status: "success" });
+    res.status(200).json({ data: posts.reverse(), status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -145,5 +146,16 @@ exports.log = async (req, res) => {
     res.status(200).json(newUser);
   } else {
     res.status(400).json({ message: "No text or user" });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    if (users) {
+      res.status(200).json(users);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

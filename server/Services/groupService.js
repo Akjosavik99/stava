@@ -30,3 +30,10 @@ exports.allGroups = async () => {
 exports.joinGroup = async (id, user) => {
   return await GroupModel.updateOne({ _id: id }, { $push: { members: user } });
 };
+
+exports.addPostToGroup = async (id, postID) => {
+  return await GroupModel.updateOne(
+    { _id: id },
+    { $push: { postIDs: postID } }
+  );
+};

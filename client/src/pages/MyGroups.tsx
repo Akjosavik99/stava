@@ -1,12 +1,11 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import Loading from "../components/Loading";
-import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
 import { useGetGroupsQuery } from "../utils/api";
 import JoinCommunityPopUp from "../components/JoinCommunityPopUp";
-import { isVisible } from "@testing-library/user-event/dist/utils";
+import CreateGroupPopUp from "../components/CreateGroupPopUp";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -87,8 +86,8 @@ const GroupName = styled.p`
 `;
 
 const MyGroups: React.FC = () => {
-  const [isVisible2, setIsVisible2] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisible2, setIsVisible2] = useState(false);
 
   const { data, isLoading, isError } = useGetGroupsQuery();
 
@@ -140,6 +139,7 @@ const MyGroups: React.FC = () => {
         {isVisible2 ? (
           <JoinCommunityPopUp setIsVisible2={setIsVisible2} />
         ) : null}
+        {isVisible ? <CreateGroupPopUp setIsVisible={setIsVisible} /> : null}
       </DataContainer>
       <Triangle
         style={{ height: "20px", position: "absolute", bottom: 0 }}
