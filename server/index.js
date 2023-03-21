@@ -54,12 +54,12 @@ app.use(
     saveUninitialized: false,
     store: mongoDBstore,
     cookie: {
-      domain: 'localhost',
-      path: '/',
+      domain: "localhost",
+      path: "/",
       secure: IS_PROD,
       maxAge: MAX_AGE,
-      sameSite: false
-    }
+      sameSite: false,
+    },
   })
 );
 
@@ -82,6 +82,12 @@ app.use("/api/user", userRouter);
 
 const workoutRouter = require("./Routers/workoutRouter");
 app.use("/api/workout", workoutRouter);
+
+const groupRouter = require("./Routers/groupRouter");
+app.use("/api/group", groupRouter);
+
+const postRouter = require("./Routers/postRouter");
+app.use("/api/post", postRouter);
 
 // Handle all other GET-reqs
 app.get("*", (req, res) => {

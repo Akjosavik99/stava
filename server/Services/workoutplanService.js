@@ -1,13 +1,13 @@
-const workoutPlanModel = require("../Models/workoutPlan");
+const WorkoutPlanModel = require("../Models/WorkoutPlan");
 
 module.exports.createWorkoutPlan = async (workoutPlan) => {
-  return await workoutPlanModel.create(workoutPlan);
+  return await WorkoutPlanModel.create(workoutPlan);
 };
 
 module.exports.getWorkoutPlansByOwner = async (owner) => {
-  return await workoutPlanModel.find({ owner: owner });
+  return await WorkoutPlanModel.find({ owner: owner });
 };
 
 module.exports.getWorkoutPlanById = async (id) => {
-  return await workoutPlanModel.findById(id);
+  return await WorkoutPlanModel.findById(id);
 };

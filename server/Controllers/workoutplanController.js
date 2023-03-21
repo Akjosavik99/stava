@@ -1,4 +1,4 @@
-const workoutPlan = require("../Models/workoutPlan");
+const workoutPlan = require("../Models/WorkoutPlan");
 const workoutplanService = require("../Services/workoutplanService");
 
 exports.getWorkoutPlansByOwner = async (req, res) => {
