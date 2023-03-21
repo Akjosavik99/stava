@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const user = require("./user");
+const workout = require("./workout");
 
 const Schema = mongoose.Schema;
 
-const WorkoutPlanSchema = new Schema({
+const workoutPlanSchema = new Schema({
   owner: { type: String, required: true },
   workoutPlanName: { type: String, required: true, unique: true },
   date: { type: Date, default: Date.now },
@@ -10,4 +12,4 @@ const WorkoutPlanSchema = new Schema({
   followers: [String],
 });
 
-module.exports = mongoose.model("WorkoutPlan", WorkoutPlanSchema);
+module.exports = mongoose.model("WorkoutPlan", workoutPlanSchema);

@@ -4,7 +4,7 @@ import {
   ExerciseImage,
   RepsSetsContainer,
   RepsSets,
-} from "../styles/ExerciseForm";
+} from "./ExerciseForm";
 
 type Props = {
   img: string;

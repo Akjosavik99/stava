@@ -1,14 +1,16 @@
-import React from "react";
+import React from 'react';
 import Navbar from "../components/Navbar";
 import ProgramView from "../components/ProgramView";
 
+
 const ProgramsPage: React.FC = () => {
-  return (
-    <>
-      <Navbar />
-      <ProgramView />
-    </>
-  );
-};
+
+    return (
+      <>
+        <Navbar />
+        <ProgramView />
+      </>
+    );
+  };
 
 export default ProgramsPage;

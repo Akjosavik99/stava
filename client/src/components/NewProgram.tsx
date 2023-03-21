@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 export const Frame = styled.div`
   background-color: #f9dac3;
   height: 50vh;
@@ -42,6 +43,7 @@ export const SubmitFrame = styled.div`
   flex-direction: row;
 `;
 
+
 export const FrameHolder = styled.section`
   height: auto;
   width: auto;
@@ -50,11 +52,12 @@ export const FrameHolder = styled.section`
   flex-direction: row;
 `;
 
+
 export const Title = styled.h1`
   color: #f16a00;
   font-size: 4em;
   text-align: center;
-  margin: 0;
+  margin: 0
 `;
 export const Page = styled.main`
   height: 92vh;
@@ -103,6 +106,7 @@ export const InputField = styled.input`
   width: 50%;
   margin: 0 auto;
   padding: 0rem 1rem;
+  default: "Workout Program Name";
 `;
 export const LabelField = styled.label`
   border-color: black;
@@ -111,7 +115,9 @@ export const LabelField = styled.label`
   width: 50%;
   margin: 0 auto;
   padding: 0rem 1rem;
+  default: "Workout Program Name";
 `;
+
 
 export const WeekLabel = styled.label`
   display: flex;
@@ -145,12 +151,12 @@ export const Subtitle = styled.h2`
   margin: 20px 0 20px 0;
 `;
 export const WorkoutPlanDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: auto;
-  align-items: center;
-  overflow: scroll;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+height: auto;
+align-items: center;
+overflow: scroll;
 `;
 export const WorkoutNameHolder = styled.div`
   display: flex;

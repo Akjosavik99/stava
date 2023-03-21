@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 export const Frame = styled.div`
@@ -44,17 +45,16 @@ export const Frame2 = styled.div`
   margin-left: 30px;
   margin-top: 10px;
   overflow: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
 `;
 export const SaveButton = styled.button`
   border-radius: 5rem;
   background-color: #f16a00;
-  height: 3rem;
+  height: 4rem;
   width: 10rem;
   font-size: 1rem;
   font-weight: bold;
   color: white;
-  margin-top: 0.5em;
   margin-right: 30px;
   margin-bottom: 15px;
 `;

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -14,14 +14,13 @@ const UserSchema = new Schema({
   groups: [String],
   plans: [String],
   exercises: [String],
-  log: [{ date: { type: Date, default: Date.now() }, text: String }],
 });
 
-UserSchema.static({
+userSchema.static({
   async getUserByUsername(username) {
     const user = await this.findOne({ username: username });
     return user;
   },
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", userSchema);

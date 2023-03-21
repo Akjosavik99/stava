@@ -14,7 +14,6 @@ export const DoubleContainer = styled.div`
   min-width: 700px;
   border: 3px solid black;
 `;
-
 export const WeekdayContainer = styled.div`
   min-width: 600px;
   margin: 0px;

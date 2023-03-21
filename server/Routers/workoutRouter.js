@@ -2,6 +2,7 @@ const express = require("express");
 
 const {
   createWorkout,
+  findWorkout,
   findWorkoutById,
   getWorkoutByOwner,
 } = require("../Controllers/workoutController");
@@ -14,7 +15,7 @@ const {
 
 const router = express.Router();
 
-router.route("/").post(createWorkout);
+router.route("/").post(createWorkout).get(findWorkout);
 router.route("/workouts").get(getWorkoutByOwner);
 router.route("/workout/:id").get(findWorkoutById);
 router.route("/plan").get(getWorkoutPlansByOwner).post(createWorkoutPlan);

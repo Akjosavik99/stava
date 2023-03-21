@@ -1,5 +1,16 @@
-const workout = require("../Models/Workout");
+const workout = require("../Models/workout");
+const user = require("../Models/user");
 const workoutService = require("../Services/workoutService");
+
+exports.findWorkout = async (req, res) => {
+  try {
+    const owner = req.session.user.username;
+    const workouts = await workoutService.getWorkoutByOwner(owner);
+    res.json({ data: workouts, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 exports.findWorkoutById = async (req, res) => {
   try {
@@ -43,12 +54,8 @@ exports.createWorkout = async (req, res) => {
 
 exports.getWorkoutByOwner = async (req, res) => {
   try {
-    if (!req.session.user) {
-      res.status(401).json({ status: "Fail", message: "Unauthorized" });
-      return;
-    }
     const owner = req.session.user.username;
-    const workouts = await workoutService.getWorkoutsByOwner(owner);
+    let workouts = await workoutService.getWorkoutsByOwner(owner);
     res.json({
       data: workouts,
       status: "success",

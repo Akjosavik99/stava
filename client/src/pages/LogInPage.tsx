@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+// import styled from "styled-components";
 import stava_logo from "../assets/logo/stava_logo.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useLoginMutation } from "../utils/api";
+import { useMutation } from "@tanstack/react-query";
 import Loading from "../components/Loading";
 import {
   InputFieldLogInPage,
@@ -17,9 +18,32 @@ import {
   CreateUserButton,
   ErrorText,
   SubmitButton,
-} from "../styles/Form";
+} from "../components/Form";
 
 axios.defaults.withCredentials = true;
+
+type FormData = {
+  username: string;
+  password: string;
+};
+
+export const useLoginMutation = () => {
+  const navigate = useNavigate();
+  return useMutation(
+    async (formData: FormData) => {
+      await axios.post("http://localhost:3001/api/user/auth", formData);
+    },
+    {
+      onSuccess: () => {
+        console.log("Success");
+        navigate("/programs");
+      },
+      onError: () => {
+        console.log("Wrong username/password");
+      },
+    }
+  );
+};
 
 const LogInPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -27,7 +51,6 @@ const LogInPage: React.FC = () => {
     password: "",
   });
 
-  // Update form state when user types in input field
   const onUpdateField = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nextFormState = {
       ...form,
@@ -55,7 +78,7 @@ const LogInPage: React.FC = () => {
         <LogoContainer>
           <Logo src={stava_logo} />
         </LogoContainer>
-        <Triangle />
+        <Triangle></Triangle>
         <FormContainer>
           <InputContainer>
             <InputFieldLogInPage
