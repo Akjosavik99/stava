@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 export const WhiteSquare = styled.div`
   width: 680px;
   height: 400px;
@@ -17,16 +16,14 @@ export const OrangeSquare = styled.div`
   position: relative;
   margin: 10px;
 `;
-
 export const OrangeText = styled.div`
-  font-family: "Inter";
+  font-family: Inter;
   font-style: normal;
   font-weight: 800;
-  font-size: 48px;
+  font-size: 43px;
   line-height: 58px;
   color: #f16a00;
 `;
-
 export const CreateButton = styled.button`
   width: 188px;
   height: 48px;
@@ -34,4 +31,7 @@ export const CreateButton = styled.button`
   border-radius: 20px;
   color: white;
   font-weight: 700;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;

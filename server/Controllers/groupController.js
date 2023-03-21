@@ -80,3 +80,26 @@ exports.updateGroup = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getAllGroups = async (req, res) => {
+  try {
+    const groups = await groupService.allGroups();
+    res.status(200).json({ data: groups, message: "All groups returned" });
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.joinGroup = async (req, res) => {
+  const id = req.params.id;
+  const user = {
+    userName: req.session.user.username,
+    userID: req.session.user._id,
+  };
+  try {
+    const group = groupService.joinGroup(id, user);
+    res.status(200).json({ data: group, message: "Joined group" });
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+};

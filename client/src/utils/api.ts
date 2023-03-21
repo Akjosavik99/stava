@@ -141,6 +141,16 @@ export const useGetGroupsQuery = () => {
   });
 };
 
+export const useGetAllGroupsQuery = () => {
+  return useQuery(["allgroups"], async () => {
+    return await axios
+      .get("http://localhost:3001/api/group/all")
+      .then((res) => {
+        return res.data.data as GroupData[];
+      });
+  });
+};
+
 export const sendPost = async (post: any) => {
   await axios.post("http://localhost:3001/api/post/submit", post);
 };
@@ -173,6 +183,11 @@ export const getAllUsers = async () => {
 export const createGroup = async (group: submitGroup) => {
   return await axios.post("http://localhost:3001/api/group", group);
 };
+
+export const joinGroup = async (id: string) => {
+  return await axios.post("http://localhost:3001/api/group/join/" + id);
+}
+
 export const useGetGroupQuery = (id: string) => {
   return useQuery(["members"], async () => {
     return await axios
