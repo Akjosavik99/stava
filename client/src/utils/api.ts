@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { GroupData } from "../types/groupTypes";
+import { GroupData, submitGroup } from "../types/groupTypes";
 import { Post } from "../types/postTypes";
 import { Log } from "../types/userType";
 import {
@@ -139,23 +139,34 @@ export const useGetGroupsQuery = () => {
       return res.data.data as GroupData[];
     });
   });
-}
+};
+
+export const useGetAllGroupsQuery = () => {
+  return useQuery(["allgroups"], async () => {
+    return await axios
+      .get("http://localhost:3001/api/group/all")
+      .then((res) => {
+        return res.data.data as GroupData[];
+      });
+  });
+};
 
 export const sendPost = async (post: any) => {
-  await axios.post("http://localhost:3001/api/post", post);
+  await axios.post("http://localhost:3001/api/post/submit", post);
 };
 
 export const useGetFeedPostsQuery = () =>
   useQuery(["feed"], async () => {
-    return await axios.get("http://localhost:3001/api/post").then((res) => {
-      return res.data.data as Post[];
-    });
+    return await axios
+      .get("http://localhost:3001/api/user/feed")
+      .then((res) => {
+        return res.data.data as Post[];
+      });
   });
 
-  
 export const getUserGroups = async () => {
   return await axios.get("http://localhost:3001/api/group");
-}
+};
 
 export const fetchUser = async () => {
   return await axios.get("http://localhost:3001/api/user/auth");
@@ -163,4 +174,32 @@ export const fetchUser = async () => {
 
 export const log = async (log: Log) => {
   return await axios.post("http://localhost:3001/api/user/log", log);
+};
+
+export const getAllUsers = async () => {
+  return await axios.get("http://localhost:3001/api/user/all");
+};
+
+export const createGroup = async (group: submitGroup) => {
+  return await axios.post("http://localhost:3001/api/group", group);
+};
+
+export const joinGroup = async (id: string) => {
+  return await axios.post("http://localhost:3001/api/group/join/" + id);
+}
+
+export const useGetGroupQuery = (id: string) => {
+  return useQuery(["members"], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/group/find/${id}`)
+      .then((res) => {
+        return res.data.data as GroupData;
+      });
+  });
+};
+
+export const useUpdateGroupMutation = (groupId: string) => {
+  return useMutation(async (group: GroupData) => {
+    await axios.put(`http://localhost:3001/api/group/update/${groupId}`, group);
+  });
 };

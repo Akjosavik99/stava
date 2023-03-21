@@ -57,7 +57,6 @@ exports.loginUser = async (req, res) => {
   );
 
   try {
-    console.log(req.body);
     const user = await userService.getUserByName(req.body.username);
     const userPassword = req.body.password;
     if (user && userPassword) {
@@ -134,7 +133,7 @@ exports.UserFeed = async (req, res) => {
         }
       });
     });
-    res.status(200).json({ data: posts, status: "success" });
+    res.status(200).json({ data: posts.reverse(), status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -153,5 +152,16 @@ exports.log = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    if (users) {
+      res.status(200).json(users);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
