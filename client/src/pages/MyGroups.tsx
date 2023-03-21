@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useGetGroupsQuery } from "../utils/api";
+import CreateGroupPopUp from "../components/CreateGroupPopUp";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -77,6 +78,7 @@ const GroupName = styled.p`
 
 const MyGroups: React.FC = () => {
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
 
   const { data, isLoading, isError } = useGetGroupsQuery();
 
@@ -106,7 +108,10 @@ const MyGroups: React.FC = () => {
         </OuterExercisesContainer>
         <GroupFunctionsContainer>
           <GroupFunction>
-            <GroupButton onClick={() => navigate("/creategroup")}>
+            <GroupButton
+              disabled={isVisible ? true : false}
+              onClick={() => setIsVisible(!isVisible)}
+            >
               Create group
             </GroupButton>
           </GroupFunction>
@@ -116,6 +121,7 @@ const MyGroups: React.FC = () => {
             </GroupButton>
           </GroupFunction>
         </GroupFunctionsContainer>
+        {isVisible ? <CreateGroupPopUp setIsVisible={setIsVisible} /> : null}
       </DataContainer>
       <Triangle
         style={{ height: "20px", position: "absolute", bottom: 0 }}

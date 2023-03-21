@@ -24,32 +24,36 @@ exports.findGroupById = async (req, res) => {
 
 exports.createGroup = async (req, res) => {
   try {
-    const { groupName, isPrivate } = req.body;
+    const { groupName, isPrivate, members } = req.body;
     const { user } = req.session;
-    if (!groupName || !isPrivate || !user) {
+    console.log("== Req body : when creating group ==");
+    console.log(groupName);
+    console.log(isPrivate);
+    console.log(members);
+    console.log(user.username);
+    if (!groupName || !user) {
+      console.log("incomplete post");
       return res.status(400).json({ message: "Incomplete post request!" });
     } else if (await groupService.findGroup(groupName)) {
+      console.log("groupname taken");
       return res.status(400).json({ message: "groupname is taken." });
     } else {
-      const newGroup = await groupService.createGroup(
-        new group({
-          groupName: groupName,
-          isPrivate: isPrivate,
-          owners: [
-            {
-              userName: user.username,
-              userID: user._id,
-            },
-          ],
-          members: [
-            {
-              userName: user.username,
-              userID: user._id,
-            },
-          ],
-        })
-      );
-      res.status(200).json({ data: newGroup, message: "New group created" });
+      let newGroup = new group({
+        groupName: groupName,
+        isPrivate: isPrivate,
+        owners: [
+          {
+            userName: user.username,
+            userID: user._id,
+          },
+        ],
+        members: [{ userName: user.username, userID: user._id }],
+      });
+      members.forEach((user) => {
+        newGroup.members.push({ userName: user.username, userID: user.userID });
+      });
+      const savedGroup = await groupService.createGroup(newGroup);
+      res.status(200).json({ data: savedGroup, message: "New group created" });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
