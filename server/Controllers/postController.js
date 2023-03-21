@@ -1,7 +1,7 @@
 const post = require("../Models/Post");
 const postService = require("../Services/postService");
 const groupService = require("../Services/groupService");
-const workoutPlanService = require("../Services/workoutPlanService");
+const workoutPlanService = require("../Services/workoutplanService");
 
 exports.findPostByUser = async (req, res) => {
   try {
