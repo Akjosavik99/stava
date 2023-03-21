@@ -5,7 +5,6 @@ import { Triangle } from "../styles/Form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetGroupQuery, useUpdateGroupMutation } from "../utils/api";
 import Loading from "../components/Loading";
-import { GroupData } from "../types/groupTypes";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -67,6 +66,10 @@ const AdminButton = styled.button`
   color: white;
   font-size: 24px;
   font-weight: bold;
+
+  &:disabled {
+    background-color: #958686;
+  }
 `;
 
 const GroupName = styled.label`
