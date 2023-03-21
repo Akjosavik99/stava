@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { GroupData } from "../types/groupTypes";
+import { GroupData, submitGroup } from "../types/groupTypes";
 import { Post } from "../types/postTypes";
 import { Log } from "../types/userType";
 import {
@@ -139,7 +139,17 @@ export const useGetGroupsQuery = () => {
       return res.data.data as GroupData[];
     });
   });
-}
+};
+
+export const useGetAllGroupsQuery = () => {
+  return useQuery(["allgroups"], async () => {
+    return await axios
+      .get("http://localhost:3001/api/group/all")
+      .then((res) => {
+        return res.data.data as GroupData[];
+      });
+  });
+};
 
 export const sendPost = async (post: any) => {
   await axios.post("http://localhost:3001/api/post", post);
@@ -152,10 +162,9 @@ export const useGetFeedPostsQuery = () =>
     });
   });
 
-  
 export const getUserGroups = async () => {
   return await axios.get("http://localhost:3001/api/group");
-}
+};
 
 export const fetchUser = async () => {
   return await axios.get("http://localhost:3001/api/user/auth");
@@ -163,4 +172,16 @@ export const fetchUser = async () => {
 
 export const log = async (log: Log) => {
   return await axios.post("http://localhost:3001/api/user/log", log);
+};
+
+export const getAllUsers = async () => {
+  return await axios.get("http://localhost:3001/api/user/all");
+};
+
+export const createGroup = async (group: submitGroup) => {
+  return await axios.post("http://localhost:3001/api/group", group);
+};
+
+export const joinGroup = async (id: string) => {
+  return await axios.post("http://localhost:3001/api/group/join/" + id);
 };

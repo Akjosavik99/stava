@@ -18,3 +18,9 @@ export type GroupData = {
   postIDs: string[];
   date: Date;
 };
+
+export type submitGroup = {
+  groupName: string;
+  isPrivate: boolean;
+  members: { username: string; userID: string }[];
+}

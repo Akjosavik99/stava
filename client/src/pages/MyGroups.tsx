@@ -1,10 +1,12 @@
-import React from "react";
 import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import Loading from "../components/Loading";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useGetGroupsQuery } from "../utils/api";
+import JoinCommunityPopUp from "../components/JoinCommunityPopUp";
+import { isVisible } from "@testing-library/user-event/dist/utils";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -29,6 +31,15 @@ const InnerExercisesContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+`;
+ const OrangeText = styled.div`
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 40px;
+  margin: 15px;
+  line-height: 58px;
+  color: #f16a00;
 `;
 
 const DataContainer = styled.div`
@@ -76,7 +87,8 @@ const GroupName = styled.p`
 `;
 
 const MyGroups: React.FC = () => {
-  const navigate = useNavigate();
+  const [isVisible2, setIsVisible2] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const { data, isLoading, isError } = useGetGroupsQuery();
 
@@ -95,27 +107,39 @@ const MyGroups: React.FC = () => {
       <DataContainer>
         <OuterExercisesContainer>
           <InnerExercisesContainer>
-            {data.length > 0 ? (
-              data.map((element) => {
-                return <GroupName>{element.groupName}</GroupName>;
-              })
-            ) : (
-              <GroupName>You are not a member of any groups</GroupName>
-            )}
+            <div className="container">
+              {data.length > 0 ? (
+                data.map((element) => {
+                  return (
+                    <div className="row">
+                      <OrangeText>{element.groupName}</OrangeText>
+                    </div>
+                  );
+                })
+              ) : (
+                <GroupName>You are not a member of any groups</GroupName>
+              )}
+            </div>
           </InnerExercisesContainer>
         </OuterExercisesContainer>
         <GroupFunctionsContainer>
           <GroupFunction>
-            <GroupButton onClick={() => navigate("/creategroup")}>
+            <GroupButton
+              disabled={isVisible ? true : false}
+              onClick={() => setIsVisible(!isVisible)}
+            >
               Create group
             </GroupButton>
           </GroupFunction>
-          <GroupFunction>
-            <GroupButton onClick={() => navigate("/joincommunity")}>
-              Join community
-            </GroupButton>
-          </GroupFunction>
+        <GroupFunction>
+          <GroupButton onClick={() => setIsVisible2(!isVisible2)}>
+            Join community
+          </GroupButton>
+        </GroupFunction>
         </GroupFunctionsContainer>
+        {isVisible2 ? (
+          <JoinCommunityPopUp setIsVisible2={setIsVisible2} />
+        ) : null}
       </DataContainer>
       <Triangle
         style={{ height: "20px", position: "absolute", bottom: 0 }}
