@@ -1,44 +1,81 @@
 import React from "react";
-
-import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../components/Loading";
-import {
-  HeaderContainer,
-  InnerExercisesContainer,
-  OuterExercisesContainer,
-  ProgressButton,
-  SingleContainer,
-  TripleContainer,
-} from "../styles/ExerciseForm";
-import { DataContainer } from "../styles/WorkoutForm";
 import Navbar from "../components/Navbar";
 import ExerciseComponent from "../components/ExerciseComponent";
-import { useGetDataQuery } from "../utils/api";
-import SharePopUp from "../components/SharePopUp";
+import bench from "../assets/workout_icons/bench.svg";
+import cycle from "../assets/workout_icons/cycle.svg";
+import dumbell from "../assets/workout_icons/cycle.svg";
+import machine from "../assets/workout_icons/machine.svg";
+import medicineBall from "../assets/workout_icons/medicineBall.svg";
+import running from "../assets/workout_icons/running.svg";
+import yoga from "../assets/workout_icons/yoga.svg";
+import stretching from "../assets/workout_icons/stretching.svg";
+import pulldown from "../assets/workout_icons/pulldown.svg";
+import situps from "../assets/workout_icons/situps.svg";
+import hangups from "../assets/workout_icons/hangups.svg";
+import jumping from "../assets/workout_icons/jumping.svg";
+import strongMan from "../assets/workout_icons/strongMan.svg";
+import weightLifting from "../assets/workout_icons/weightlifting.svg";
 
-type ImageList = {
-  [key: string]: string;
+import axios from "axios";
+import { Exercises } from "../util/workoutExerciseTypes";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../components/Loading";
+import {
+  InnerExercisesContainer,
+  OuterExercisesContainer,
+} from "../components/ExerciseForm";
+import { DataContainer } from "../components/WorkoutForm";
+
+const useGetDataQuery = (id: string | undefined) => {
+  return useQuery<Exercises>(["workout", id], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/workout/workout/${id}`)
+      .then((res) => {
+        return res.data.data;
+      });
+  });
 };
+
+function updateImage(img: string) {
+  switch (img) {
+    case "bench":
+      return bench;
+    case "cycle":
+      return cycle;
+    case "dumbell":
+      return dumbell;
+    case "machine":
+      return machine;
+    case "medicineBall":
+      return medicineBall;
+    case "running":
+      return running;
+    case "yoga":
+      return yoga;
+    case "stretching":
+      return stretching;
+    case "pulldown":
+      return pulldown;
+    case "situps":
+      return situps;
+    case "hangups":
+      return hangups;
+    case "jumping":
+      return jumping;
+    case "strongMan":
+      return strongMan;
+    case "weightlifting":
+      return weightLifting;
+    default:
+      return bench;
+  }
+}
 
 const ViewExercises: React.FC = () => {
   const params = useParams();
 
-  const navigator = useNavigate();
-
   const { data, isLoading } = useGetDataQuery(params.id);
-
-  // Function to dynamically import all images from a folder
-  function importAll(r: __WebpackModuleApi.RequireContext) {
-    let images: ImageList = {};
-    r.keys().map((item) => {
-      images[item.replace("./", "")] = r(item);
-    });
-    return images;
-  }
-
-  const images: ImageList = importAll(
-    require.context("../assets/workout_icons/", false, /\.(svg)$/)
-  );
 
   if (isLoading) {
     return <Loading />;
@@ -49,25 +86,7 @@ const ViewExercises: React.FC = () => {
       <Navbar />
       <DataContainer>
         <OuterExercisesContainer>
-          <TripleContainer>
-            <SingleContainer>
-              <ProgressButton onClick={() => navigator("/viewProgress")}>
-                Progress
-              </ProgressButton>
-            </SingleContainer>
-            <HeaderContainer>
-              <h1
-                style={{
-                  textAlign: "center",
-                  fontSize: "4em",
-                  width: "100%",
-                }}
-              >
-                Exercises
-              </h1>
-            </HeaderContainer>
-            {/* <SingleContainer></SingleContainer> */}
-          </TripleContainer>
+          <h1 style={{ textAlign: "center" }}>Exercises</h1>
 
           <InnerExercisesContainer>
             {data?.exercises.map(
@@ -78,7 +97,7 @@ const ViewExercises: React.FC = () => {
               }) => {
                 return (
                   <ExerciseComponent
-                    img={images[`${exercise.exerciseName}.svg`]}
+                    img={updateImage(exercise.exerciseName)}
                     reps={exercise.reps}
                     sets={exercise.sets}
                   />

@@ -9,7 +9,7 @@ export const OuterExercisesContainer = styled.div`
   width: 60%;
   background-color: #ffc08e;
   border: 3px solid black;
-  overflow-y: auto;
+  overflow-y: scroll;
 `;
 
 export const InnerExercisesContainer = styled.div`
@@ -18,35 +18,6 @@ export const InnerExercisesContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-`;
-
-export const TripleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  max-width: 100%;
-`;
-export const SingleContainer = styled.div`
-  display: flex;
-  min-width: 25%;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const HeaderContainer = styled.div`
-  display: flex;
-  min-width: 50%;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const ProgressButton = styled.button`
-  border-color: black;
-  border-radius: 5rem;
-  background-color: white;
-  height: 2.5rem;
-  width: 8rem;
-  font-size: 1.5rem;
-  font-weight: bold;
 `;
 
 // The container with the exercises + reps/sets

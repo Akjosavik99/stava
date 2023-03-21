@@ -4,49 +4,62 @@ import Navbar from "../components/Navbar";
 import {
   Frame,
   Column,
+  Title,
   Title2,
   Frame2,
   SaveButton,
   InputField,
-} from "../styles/MyWorkout";
+} from "../components/MyWorkout";
 import SetsXReps from "../components/SetsXReps";
 import MyExercises from "../components/MyExercises";
 import axios from "axios";
-import { useSaveWorkoutMutation } from "../utils/api";
 
 axios.defaults.withCredentials = true;
 
-type NewExercise = {
+type Exercise = {
   exerciseName: string;
   sets: number;
   reps: number;
 };
 
-type NewWorkoutData = {
+type WorkoutData = {
   workoutname: string;
-  exercises: Array<NewExercise>;
+  exercises: Array<Exercise>;
 };
 
 type ChosenExercise = {
   name: string;
+  src: any;
   sets: number;
   reps: number;
 };
 
-const CreateWorkout: React.FC = () => {
+const saveWorkout = async (currentData: WorkoutData) => {
+  console.log(currentData);
+  await axios
+    .post("http://localhost:3001/api/workout", currentData)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      console.log("done");
+    });
+};
+
+const CreateWorkout: React.FC = (props) => {
   const navigate = useNavigate();
-  const [data, setData] = useState<NewWorkoutData>({
+  const [data, setData] = useState<WorkoutData>({
     workoutname: "undefined",
     exercises: [],
   });
-
-  const { mutate } = useSaveWorkoutMutation();
-
   const [exercises, setExercises] = useState<Array<ChosenExercise>>([]);
   const [title, setTitle] = useState<string>("undefined");
 
-  const updateExercises = (name: string): void => {
-    setExercises([...exercises, { name: name, sets: 0, reps: 0 }]);
+  const updateExercises = (name: string, src: any): void => {
+    setExercises([...exercises, { name: name, src: src, sets: 0, reps: 0 }]);
   };
 
   const updateSets = (sets: number, index: number): void => {
@@ -61,7 +74,7 @@ const CreateWorkout: React.FC = () => {
   let chosenExercises = exercises.map((exercise) => {
     return (
       <SetsXReps
-        source={exercise.name}
+        source={exercise.src}
         index={exercises.indexOf(exercise)}
         updateSets={updateSets}
         updateReps={updateReps}
@@ -69,7 +82,6 @@ const CreateWorkout: React.FC = () => {
     );
   });
 
-  // When exercises or title changes, update data
   useEffect(() => {
     setData({
       workoutname: title,
@@ -100,7 +112,7 @@ const CreateWorkout: React.FC = () => {
         </Column>
         <SaveButton
           onClick={() => {
-            mutate(data);
+            saveWorkout(data);
             navigate("/programs");
           }}
         >
