@@ -16,6 +16,7 @@ height: 320px;
 background: rgba(241, 106, 0, 0.22);
 position: relative;
 margin: 10px; 
+border-radius: 20px;
 `
 
 export const OrangeText = styled.div`
@@ -32,6 +33,7 @@ width: 253px;
 height: 195px;
 background: rgba(241, 106, 0, 0.22);
 margin: auto; 
+border-radius: 10px;
 
 `
 

@@ -7,6 +7,7 @@ import {
   FeedContainer,
   FeedPost,
   MainContainer,
+Button
 } from "./styles/Feed";
 import { useGetFeedPostsQuery } from "./utils/api";
 
@@ -33,9 +34,6 @@ const App: React.FC = () => {
             data?.map((post) => {
               return (
                 <FeedPost
-                  onClick={() =>
-                    navigate(`/viewworkouts/${post.workoutPlan.workoutPlanID}`)
-                  }
                 >
                   <p style={{ gridArea: "username", marginLeft: "1rem" }}>
                     <b>Author: </b>
@@ -50,6 +48,10 @@ const App: React.FC = () => {
                   >
                     {post.text}
                   </p>
+                  <Button
+                  onClick={() =>
+                    navigate(`/viewworkouts/${post.workoutPlan.workoutPlanID}`)
+                  }>See program...</Button>
                 </FeedPost>
               );
             })
