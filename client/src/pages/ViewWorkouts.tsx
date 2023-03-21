@@ -1,6 +1,4 @@
 import React from "react";
-import axios from "axios";
-import { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import {
   WeekdayContainer,
@@ -8,54 +6,35 @@ import {
   DayContainer,
   DoubleContainer,
   DayContainerList,
-} from "../components/WorkoutForm";
+} from "../styles/WorkoutForm";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Workout,
-  WorkoutPlan,
-  ExerciseData,
-} from "../util/workoutExerciseTypes";
+import { ExerciseData, WorkoutInfo } from "../types/workoutExerciseTypes";
+import { useGetWorkoutDataQuery } from "../utils/api";
+import Loading from "../components/Loading";
+import SharePopUp from "../components/SharePopUp";
 
 const ViewWorkouts: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan>(
-    {} as WorkoutPlan
-  );
 
-  const getData = async (id: string) => {
-    try {
-      const res = await axios.get(
-        `http://localhost:3001/api/workout/plan/${id}`
-      );
-      return res.data.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { data, isLoading } = useGetWorkoutDataQuery(params.id as string);
 
-  useEffect(() => {
-    if (params.id === undefined) {
-      return;
-    }
-
-    getData(params.id).then((res) => {
-      setWorkoutPlan(res);
-    });
-  }, [params.id]);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   function getWorkouts(day: string) {
     try {
       const emptyList: ExerciseData[] = [];
 
-      const workout: Workout[] = workoutPlan.workouts;
-      for (const key in workout) {
-        let len = workout[key].day.length;
+      const workouts: WorkoutInfo[] = data!.workouts;
+      for (let j = 0; j < workouts.length; j++) {
+        let len = workouts[j].day.length;
         for (let i = 0; i < len; i++) {
-          if (workout[key].day[i] === day) {
+          if (workouts[j].day[i] === day) {
             emptyList.push({
-              name: workout[key].workoutName,
-              url: "/viewexercises/" + workout[key].workoutID,
+              name: workouts[j].workoutName,
+              url: "/viewexercises/" + workouts[j].workoutID,
             });
           }
         }
@@ -110,6 +89,8 @@ const ViewWorkouts: React.FC = () => {
           </WeekdayContainer>
         </DoubleContainer>
       </DataContainer>
+      <SharePopUp/>
+
     </>
   );
 };
