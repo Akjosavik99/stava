@@ -195,13 +195,41 @@ export const createGroup = async (group: submitGroup) => {
 
 export const joinGroup = async (id: string) => {
   return await axios.post("http://localhost:3001/api/group/join/" + id);
-}
+};
+
+export const updateGroup = async (group: GroupData) => {
+  return await axios.post(
+    "http://localhost:3001/api/group/update/" + group._id,
+    group
+  );
+};
 
 export const useGetGroupQuery = (id: string) => {
   return useQuery(["members"], async () => {
     return await axios
       .get(`http://localhost:3001/api/group/find/${id}`)
       .then((res) => {
+        return res.data.data as GroupData;
+      });
+  });
+};
+
+export const useGetGroupPostsQuery = (id: string) => {
+  return useQuery(["groupPosts"], async () => {
+    return await axios
+      .get(`http://localhost:3001/api/group/posts/${id}`)
+      .then((res) => {
+        return res.data.data as Post[];
+      });
+  });
+};
+
+export const useUpdateGroupQuery = (group: GroupData) => {
+  return useQuery(["updateGroup"], async () => {
+    return await axios
+      .post(`http://localhost:3001/api/group/update/${group._id}`, group)
+      .then((res) => {
+        console.log(res.data.data.postIds);
         return res.data.data as GroupData;
       });
   });

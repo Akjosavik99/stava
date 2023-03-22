@@ -20,7 +20,7 @@ const JoinCommunityPopUp: React.FC<JCPUprops> = (props) => {
   const { data, isLoading, isError } = useGetAllGroupsQuery();
 
   if (isLoading) {
-    return <Loading />;
+    return <></>;
   }
 
   if (isError) {
@@ -41,7 +41,6 @@ const JoinCommunityPopUp: React.FC<JCPUprops> = (props) => {
       .map((group) => {
         return (
           <div>
-            
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -52,10 +51,12 @@ const JoinCommunityPopUp: React.FC<JCPUprops> = (props) => {
               }
             >
               <OrangeText
-              style = {{
-                fontSize : "25px"
-              }}>{group.groupName}</OrangeText>
-              
+                style={{
+                  fontSize: "25px",
+                }}
+              >
+                {group.groupName}
+              </OrangeText>
             </button>
           </div>
         );

@@ -1,6 +1,7 @@
 const group = require("../Models/Group");
 const groupService = require("../Services/groupService");
 const userService = require("../Services/userService");
+const postService = require("../Services/postService");
 
 exports.findGroupByUser = async (req, res) => {
   try {
@@ -100,6 +101,17 @@ exports.joinGroup = async (req, res) => {
     const group = groupService.joinGroup(id, user);
     res.status(200).json({ data: group, message: "Joined group" });
   } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.findPostsByGroup = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const group = await groupService.findGroupById(id);
+    const posts = await postService.getAllPosts(group.postIDs);
+    res.json({ data: posts, status: "success" });
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };

@@ -19,3 +19,7 @@ exports.updatePost = async (id, post) => {
 exports.deletePost = async (id) => {
   return await PostModel.findByIdAndDelete(id);
 };
+
+exports.getAllPosts = async (ids) => {
+  return await PostModel.find({ _id: { $in: ids } });
+};

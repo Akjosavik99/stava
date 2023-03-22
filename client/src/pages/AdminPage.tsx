@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetGroupQuery, useUpdateGroupMutation } from "../utils/api";
 import Loading from "../components/Loading";
-
+import AdminViewPosts from "../components/adminViewPosts";
 const StyledHeader = styled.h1`
   font-size: 3em;
   text-align: center;
@@ -91,6 +91,7 @@ const AdminPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const groupId = searchParams.get("groupId");
+  const [showPosts, setShowPosts] = useState(false);
 
   const { data, isLoading, isError } = useGetGroupQuery(groupId || "");
   const { mutate } = useUpdateGroupMutation(groupId || "");
@@ -124,6 +125,10 @@ const AdminPage: React.FC = () => {
     });
     mutate(data!);
   };
+
+  useEffect(() => {
+    //reload page when data is updated
+  }, [showPosts]);
 
   if (isError) return <h1>Something went wrong</h1>;
 
@@ -198,9 +203,12 @@ const AdminPage: React.FC = () => {
             </AdminButton>
           </AdminFunction>
           <AdminFunction>
-            <AdminButton onClick={() => goBackToGroup}>
-              Back to Cardio Group
+            <AdminButton onClick={() => setShowPosts(!showPosts)}>
+              View posts
             </AdminButton>
+            {showPosts ? (
+              <AdminViewPosts group={data} setShowPosts={setShowPosts} />
+            ) : null}
           </AdminFunction>
         </AdminFunctionsContainer>
       </DataContainer>
