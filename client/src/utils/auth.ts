@@ -14,5 +14,5 @@ const useValidateUserQuery = () => {
 export const auth = () => {
   const { data: isAuthenticated, isLoading } = useValidateUserQuery();
 
-  return { invalid: isAuthenticated === "Ikke Autorisert :(", isLoading };
+  return { valid: isAuthenticated === "Autorisert :)", isLoading };
 };

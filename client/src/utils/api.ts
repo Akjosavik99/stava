@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { GroupData, submitGroup } from "../types/groupTypes";
 import { Post } from "../types/postTypes";
-import { Log } from "../types/userType";
+import { Log, User } from "../types/userType";
 import {
   Exercises,
   Workout,
@@ -171,6 +171,15 @@ export const getUserGroups = async () => {
 export const fetchUser = async () => {
   return await axios.get("http://localhost:3001/api/user/auth");
 };
+
+export const useFetchUser = () =>
+  useQuery(["user"], async () => {
+    return await axios
+      .get("http://localhost:3001/api/user/auth")
+      .then((res) => {
+        return res.data.data as User;
+      });
+  });
 
 export const log = async (log: Log) => {
   return await axios.post("http://localhost:3001/api/user/log", log);

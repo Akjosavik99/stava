@@ -11,7 +11,7 @@ type PrivateRouteProps = {
 console.error = () => {};
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
-  const { invalid, isLoading } = auth();
+  const { valid, isLoading } = auth();
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -20,7 +20,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
 
   // To fix, set this inside useEffect. Decided not to do it, since then I couldn't
   // set a loading screen.
-  if (invalid) {
+  if (!valid) {
     navigate("/login");
   }
 

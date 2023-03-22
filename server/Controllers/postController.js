@@ -53,7 +53,7 @@ exports.createPost2 = async (req, res) => {
   try {
     const { title, text, workoutPlanID, groupID, picture } = req.body;
     const { user } = req.session;
-    if (!title || !text || !workoutPlanID || !groupID || !user) {
+    if (!title || !text || !groupID || !user) {
       return res.status(400).json({ message: "Incomplete post request!" });
     } else {
       const workoutPlanName = await workoutPlanService.getWorkoutPlanById(

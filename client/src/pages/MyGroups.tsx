@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
-import { useGetGroupsQuery } from "../utils/api";
 import JoinCommunityPopUp from "../components/JoinCommunityPopUp";
+import { useNavigate } from "react-router-dom";
+import { fetchUser, useFetchUser, useGetGroupsQuery } from "../utils/api";
 import CreateGroupPopUp from "../components/CreateGroupPopUp";
 
 const StyledHeader = styled.h1`
@@ -31,7 +32,7 @@ const InnerExercisesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;
- const OrangeText = styled.div`
+const OrangeText = styled.div`
   font-family: Inter;
   font-style: normal;
   font-weight: 800;
@@ -89,13 +90,14 @@ const MyGroups: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
 
-  const { data, isLoading, isError } = useGetGroupsQuery();
+  const groups = useGetGroupsQuery();
+  const user = useFetchUser();
 
-  if (isLoading) {
+  if (groups.isLoading || user.isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
+  if (groups.isError || user.isError) {
     return <div>Something went wrong</div>;
   }
 
@@ -106,19 +108,24 @@ const MyGroups: React.FC = () => {
       <DataContainer>
         <OuterExercisesContainer>
           <InnerExercisesContainer>
-            <div className="container">
-              {data.length > 0 ? (
-                data.map((element) => {
-                  return (
-                    <div className="row">
-                      <OrangeText>{element.groupName}</OrangeText>
-                    </div>
-                  );
-                })
-              ) : (
-                <GroupName>You are not a member of any groups</GroupName>
-              )}
-            </div>
+            {groups.data.length > 0 ? (
+              groups.data.reverse().map((element) => {
+                return (
+                  <div className="container">
+                    {element.groupName ==
+                    user.data.username + "" + user.data._id ? (
+                      <OrangeText className="fw-bold fw-italic">
+                        My Friends{" "}
+                      </OrangeText>
+                    ) : (
+                      <OrangeText>{element.groupName} </OrangeText>
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              <GroupName>You are not a member of any groups</GroupName>
+            )}
           </InnerExercisesContainer>
         </OuterExercisesContainer>
         <GroupFunctionsContainer>
@@ -130,20 +137,17 @@ const MyGroups: React.FC = () => {
               Create group
             </GroupButton>
           </GroupFunction>
-        <GroupFunction>
-          <GroupButton onClick={() => setIsVisible2(!isVisible2)}>
-            Join community
-          </GroupButton>
-        </GroupFunction>
+          <GroupFunction>
+            <GroupButton onClick={() => setIsVisible2(!isVisible2)}>
+              Join community
+            </GroupButton>
+          </GroupFunction>
         </GroupFunctionsContainer>
         {isVisible2 ? (
           <JoinCommunityPopUp setIsVisible2={setIsVisible2} />
         ) : null}
         {isVisible ? <CreateGroupPopUp setIsVisible={setIsVisible} /> : null}
       </DataContainer>
-      <Triangle
-        style={{ height: "20px", position: "absolute", bottom: 0 }}
-      ></Triangle>
     </div>
   );
 };
