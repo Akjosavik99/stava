@@ -7,6 +7,7 @@ const AdsContainer = styled.div`
   padding: 1em;
   text-align: center;
   justify-content: space-around;
+  min-height: 90vh;
 `;
 
 const AdsImg = styled.div`
