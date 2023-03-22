@@ -241,15 +241,6 @@ export const useUpdateGroupMutation = (groupId: string) => {
   });
 };
 
-export const useGetGroupPostsQuery = (groupId: string) =>
-  useQuery(["groupPosts"], async () => {
-    return await axios
-      .get(`http://localhost:3001/api/group/posts/${groupId}`)
-      .then((res) => {
-        return res.data.data as Post[];
-      });
-  });
-
 export const getUsername = async () => {
   return await axios
     .get("http://localhost:3001/api/user/username")
