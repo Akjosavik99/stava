@@ -5,8 +5,8 @@ const postService = require("../Services/postService");
 const groupService = require("../Services/groupService");
 
 exports.getUserByName = async (req, res) => {
-  const { username } = req.body;
   try {
+    const { username } = req.body;
     const user = await userService.getuserByName(username);
     res.json({ data: user, status: "success" });
   } catch (err) {
@@ -91,19 +91,21 @@ exports.authCheck = async (req, res) => {
     if (user) {
       req.session.user = user;
       return res.status(200).json({ data: user, message: "Autorisert :)" });
-    } else {
-      return res.status(200).json({ message: "Ikke Autorisert :(" });
     }
-  } catch {}
+  } catch (err) {
+    return res.status(401).json({ message: "Ikke Autorisert :(" });
+  }
 };
 
 exports.logoutUser = async (req, res) => {
-  req.session.destroy((err) => {
-    //destroy session
-    if (err) throw err;
-    res.clearCookie("session-id"); // clear cookie
-    res.send("Logget ut.");
-  });
+  if (req.session) {
+    req.session.destroy((err) => {
+      //destroy session
+      if (err) throw err;
+      res.clearCookie("session-id"); // clear cookie
+    });
+  }
+  res.send("Logget ut.");
 };
 
 exports.deleteUser = async (req, res) => {
@@ -138,14 +140,18 @@ exports.UserFeed = async (req, res) => {
 };
 
 exports.log = async (req, res) => {
-  const { text } = req.body;
-  const user = await userService.getUserByName(req.session.user.username);
-  if (text && user) {
-    user.log.push({ date: Date.now(), text: text });
-    const newUser = await userService.updateUser(user._id, user);
-    res.status(200).json(newUser);
-  } else {
-    res.status(400).json({ message: "No text or user" });
+  try {
+    const { text } = req.body;
+    const user = await userService.getUserByName(req.session.user.username);
+    if (text && user) {
+      user.log.push({ date: Date.now(), text: text });
+      const newUser = await userService.updateUser(user._id, user);
+      res.status(200).json(newUser);
+    } else {
+      res.status(400).json({ message: "No text or user" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: err.message });
   }
 };
 
