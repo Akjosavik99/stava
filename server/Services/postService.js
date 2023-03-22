@@ -4,8 +4,8 @@ exports.findPostByUser = async (username) => {
   return await PostModel.find({ author: username });
 };
 
-exports.findPostById = async (id) => {
-  return await PostModel.findById(id);
+exports.findPostById = async (ids) => {
+  return await PostModel.find({ _id: { $in: ids } });
 };
 
 exports.createPost = async (post) => {
