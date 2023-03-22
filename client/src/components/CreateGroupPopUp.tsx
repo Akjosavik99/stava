@@ -77,7 +77,7 @@ const CreateGroupPopUp: React.FC<CGPUprops> = (props) => {
     return users.map((user) => {
       return (
         <div>
-          <div className="form-check">
+          <div className="form-check-align-middle">
             <input
               className="form-check-input"
               type="checkbox"
@@ -85,7 +85,7 @@ const CreateGroupPopUp: React.FC<CGPUprops> = (props) => {
               id="flexCheckDefault"
               onChange={() => addUserToSelectedUsers(user)}
               style={{
-                verticalAlign: "middle",
+                margin: "20px",
               }}
             />
             <label className="form-check-label" htmlFor="flexCheckDefault">

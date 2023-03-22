@@ -41,6 +41,7 @@ const JoinCommunityPopUp: React.FC<JCPUprops> = (props) => {
       .map((group) => {
         return (
           <div>
+            
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -50,7 +51,11 @@ const JoinCommunityPopUp: React.FC<JCPUprops> = (props) => {
                 selectedCommunity == group._id ? "btn btn-light" : "btn"
               }
             >
-              {group.groupName}
+              <OrangeText
+              style = {{
+                fontSize : "25px"
+              }}>{group.groupName}</OrangeText>
+              
             </button>
           </div>
         );

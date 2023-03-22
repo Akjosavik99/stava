@@ -26,9 +26,21 @@ export const FeedPost = styled.div`
   border: 1px solid black;
   background-color: rgba(241, 106, 0, 0.22);
   margin: 1rem auto;
-  &:hover {
-    cursor: pointer;
+  position: relative; 
+  border-radius: 20px;
   }
+`;
+
+export const Button = styled.button`
+  width: 180px;
+  height: 40px;
+  background: #f16a00;
+  border-radius: 20px;
+  color: white;
+  font-size: 18px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;
 
 export const MainContainer = styled.div`
