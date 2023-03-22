@@ -14,6 +14,12 @@ exports.findGroupByUser = async (req, res) => {
 };
 
 exports.findGroupById = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   try {
     const id = req.params.id;
     const group = await groupService.findGroupById(id);
@@ -27,11 +33,6 @@ exports.createGroup = async (req, res) => {
   try {
     const { groupName, isPrivate, members } = req.body;
     const { user } = req.session;
-    console.log("== Req body : when creating group ==");
-    console.log(groupName);
-    console.log(isPrivate);
-    console.log(members);
-    console.log(user.username);
     if (!groupName || !user) {
       console.log("incomplete post");
       return res.status(400).json({ message: "Incomplete post request!" });
@@ -78,6 +79,17 @@ exports.updateGroup = async (req, res) => {
       res.status(200).json({ data: updatedGroup, message: "group updated" });
     }
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.findPostsByGroup = async (req, res) => {
+  try {
+    const groupID = req.params.id;
+    const group = await groupService.findPostsByGroup(groupID);
+    posts = await postService.findPostById(group.postIDs);
+    res.json({ data: posts, status: "success" });
+  } catch (err) {    
     res.status(500).json({ error: err.message });
   }
 };

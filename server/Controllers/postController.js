@@ -23,6 +23,16 @@ exports.findPostById = async (req, res) => {
   }
 };
 
+exports.findPostsByGroup = async (req, res) => {
+  try {
+    const groupID = req.params.id;
+    const posts = await postService.findPostsByGroup(groupID);
+    res.json({ data: posts, status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.createPost = async (req, res) => {
   try {
     const { title, text, workoutPlanName, workoutPlanID, picture } = req.body;

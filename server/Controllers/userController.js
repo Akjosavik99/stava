@@ -86,6 +86,11 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.authCheck = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   try {
     const user = await userService.getUserByName(req.session.user.username);
     if (user) {
@@ -156,6 +161,44 @@ exports.getAllUsers = async (req, res) => {
     const users = await userService.getAllUsers();
     if (users) {
       res.status(200).json(users);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getUserName = async (req, res) => {
+  try {
+    const user = await userService.getUserByName(req.session.user.username);
+    console.log(user);
+    if (user) {
+      res.status(200).json({ message: user.username });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.adminCheck = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  try {
+    const group = await groupService.findGroupById(req.query.groupID);
+    const user = await userService.getUserByName(req.session.user.username);
+    // Don't judge me for this
+    let isAdmin = false;
+    group.owners.forEach((owner) => {
+      if (owner.userName === user.username) {
+        isAdmin = true;
+      }
+    });
+    if (isAdmin) {
+      res.status(200).json({ message: "Admin" });
+    } else {
+      res.status(200).json({ message: "Not admin" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

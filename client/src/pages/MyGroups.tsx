@@ -5,7 +5,7 @@ import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import JoinCommunityPopUp from "../components/JoinCommunityPopUp";
 import { useNavigate } from "react-router-dom";
-import { fetchUser, useFetchUser, useGetGroupsQuery } from "../utils/api";
+import { useFetchUser, useGetGroupsQuery } from "../utils/api";
 import CreateGroupPopUp from "../components/CreateGroupPopUp";
 
 const StyledHeader = styled.h1`
@@ -84,6 +84,9 @@ const GroupName = styled.p`
   font-weight: bold;
   margin-left: 2rem;
   margin-top: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const MyGroups: React.FC = () => {
@@ -92,6 +95,8 @@ const MyGroups: React.FC = () => {
 
   const groups = useGetGroupsQuery();
   const user = useFetchUser();
+
+  const navigate = useNavigate();
 
   if (groups.isLoading || user.isLoading) {
     return <Loading />;
@@ -109,9 +114,13 @@ const MyGroups: React.FC = () => {
         <OuterExercisesContainer>
           <InnerExercisesContainer>
             {groups.data.length > 0 ? (
-              groups.data.reverse().map((element) => {
+              groups.data.map((element) => {
                 return (
-                  <div className="container">
+                  <GroupName
+                    onClick={() =>
+                      navigate(`/viewgroup?groupid=${element._id}`)
+                    }
+                  >
                     {element.groupName ==
                     user.data.username + "" + user.data._id ? (
                       <OrangeText className="fw-bold fw-italic">
@@ -120,7 +129,7 @@ const MyGroups: React.FC = () => {
                     ) : (
                       <OrangeText>{element.groupName} </OrangeText>
                     )}
-                  </div>
+                  </GroupName>
                 );
               })
             ) : (

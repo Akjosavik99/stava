@@ -5,6 +5,7 @@ const {
   findGroupById,
   createGroup,
   updateGroup,
+  findPostsByGroup,
   getAllGroups,
   joinGroup,
   findPostsByGroup,

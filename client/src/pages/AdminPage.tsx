@@ -6,6 +6,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetGroupQuery, useUpdateGroupMutation } from "../utils/api";
 import Loading from "../components/Loading";
 import AdminViewPosts from "../components/adminViewPosts";
+import { admin } from "../utils/auth";
+
 const StyledHeader = styled.h1`
   font-size: 3em;
   text-align: center;
@@ -98,7 +100,7 @@ const AdminPage: React.FC = () => {
 
   const goBackToGroup = () => {
     // redirect to group page
-    navigate(`/groups/${groupId}`);
+    navigate(`/viewgroup?groupid=${groupId}`);
   };
 
   const handleCreateAdmin = (
@@ -110,6 +112,7 @@ const AdminPage: React.FC = () => {
       }
     });
     mutate(data!);
+    window.location.reload();
   };
 
   const handleRemoveMember = (
