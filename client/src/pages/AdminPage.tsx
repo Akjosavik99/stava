@@ -5,6 +5,7 @@ import { Triangle } from "../styles/Form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetGroupQuery, useUpdateGroupMutation } from "../utils/api";
 import Loading from "../components/Loading";
+import { admin } from "../utils/auth";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -90,14 +91,14 @@ const AdminPage: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const groupId = searchParams.get("groupId");
+  const groupId = searchParams.get("groupid");
 
   const { data, isLoading, isError } = useGetGroupQuery(groupId || "");
   const { mutate } = useUpdateGroupMutation(groupId || "");
 
   const goBackToGroup = () => {
     // redirect to group page
-    navigate(`/groups/${groupId}`);
+    navigate(`/viewgroup?groupid=${groupId}`);
   };
 
   const handleCreateAdmin = (
@@ -109,6 +110,7 @@ const AdminPage: React.FC = () => {
       }
     });
     mutate(data!);
+    window.location.reload();
   };
 
   const handleRemoveMember = (
@@ -198,7 +200,7 @@ const AdminPage: React.FC = () => {
             </AdminButton>
           </AdminFunction>
           <AdminFunction>
-            <AdminButton onClick={() => goBackToGroup}>
+            <AdminButton onClick={() => goBackToGroup()}>
               Back to Cardio Group
             </AdminButton>
           </AdminFunction>

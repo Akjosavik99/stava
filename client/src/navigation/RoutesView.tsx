@@ -14,6 +14,7 @@ import MyGroups from "../pages/MyGroups";
 import SubmitPost from "../pages/SubmitPost";
 import ViewProgress from "../pages/ViewProgress";
 import AdminPage from "../pages/AdminPage";
+import ViewGroup from "../pages/ViewGroup";
 
 const RoutesView: React.FC = () => {
   return (
@@ -39,17 +40,21 @@ const RoutesView: React.FC = () => {
         element={<PrivateRoute element={<NewProgramPage />} />}
       />
       <Route path="/post" element={<PrivateRoute element={<SubmitPost />} />} />
-      <Route
-        path="/groups"
-        element={<PrivateRoute element={<MyGroups />}></PrivateRoute>}
-      />
+      <Route path="/groups" element={<PrivateRoute element={<MyGroups />} />} />
       <Route
         path="/viewProgress"
         element={<PrivateRoute element={<ViewProgress />} />}
       />
-      <Route path="/newprogram" element={<NewProgramPage />} />
       <Route
-        /* Dette må bli omgjort til private route */ path="/admin"
+        path="/newprogram"
+        element={<PrivateRoute element={<NewProgramPage />} />}
+      />
+      <Route
+        path="/viewgroup"
+        element={<PrivateRoute element={<ViewGroup />} />}
+      />
+      <Route
+        path="/admin"
         element={<PrivateRoute element={<AdminPage />}></PrivateRoute>}
       />
       <Route path="*" element={<PageNotFound />} />

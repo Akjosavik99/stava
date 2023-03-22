@@ -37,3 +37,7 @@ exports.addPostToGroup = async (id, postID) => {
     { $push: { postIDs: postID } }
   );
 };
+
+exports.findPostsByGroup = async (id) => {
+  return await GroupModel.findById(id);
+};

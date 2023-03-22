@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import { SubmitButton } from "../styles/Form";
 import {
   sendPost,
   useFetchWorkoutPlansQuery,
-  useFetchWorkouts,
   useGetGroupsQuery,
-  useGetWorkoutDataQuery,
 } from "../utils/api";
 import { GroupData } from "../types/groupTypes";
 import Loading from "../components/Loading";
-import { Workout, WorkoutPlan } from "../types/workoutExerciseTypes";
+import { WorkoutPlan } from "../types/workoutExerciseTypes";
 
 const SuperWrapper = styled.div`
   padding: 20px;
@@ -30,6 +28,24 @@ const Title = styled.h1`
   font-size: 4em;
   text-align: center;
   margin: 0;
+`;
+
+const SubmitPostButton = styled.button`
+  border-radius: 5rem;
+  background-color: green;
+  color: white;
+  height: 4rem;
+  width: 10rem;
+  margin: 0 auto;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-color: black;
+
+  &:disabled {
+    cursor: default;
+    background-color: #958686;
+  }
 `;
 
 const SubmitPost: React.FC = () => {
@@ -153,15 +169,23 @@ const SubmitPost: React.FC = () => {
               {showWorkouts()}
             </div>
           </SubmitPostWrapper>
-          <SubmitButton
-            style={{ marginTop: "10px" }}
+          <SubmitPostButton
+            style={{
+              marginTop: "10px",
+            }}
             type="submit"
             onClick={() => {
               handleSubmitPost();
             }}
+            disabled={
+              title == "" ||
+              text == "" ||
+              selectedGroupID == "" ||
+              selectedWorkoutPlanID == ""
+            }
           >
             Submit Post
-          </SubmitButton>
+          </SubmitPostButton>
         </SuperWrapper>
       </div>
     </>
