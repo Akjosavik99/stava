@@ -196,6 +196,11 @@ export const createGroup = async (group: submitGroup) => {
 export const joinGroup = async (id: string) => {
   return await axios.post("http://localhost:3001/api/group/join/" + id);
 };
+export const addToGroup = async (groupid: string, userid: string) => {
+  return await axios.post("http://localhost:3001/api/group/add/" + groupid, {
+    userid: userid,
+  });
+};
 
 export const updateGroup = async (group: GroupData) => {
   return await axios.post(
