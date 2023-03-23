@@ -136,3 +136,23 @@ exports.addToGroup = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.removeFromGroup = async (req, res) => {
+  const id = req.params.id;
+  console.log(req.body);
+  const { userid } = req.body;
+  const newuser = await userService.getUserById(userid);
+  if (!newuser) {
+    res.status(500).json({ error: err.message });
+  }
+  const user = {
+    userName: newuser.username,
+    userID: newuser._id,
+  };
+  try {
+    const group = groupService.removeFromGroup(id, user);
+    res.status(200).json({ data: group, message: "Removed from group" });
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+};
