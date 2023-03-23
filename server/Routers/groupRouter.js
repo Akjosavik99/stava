@@ -8,7 +8,6 @@ const {
   findPostsByGroup,
   getAllGroups,
   joinGroup,
-  findPostsByGroup,
 } = require("../Controllers/groupController.js");
 
 const router = express.Router();
