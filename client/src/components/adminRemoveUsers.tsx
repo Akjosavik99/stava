@@ -86,7 +86,7 @@ const AdminRemoveUsers: React.FC<AdminRemoveUsersProps> = (props) => {
                 removeUser(e), setShowRemoveUser(false);
               }}
             >
-              Add user to group
+              Remove user
             </CreateButton>
           </div>
           {showUsers()}
