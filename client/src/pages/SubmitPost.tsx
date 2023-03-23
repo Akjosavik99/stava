@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { SubmitButton } from "../styles/Form";
 import {
   sendPost,
+  useFetchUser,
   useFetchWorkoutPlansQuery,
   useGetGroupsQuery,
 } from "../utils/api";
@@ -59,11 +60,13 @@ const SubmitPost: React.FC = () => {
 
   const workoutPlanData = useFetchWorkoutPlansQuery();
 
-  if (groupData.isLoading || workoutPlanData.isLoading) {
+  const userData = useFetchUser();
+
+  if (groupData.isLoading || workoutPlanData.isLoading || userData.isLoading) {
     return <Loading />;
   }
 
-  if (groupData.isError || workoutPlanData.isError) {
+  if (groupData.isError || workoutPlanData.isError || userData.isError) {
     return <div>Something went wrong</div>;
   }
 
@@ -93,7 +96,12 @@ const SubmitPost: React.FC = () => {
               }
               onClick={(e) => setSelectedGroupID(group._id)}
             >
-              {group.groupName}
+              {group.groupName ==
+              userData.data.username + "" + userData.data._id ? (
+                <>My Friends</>
+              ) : (
+                <>{group.groupName}</>
+              )}
             </button>
           </div>
         );

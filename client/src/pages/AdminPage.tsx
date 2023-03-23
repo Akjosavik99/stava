@@ -3,7 +3,11 @@ import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import { Triangle } from "../styles/Form";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useGetGroupQuery, useUpdateGroupMutation } from "../utils/api";
+import {
+  useFetchUser,
+  useGetGroupQuery,
+  useUpdateGroupMutation,
+} from "../utils/api";
 import Loading from "../components/Loading";
 import AdminViewPosts from "../components/adminViewPosts";
 import { admin } from "../utils/auth";
@@ -100,6 +104,8 @@ const AdminPage: React.FC = () => {
   const { data, isLoading, isError } = useGetGroupQuery(groupid || "");
   const { mutate } = useUpdateGroupMutation(groupid || "");
 
+  const user = useFetchUser();
+
   const goBackToGroup = () => {
     // redirect to group page
     navigate(`/viewgroup?groupid=${groupid}`);
@@ -135,9 +141,9 @@ const AdminPage: React.FC = () => {
     //reload page when data is updated
   }, [showPosts]);
 
-  if (isError) return <h1>Something went wrong</h1>;
+  if (isError || user.isError) return <h1>Something went wrong</h1>;
 
-  if (isLoading) return <Loading />;
+  if (isLoading || user.isLoading) return <Loading />;
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
@@ -147,44 +153,46 @@ const AdminPage: React.FC = () => {
         <OuterExercisesContainer>
           <InnerExercisesContainer>
             {data.members.length > 0 ? (
-              data.members.map((member) => {
-                return (
-                  <div>
-                    <input
-                      type={"checkbox"}
-                      id={member.userID}
-                      name={"userID"}
-                      value={(member.userID, member.userName)}
-                      style={{
-                        margin: "1rem",
-                        height: "20px",
-                        width: "20px",
-                        marginRight: "0rem",
-                      }}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedMembers([
-                            ...selectedMembers,
-                            {
-                              userName: member.userName,
-                              userID: member.userID,
-                            },
-                          ]);
-                        } else {
-                          setSelectedMembers(
-                            selectedMembers.filter(
-                              (user) => user.userID !== member.userID
-                            )
-                          );
-                        }
-                      }}
-                    />
-                    <GroupName htmlFor={member.userID}>
-                      {member.userName}
-                    </GroupName>
-                  </div>
-                );
-              })
+              data.members
+                .filter((member) => member.userName !== user.data.username)
+                .map((member) => {
+                  return (
+                    <div>
+                      <input
+                        type={"checkbox"}
+                        id={member.userID}
+                        name={"userID"}
+                        value={(member.userID, member.userName)}
+                        style={{
+                          margin: "1rem",
+                          height: "20px",
+                          width: "20px",
+                          marginRight: "0rem",
+                        }}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedMembers([
+                              ...selectedMembers,
+                              {
+                                userName: member.userName,
+                                userID: member.userID,
+                              },
+                            ]);
+                          } else {
+                            setSelectedMembers(
+                              selectedMembers.filter(
+                                (user) => user.userID !== member.userID
+                              )
+                            );
+                          }
+                        }}
+                      />
+                      <GroupName htmlFor={member.userID}>
+                        {member.userName}
+                      </GroupName>
+                    </div>
+                  );
+                })
             ) : (
               <h1>No members in this group</h1>
             )}

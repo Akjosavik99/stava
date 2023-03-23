@@ -113,28 +113,35 @@ const MyGroups: React.FC = () => {
       <DataContainer>
         <OuterExercisesContainer>
           <InnerExercisesContainer>
-            {groups.data.length > 0 ? (
-              groups.data.map((element) => {
-                return (
-                  <GroupName
-                    onClick={() =>
-                      navigate(`/viewgroup?groupid=${element._id}`)
-                    }
-                  >
-                    {element.groupName ==
-                    user.data.username + "" + user.data._id ? (
-                      <OrangeText className="fw-bold fw-italic">
-                        My Friends{" "}
-                      </OrangeText>
-                    ) : (
-                      <OrangeText>{element.groupName} </OrangeText>
-                    )}
-                  </GroupName>
-                );
-              })
-            ) : (
-              <GroupName>You are not a member of any groups</GroupName>
-            )}
+            <div className="mx-4">
+              {groups.data.length > 0 ? (
+                groups.data
+                  .sort((a, b) => b.groupName.length - a.groupName.length)
+                  .map((element) => {
+                    return (
+                      <>
+                        <div className="row my-1">
+                          <a
+                            onClick={() =>
+                              navigate(`/viewgroup?groupid=${element._id}`)
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            {element.groupName ==
+                            user.data.username + "" + user.data._id ? (
+                              <h1 className="fw-bold fw-italic">My Friends </h1>
+                            ) : (
+                              <h1>{element.groupName} </h1>
+                            )}
+                          </a>
+                        </div>
+                      </>
+                    );
+                  })
+              ) : (
+                <GroupName>You are not a member of any groups</GroupName>
+              )}
+            </div>
           </InnerExercisesContainer>
         </OuterExercisesContainer>
         <GroupFunctionsContainer>
