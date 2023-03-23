@@ -1,10 +1,12 @@
 const bcrypt = require("bcrypt");
-const user = require("../Models/user");
+const user = require("../Models/User");
 const userService = require("../Services/userService");
+const postService = require("../Services/postService");
+const groupService = require("../Services/groupService");
 
 exports.getUserByName = async (req, res) => {
-  const { username } = req.body;
   try {
+    const { username } = req.body;
     const user = await userService.getuserByName(username);
     res.json({ data: user, status: "success" });
   } catch (err) {
@@ -32,6 +34,14 @@ exports.createUser = async (req, res) => {
         new user({ username: username, password: hashedPwd })
       );
       req.session.user = newUser;
+      await groupService.createGroup({
+        groupName: newUser.username + "" + newUser._id,
+        isPrivate: true,
+        owners: [{ userName: newUser.username, userID: newUser._id }],
+        members: [{ userName: newUser.username, userID: newUser._id }],
+        workoutPlans: [],
+        postIDs: [],
+      });
       res.status(200).json({ data: newUser, message: "New user created" });
     }
   } catch (err) {
@@ -47,7 +57,6 @@ exports.loginUser = async (req, res) => {
   );
 
   try {
-    console.log(req.body);
     const user = await userService.getUserByName(req.body.username);
     const userPassword = req.body.password;
     if (user && userPassword) {
@@ -77,21 +86,31 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.authCheck = async (req, res) => {
-  const sessUser = req.session.user;
-  if (sessUser) {
-    return res.status(201).json({ data: user, message: "Autorisert :)" });
-  } else {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  try {
+    const user = await userService.getUserByName(req.session.user.username);
+    if (user) {
+      req.session.user = user;
+      return res.status(200).json({ data: user, message: "Autorisert :)" });
+    }
+  } catch (err) {
     return res.status(401).json({ message: "Ikke Autorisert :(" });
   }
 };
 
 exports.logoutUser = async (req, res) => {
-  req.session.destroy((err) => {
-    //destroy session
-    if (err) throw err;
-    res.clearCookie("session-id"); // clear cookie
-    res.send("Logget ut.");
-  });
+  if (req.session) {
+    req.session.destroy((err) => {
+      //destroy session
+      if (err) throw err;
+      res.clearCookie("session-id"); // clear cookie
+    });
+  }
+  res.send("Logget ut.");
 };
 
 exports.deleteUser = async (req, res) => {
@@ -103,5 +122,85 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json({ data: user, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.UserFeed = async (req, res) => {
+  try {
+    const user = await userService.getUserByName(req.session.user.username);
+    const groups = await groupService.findGroupByUser(user.username);
+    const postIDs = [];
+    groups.forEach((group) => {
+      postIDs.push(...group.postIDs);
+    });
+    const posts = await postService.getAllPosts(postIDs);
+    res.status(200).json({ data: posts.reverse(), status: "success" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.log = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const user = await userService.getUserByName(req.session.user.username);
+    if (text && user) {
+      user.log.push({ date: Date.now(), text: text });
+      const newUser = await userService.updateUser(user._id, user);
+      res.status(200).json(newUser);
+    } else {
+      res.status(400).json({ message: "No text or user" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    if (users) {
+      res.status(200).json(users);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getUserName = async (req, res) => {
+  try {
+    const user = await userService.getUserByName(req.session.user.username);
+    console.log(user);
+    if (user) {
+      res.status(200).json({ message: user.username });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.adminCheck = async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  try {
+    const group = await groupService.findGroupById(req.query.groupID);
+    const user = await userService.getUserByName(req.session.user.username);
+    // Don't judge me for this
+    let isAdmin = false;
+    group.owners.forEach((owner) => {
+      if (owner.userName === user.username) {
+        isAdmin = true;
+      }
+    });
+    if (isAdmin) {
+      res.status(200).json({ message: "Admin" });
+    } else {
+      res.status(200).json({ message: "Not admin" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

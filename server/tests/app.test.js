@@ -1,10 +1,8 @@
-/* const { expect } = require("chai"); */
-const User = require("../Models/user");
-const userModel = require("../Models/user");
+const User = require("../Models/User");
+const userModel = require("../Models/User");
 const mongoose = require("mongoose");
 
 const { dbConnect, dbDisconnect } = require("../utils/dbHandler.utils");
-const { MongoServerError } = require("mongodb");
 
 beforeAll(async () => {
   await dbConnect();
@@ -63,6 +61,7 @@ describe("create user", () => {
     } catch (error) {
       err = error;
     }
+    console.log(err);
     expect(err.constructor.name).toBe("MongoServerError");
   });
 });

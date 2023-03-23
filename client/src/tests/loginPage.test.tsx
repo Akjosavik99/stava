@@ -6,7 +6,7 @@ import nock from "nock";
 import { act } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 
-import { useLoginMutation } from "../pages/LogInPage";
+import { useLoginMutation } from "../utils/api";
 
 jest.mock("axios");
 
@@ -35,7 +35,7 @@ const mockedConsoleLog = jest.fn();
 console.log = mockedConsoleLog;
 
 describe("Log in", () => {
-  test("useLoginMutation should navigate to '/programs' on success", async () => {
+  test("useLoginMutation should navigate to '/' on success", async () => {
     const { result, waitFor } = renderHook(() => useLoginMutation(), {
       wrapper: wrapper,
     });
@@ -50,7 +50,7 @@ describe("Log in", () => {
     });
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
-      expect(mockedUsedNavigate).toBeCalledWith("/programs");
+      expect(mockedUsedNavigate).toBeCalledWith("/");
       expect(mockedConsoleLog).toBeCalledWith("Success");
     });
   });

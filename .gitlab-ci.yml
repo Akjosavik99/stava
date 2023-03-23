@@ -1,3 +1,7 @@
+cache:
+  paths:
+    - node_modules/
+
 stages:
   - build
   - test
@@ -8,8 +12,8 @@ build:
   image: node:latest
   script:
     - echo "Building..."
-    - npm install
-    - npm run build
+    - npm run build-server
+    - npm run build-client
   only:
     - merge_requests
 
@@ -17,13 +21,11 @@ test:
   stage: test
   image: node:latest
   script:
-    - echo "Testing server..."
     - npm install
-    - npm run test
     - echo "Testing client..."
-    - cd client
-    - npm install --force
-    - npm run test
+    - npm run build-test-client
+    - echo "Testing server..."
+    - npm run build-test-server
   only:
     - merge_requests
 

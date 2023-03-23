@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { SubmitButton, Triangle } from "./Form";
+import { SubmitButton, Triangle } from "../styles/Form";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WorkoutPlan } from "../utils/WorkoutPlan";
-import { workoutPlanExample } from "../tests/ExampleWorkouts";
+import { useFetchWorkoutPlansQuery } from "../utils/api";
+
 axios.defaults.withCredentials = true;
 
 const SuperFrame = styled.div`
@@ -13,30 +12,18 @@ const SuperFrame = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  margin: 1em 0;
 `;
 const Frame = styled.div`
   background-color: #f9dac3;
   height: 50vh;
   width: 60vw;
-  margin-left: 30px;
+  margin-left: 1em;
   text-align: center;
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-`;
-const Frame2 = styled.div`
-  background-color: #f9dac3;
-  height: 50vh;
-  width: 30vw;
-  text-align: center;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  justify-self: flex-end;
-  margin-right: 30px;
-  float: left;
 `;
 const Title = styled.h1`
   color: #f16a00;
@@ -66,30 +53,24 @@ const Title2 = styled.h1`
   margin: 0;
   cursor: pointer;
 `;
-const buttonStyle = {
-  marginBottom: "20px",
-};
+
+const ButtonDiv = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 0.5em 0.5em 0.5em 0;
+`;
+
+const ProgramDiv = styled.div`
+  display: flex;
+  min-height: 79%;
+  overflow-y: auto;
+  flex-direction: column;
+`;
 
 const ProgramView: React.FC = () => {
-  const [plans, setPlans] = useState<WorkoutPlan[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchWorkoutPlans = async () => {
-      try {
-        const response = await axios.get<any>(
-          "http://localhost:3001/api/workout/plan"
-        );
-
-        setPlans(response.data.data);
-      } catch (error) {
-        setPlans([workoutPlanExample]);
-        console.error(error);
-      }
-    };
-
-    fetchWorkoutPlans();
-  }, []);
+  const { data } = useFetchWorkoutPlansQuery();
 
   return (
     <>
@@ -97,30 +78,35 @@ const ProgramView: React.FC = () => {
         <Title>Your Programs</Title>
         <SuperFrame>
           <Frame>
-            {plans.length == 0 ? (
-              <h1>No workoutprograms</h1>
-            ) : (
-              plans?.map((item, index) => (
-                <ProgramItem
-                  key={index}
-                  onClick={() => {
-                    navigate(`/viewworkouts/${item._id}`);
-                  }}
-                >
-                  <Title2>{item.workoutPlanName}</Title2>
-                </ProgramItem>
-              ))
-            )}
+            <ProgramDiv>
+              {data?.length == 0 ? (
+                <h1>No workoutprograms</h1>
+              ) : (
+                data?.map((item, index) => (
+                  <ProgramItem
+                    key={index}
+                    onClick={() => {
+                      navigate(`/viewworkouts/${item._id}`);
+                    }}
+                  >
+                    <Title2>{item.workoutPlanName}</Title2>
+                  </ProgramItem>
+                ))
+              )}
+            </ProgramDiv>
+            <ButtonDiv>
+              <SubmitButton
+                style={{
+                  marginLeft: "auto",
+                  gridColumn: "2/3",
+                }}
+                type="submit"
+                onClick={() => navigate("/newprogram")}
+              >
+                New Workout Plan
+              </SubmitButton>
+            </ButtonDiv>
           </Frame>
-          <Frame2>
-            <SubmitButton
-              style={buttonStyle}
-              type="submit"
-              onClick={() => navigate("/newprogram")}
-            >
-              New Workout Plan
-            </SubmitButton>
-          </Frame2>
         </SuperFrame>
         <Triangle style={{ height: "20px" }}></Triangle>
       </Page>

@@ -33,11 +33,15 @@ const Row = styled.div`
 `;
 
 interface setsXRepsProps {
-  source: any;
+  source: string;
   index: number;
   updateSets: (sets: number, index: number) => void;
   updateReps: (reps: number, index: number) => void;
 }
+
+type ImageList = {
+  [key: string]: string;
+};
 
 const SetsXReps: React.FC<setsXRepsProps> = ({
   source,
@@ -48,6 +52,19 @@ const SetsXReps: React.FC<setsXRepsProps> = ({
   const [sets, setSets] = React.useState(0);
   const [reps, setReps] = React.useState(0);
 
+  // Function to dynamically import all images from a folder
+  function importAll(r: __WebpackModuleApi.RequireContext) {
+    let images: ImageList = {};
+    r.keys().map((item) => {
+      images[item.replace("./", "")] = r(item);
+    });
+    return images;
+  }
+
+  const images: ImageList = importAll(
+    require.context("../assets/workout_icons/", false, /\.(svg)$/)
+  );
+
   useEffect(() => {
     updateSets(sets, index);
     updateReps(reps, index);
@@ -56,7 +73,7 @@ const SetsXReps: React.FC<setsXRepsProps> = ({
   return (
     <Frame1>
       <Column>
-        <Image src={source} />
+        <Image src={images[`${source}.svg`]} />
       </Column>
       <Column>
         <Row>

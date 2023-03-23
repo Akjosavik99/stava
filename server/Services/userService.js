@@ -1,22 +1,25 @@
-const user = require("../Models/user");
-const userModel = require("../Models/user");
+const UserModel = require("../Models/User");
 
 exports.createUser = async (user) => {
-  return await userModel.create(user);
+  return await UserModel.create(user);
 };
 
 exports.getAllUsers = async () => {
-  return await userModel.find();
+  return await UserModel.find();
 };
 
 exports.getUserByName = async (username) => {
-  return await userModel.findOne({ username: username });
+  return await UserModel.findOne({ username: username });
+};
+
+exports.getUserById = async (id) => {
+  return await UserModel.findById(id);
 };
 
 exports.updateUser = async (id, user) => {
-  return await userModel.findByIdAndUpdate(id, user);
+  return await UserModel.findByIdAndUpdate(id, user, { new: true });
 };
 
 exports.deleteUser = async (id) => {
-  return await userModel.findByIdAndDelete(id);
+  return await UserModel.findByIdAndDelete(id);
 };
