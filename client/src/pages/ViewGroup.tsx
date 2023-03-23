@@ -10,6 +10,8 @@ import {
   useGetGroupPostsQuery,
   useGetGroupQuery,
   useUpdateGroupMutation,
+  removeFromGroup,
+  useFetchUser,
 } from "../utils/api";
 import { admin } from "../utils/auth";
 
@@ -95,10 +97,24 @@ const ViewGroup: React.FC = () => {
   const queryClient = useQueryClient();
   const groupId = searchParams.get("groupid");
 
+  const user = useFetchUser();
+
   const { data, isLoading } = useGetGroupPostsQuery(groupId || "");
   const { data: groupData } = useGetGroupQuery(groupId || "");
   const { mutate: leaveGroup } = useUpdateGroupMutation(groupId || "");
   const { valid } = admin(groupId || "");
+
+  const removeUser = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (groupId && user.data) {
+      removeFromGroup(groupId, user.data._id)
+        .then((res) => {
+          console.log(res.data);
+          navigate("/groups");
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   const handleLeaveGroup = () => {
     const username = getUsername();
@@ -149,7 +165,7 @@ const ViewGroup: React.FC = () => {
           )}
           <AdminFunction>
             <AdminButton
-              onClick={() => handleLeaveGroup()}
+              onClick={(e) => removeUser(e)}
               style={{ backgroundColor: "#da0000" }}
             >
               Leave group
