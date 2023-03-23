@@ -129,15 +129,11 @@ exports.UserFeed = async (req, res) => {
   try {
     const user = await userService.getUserByName(req.session.user.username);
     const groups = await groupService.findGroupByUser(user.username);
-    let posts = await postService.findPostByUser(user.username);
-
-    groups.forEach(async (group) => {
-      group.postIDs.forEach(async (id) => {
-        if (!posts.includes(id)) {
-          posts.push(await postService.findPostById(id));
-        }
-      });
+    const postIDs = [];
+    groups.forEach((group) => {
+      postIDs.push(...group.postIDs);
     });
+    const posts = await postService.getAllPosts(postIDs);
     res.status(200).json({ data: posts.reverse(), status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });

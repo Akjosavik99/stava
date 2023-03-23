@@ -61,6 +61,7 @@ describe("create user", () => {
     } catch (error) {
       err = error;
     }
+    console.log(err);
     expect(err.constructor.name).toBe("MongoServerError");
   });
 });

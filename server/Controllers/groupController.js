@@ -89,7 +89,7 @@ exports.findPostsByGroup = async (req, res) => {
     const group = await groupService.findPostsByGroup(groupID);
     posts = await postService.findPostById(group.postIDs);
     res.json({ data: posts, status: "success" });
-  } catch (err) {    
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
