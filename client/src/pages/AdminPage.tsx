@@ -7,6 +7,7 @@ import { useGetGroupQuery, useUpdateGroupMutation } from "../utils/api";
 import Loading from "../components/Loading";
 import AdminViewPosts from "../components/adminViewPosts";
 import { admin } from "../utils/auth";
+import AdminAddUsers from "../components/adminAddUsers";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -92,15 +93,16 @@ const AdminPage: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const groupId = searchParams.get("groupId");
+  const groupid = searchParams.get("groupid");
   const [showPosts, setShowPosts] = useState(false);
+  const [showUsers, setShowUsers] = useState(false);
 
-  const { data, isLoading, isError } = useGetGroupQuery(groupId || "");
-  const { mutate } = useUpdateGroupMutation(groupId || "");
+  const { data, isLoading, isError } = useGetGroupQuery(groupid || "");
+  const { mutate } = useUpdateGroupMutation(groupid || "");
 
   const goBackToGroup = () => {
     // redirect to group page
-    navigate(`/viewgroup?groupid=${groupId}`);
+    navigate(`/viewgroup?groupid=${groupid}`);
   };
 
   const handleCreateAdmin = (
@@ -211,6 +213,14 @@ const AdminPage: React.FC = () => {
             </AdminButton>
             {showPosts ? (
               <AdminViewPosts group={data} setShowPosts={setShowPosts} />
+            ) : null}
+          </AdminFunction>
+          <AdminFunction>
+            <AdminButton onClick={() => setShowUsers(!showUsers)}>
+              Add user
+            </AdminButton>
+            {showUsers ? (
+              <AdminAddUsers group={data} setShowUsers={setShowUsers} />
             ) : null}
           </AdminFunction>
         </AdminFunctionsContainer>
