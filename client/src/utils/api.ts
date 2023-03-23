@@ -202,6 +202,12 @@ export const addToGroup = async (groupid: string, userid: string) => {
   });
 };
 
+export const removeFromGroup = async (groupid: string, userid: string) => {
+  return await axios.post("http://localhost:3001/api/group/remove/" + groupid, {
+    userid: userid,
+  });
+};
+
 export const updateGroup = async (group: GroupData) => {
   return await axios.post(
     "http://localhost:3001/api/group/update/" + group._id,

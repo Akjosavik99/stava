@@ -10,8 +10,8 @@ import {
 } from "../utils/api";
 import Loading from "../components/Loading";
 import AdminViewPosts from "../components/adminViewPosts";
-import { admin } from "../utils/auth";
 import AdminAddUsers from "../components/adminAddUsers";
+import AdminRemoveUsers from "../components/adminRemoveUsers";
 
 const StyledHeader = styled.h1`
   font-size: 3em;
@@ -100,6 +100,7 @@ const AdminPage: React.FC = () => {
   const groupid = searchParams.get("groupid");
   const [showPosts, setShowPosts] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
+  const [showRemoveUser, setShowRemoveUser] = useState(false);
 
   const { data, isLoading, isError } = useGetGroupQuery(groupid || "");
   const { mutate } = useUpdateGroupMutation(groupid || "");
@@ -208,14 +209,6 @@ const AdminPage: React.FC = () => {
             </AdminButton>
           </AdminFunction>
           <AdminFunction>
-            <AdminButton
-              disabled={!(selectedMembers.length > 0)}
-              onClick={() => handleRemoveMember(selectedMembers)}
-            >
-              Remove member
-            </AdminButton>
-          </AdminFunction>
-          <AdminFunction>
             <AdminButton onClick={() => setShowPosts(!showPosts)}>
               View posts
             </AdminButton>
@@ -231,11 +224,19 @@ const AdminPage: React.FC = () => {
               <AdminAddUsers group={data} setShowUsers={setShowUsers} />
             ) : null}
           </AdminFunction>
+          <AdminFunction>
+            <AdminButton onClick={() => setShowRemoveUser(!showRemoveUser)}>
+              Remove User
+            </AdminButton>
+            {showRemoveUser ? (
+              <AdminRemoveUsers
+                group={data}
+                setShowRemoveUser={setShowRemoveUser}
+              />
+            ) : null}
+          </AdminFunction>
         </AdminFunctionsContainer>
       </DataContainer>
-      <Triangle
-        style={{ height: "20px", bottom: "0", position: "absolute" }}
-      ></Triangle>
     </div>
   );
 };
